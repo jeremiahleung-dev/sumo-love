@@ -66,7 +66,6 @@ export default async function BashoDetailPage({
 
   return (
     <div>
-      {/* Header */}
       <div className="bg-[#1A1A1A] text-[#FAF7F2]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
           <Link
@@ -111,7 +110,6 @@ export default async function BashoDetailPage({
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          {/* ── Standings ─────────────────────────────────────────── */}
           <div>
             <h2 className="font-display font-bold text-xl mb-4">Standings</h2>
             {leaderEntries.length > 0 ? (
@@ -121,7 +119,6 @@ export default async function BashoDetailPage({
             )}
           </div>
 
-          {/* ── Bouts by day ──────────────────────────────────────── */}
           <div className="lg:col-span-2">
             <h2 className="font-display font-bold text-xl mb-4">
               Bouts {basho.isActive && <span className="text-[#C0292A]">· Live</span>}

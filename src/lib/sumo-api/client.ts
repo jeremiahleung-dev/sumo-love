@@ -23,12 +23,6 @@ export async function fetchBashoList(): Promise<SumoApiBasho[]> {
   return apiFetch<SumoApiBasho[]>("/api/basho");
 }
 
-export async function fetchLatestBashoId(): Promise<string> {
-  const list = await fetchBashoList();
-  list.sort((a, b) => b.bashoId.localeCompare(a.bashoId));
-  return list[0].bashoId;
-}
-
 export async function fetchBanzuke(
   bashoId: string
 ): Promise<SumoApiBanzukeEntry[]> {

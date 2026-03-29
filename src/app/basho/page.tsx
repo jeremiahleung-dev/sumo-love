@@ -57,7 +57,6 @@ export default async function BashoPage() {
             : "border-[#EDE0CC] hover:border-[#C0292A]"
         }`}
       >
-        {/* Header stripe */}
         <div
           className={`px-4 py-3 flex items-center justify-between ${
             basho.isActive ? "bg-[#C0292A] text-white" : "bg-[#1A1A1A] text-[#FAF7F2]"
@@ -118,7 +117,6 @@ export default async function BashoPage() {
         </div>
       ) : (
         <div className="space-y-12">
-          {/* Current */}
           {active && (
             <section>
               <h2 className="font-display font-bold text-xl mb-4 flex items-center gap-2">
@@ -131,7 +129,6 @@ export default async function BashoPage() {
             </section>
           )}
 
-          {/* By year */}
           {years.map((year) => (
             <section key={year}>
               <h2 className="font-display font-bold text-xl mb-4 flex items-center gap-2">

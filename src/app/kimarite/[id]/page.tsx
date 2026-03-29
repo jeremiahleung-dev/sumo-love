@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import MatchRow from "@/components/basho/MatchRow";
 import { ChevronLeft } from "lucide-react";
 import dynamic from "next/dynamic";
+import { CATEGORY_COLORS } from "@/lib/kimarite-categories";
 
 const ANIMATION_COMPONENTS: Record<string, React.ComponentType> = {
   push:    dynamic(() => import("@/components/kimarite/animations/PushAnimation"),    { ssr: false }),
@@ -13,16 +14,6 @@ const ANIMATION_COMPONENTS: Record<string, React.ComponentType> = {
   twist:   dynamic(() => import("@/components/kimarite/animations/TwistAnimation"),   { ssr: false }),
   pull:    dynamic(() => import("@/components/kimarite/animations/PushAnimation"),    { ssr: false }), // reuse push anim mirrored
   special: dynamic(() => import("@/components/kimarite/animations/SpecialAnimation"), { ssr: false }),
-};
-
-const CATEGORY_COLORS: Record<string, string> = {
-  Push:    "bg-[#C0292A]/10 text-[#C0292A] border-[#C0292A]/30",
-  Throw:   "bg-[#1A1A1A]/10 text-[#1A1A1A] border-[#1A1A1A]/30",
-  Trip:    "bg-[#D4A97A]/30 text-[#8B4513] border-[#D4A97A]",
-  Lift:    "bg-[#2D6A4F]/10 text-[#2D6A4F] border-[#2D6A4F]/30",
-  Pull:    "bg-[#8B1A1A]/10 text-[#8B1A1A] border-[#8B1A1A]/30",
-  Twist:   "bg-[#EDE0CC] text-[#1A1A1A] border-[#D4A97A]",
-  Special: "bg-[#D4A97A]/20 text-[#8B4513] border-[#D4A97A]",
 };
 
 export const revalidate = 86400;
@@ -66,14 +57,10 @@ export default async function KimariteDetailPage({
         <ChevronLeft size={14} /> All Kimarite
       </Link>
 
-      {/* ── Header ────────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
-        {/* Animation */}
         <div className="bg-[#EDE0CC] rounded-xl p-8 flex items-center justify-center min-h-[220px]">
           <Animation />
         </div>
-
-        {/* Info */}
         <div className="flex flex-col justify-center">
           <span
             className={`text-xs font-bold uppercase tracking-widest px-3 py-1 rounded border self-start mb-3 ${catStyle}`}
@@ -95,7 +82,6 @@ export default async function KimariteDetailPage({
         </div>
       </div>
 
-      {/* ── Example matches ─────────────────────────────────────────── */}
       {kimarite.matches.length > 0 && (
         <div>
           <h2 className="font-display font-bold text-xl mb-4">

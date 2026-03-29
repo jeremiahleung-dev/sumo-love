@@ -1,6 +1,5 @@
 import { db } from "./db";
 import {
-  fetchLatestBashoId,
   fetchBashoList,
   fetchBanzuke,
   fetchTorikumi,
@@ -8,43 +7,44 @@ import {
 } from "./sumo-api/client";
 import { scrapeRikishiPhoto } from "./scraper/jsa";
 import { findMatchHighlight } from "./scraper/youtube";
+import { rankToDivision } from "./ranks";
 
 const BASHO_NAMES: Record<number, { jp: string; en: string; location: string; venue: string }> = {
-  1:  { jp: "初場所",   en: "Hatsu Basho",   location: "Tokyo",    venue: "Ryogoku Kokugikan" },
-  3:  { jp: "春場所",   en: "Haru Basho",    location: "Osaka",    venue: "Edion Arena Osaka" },
-  5:  { jp: "夏場所",   en: "Natsu Basho",   location: "Tokyo",    venue: "Ryogoku Kokugikan" },
-  7:  { jp: "名古屋場所", en: "Nagoya Basho", location: "Nagoya",   venue: "Dolphins Arena" },
-  9:  { jp: "秋場所",   en: "Aki Basho",     location: "Tokyo",    venue: "Ryogoku Kokugikan" },
-  11: { jp: "九州場所", en: "Kyushu Basho",  location: "Fukuoka",  venue: "Fukuoka Convention Center" },
+  1:  { jp: "初場所",     en: "Hatsu Basho",   location: "Tokyo",   venue: "Ryogoku Kokugikan" },
+  3:  { jp: "春場所",     en: "Haru Basho",    location: "Osaka",   venue: "Edion Arena Osaka" },
+  5:  { jp: "夏場所",     en: "Natsu Basho",   location: "Tokyo",   venue: "Ryogoku Kokugikan" },
+  7:  { jp: "名古屋場所", en: "Nagoya Basho",  location: "Nagoya",  venue: "Dolphins Arena" },
+  9:  { jp: "秋場所",     en: "Aki Basho",     location: "Tokyo",   venue: "Ryogoku Kokugikan" },
+  11: { jp: "九州場所",   en: "Kyushu Basho",  location: "Fukuoka", venue: "Fukuoka Convention Center" },
 };
 
 function bashoIdToDate(bashoId: string): { year: number; month: number; start: Date; end: Date } {
   const year = parseInt(bashoId.slice(0, 4));
   const month = parseInt(bashoId.slice(4, 6));
-  // Basho start on the second Sunday of the tournament month, run 15 days
-  const start = new Date(year, month - 1, 8); // approximate
+  // Approximate: basho start mid-month, run 15 days
+  const start = new Date(year, month - 1, 8);
   const end = new Date(year, month - 1, 22);
   return { year, month, start, end };
-}
-
-function rankToDivision(rank: string): string {
-  const sanyaku = ["Yokozuna", "Ozeki", "Sekiwake", "Komusubi"];
-  return sanyaku.some((r) => rank.startsWith(r)) ? "Sanyaku" : "Makuuchi";
 }
 
 export async function syncAll(): Promise<{ bashoSynced: number; rikishiSynced: number; matchesSynced: number }> {
   let rikishiSynced = 0;
   let matchesSynced = 0;
 
+  // Fetch once — derive latestId from the same list rather than a second API call
   const bashoList = await fetchBashoList();
-  const latestId = await fetchLatestBashoId();
+  bashoList.sort((a, b) => b.bashoId.localeCompare(a.bashoId));
+  const latestId = bashoList[0]?.bashoId;
+  if (!latestId) return { bashoSynced: 0, rikishiSynced: 0, matchesSynced: 0 };
 
-  // Sync the latest 3 basho (current + 2 past)
   const toSync = bashoList
     .map((b) => b.bashoId)
     .filter((id) => id <= latestId)
-    .sort((a, b) => b.localeCompare(a))
     .slice(0, 3);
+
+  // Pre-load all kimarite into a name→id map to avoid per-bout DB lookups
+  const allKimarite = await db.kimarite.findMany({ select: { id: true, nameEn: true } });
+  const kimariteByName = new Map(allKimarite.map((k) => [k.nameEn, k.id]));
 
   for (const bashoId of toSync) {
     const { year, month, start, end } = bashoIdToDate(bashoId);
@@ -68,7 +68,6 @@ export async function syncAll(): Promise<{ bashoSynced: number; rikishiSynced: n
       },
     });
 
-    // Sync banzuke (rankings + records)
     let banzuke;
     try {
       banzuke = await fetchBanzuke(bashoId);
@@ -76,14 +75,16 @@ export async function syncAll(): Promise<{ bashoSynced: number; rikishiSynced: n
       continue;
     }
 
-    for (const entry of banzuke) {
-      // Upsert rikishi
-      let rikishiData;
-      try {
-        rikishiData = await fetchRikishi(entry.rikishiID);
-      } catch {
-        continue;
-      }
+    // Fetch all rikishi profiles in parallel rather than serially
+    const profileResults = await Promise.allSettled(
+      banzuke.map((entry) => fetchRikishi(entry.rikishiID))
+    );
+
+    for (let i = 0; i < banzuke.length; i++) {
+      const entry = banzuke[i];
+      const profileResult = profileResults[i];
+      if (profileResult.status === "rejected") continue;
+      const rikishiData = profileResult.value;
 
       const division = rankToDivision(entry.rank);
       let imageUrl: string | null = null;
@@ -118,14 +119,9 @@ export async function syncAll(): Promise<{ bashoSynced: number; rikishiSynced: n
       });
       rikishiSynced++;
 
-      // Upsert basho entry
       await db.bashoEntry.upsert({
         where: { rikishiId_bashoId: { rikishiId: rikishi.id, bashoId: basho.id } },
-        update: {
-          wins: entry.wins,
-          losses: entry.losses,
-          absences: entry.absences,
-        },
+        update: { wins: entry.wins, losses: entry.losses, absences: entry.absences },
         create: {
           rikishiId: rikishi.id,
           bashoId: basho.id,
@@ -138,29 +134,28 @@ export async function syncAll(): Promise<{ bashoSynced: number; rikishiSynced: n
       });
     }
 
-    // Sync match results for each day
-    const totalDays = 15;
-    for (let day = 1; day <= totalDays; day++) {
+    // Build a sumoApiId→db.id map for this basho's rikishi to avoid per-bout lookups
+    const rikishiRows = await db.rikishi.findMany({
+      where: { bashoEntries: { some: { bashoId: basho.id } } },
+      select: { id: true, sumoApiId: true },
+    });
+    const rikishiById = new Map(rikishiRows.map((r) => [r.sumoApiId, r.id]));
+
+    for (let day = 1; day <= 15; day++) {
       let torikumi;
       try {
         torikumi = await fetchTorikumi(bashoId, day);
       } catch {
-        break; // Day not yet available
+        break;
       }
 
       for (const bout of torikumi) {
-        const east = await db.rikishi.findUnique({ where: { sumoApiId: String(bout.eastId) } });
-        const west = await db.rikishi.findUnique({ where: { sumoApiId: String(bout.westId) } });
-        if (!east || !west) continue;
+        const eastDbId = rikishiById.get(String(bout.eastId));
+        const westDbId = rikishiById.get(String(bout.westId));
+        if (!eastDbId || !westDbId) continue;
 
-        const winner = bout.winnerId
-          ? await db.rikishi.findUnique({ where: { sumoApiId: String(bout.winnerId) } })
-          : null;
-
-        let kimarite: { id: string } | null = null;
-        if (bout.kimarite) {
-          kimarite = await db.kimarite.findFirst({ where: { nameEn: bout.kimarite } });
-        }
+        const winnerDbId = bout.winnerId ? rikishiById.get(String(bout.winnerId)) ?? null : null;
+        const kimariteId = bout.kimarite ? (kimariteByName.get(bout.kimarite) ?? null) : null;
 
         let highlightUrl: string | null = null;
         try {
@@ -176,22 +171,18 @@ export async function syncAll(): Promise<{ bashoSynced: number; rikishiSynced: n
               bashoId_day_eastRikishiId_westRikishiId: {
                 bashoId: basho.id,
                 day,
-                eastRikishiId: east.id,
-                westRikishiId: west.id,
+                eastRikishiId: eastDbId,
+                westRikishiId: westDbId,
               },
             },
-            update: {
-              winnerId: winner?.id ?? null,
-              kimariteId: kimarite?.id ?? null,
-              highlightUrl,
-            },
+            update: { winnerId: winnerDbId, kimariteId, highlightUrl },
             create: {
               bashoId: basho.id,
               day,
-              eastRikishiId: east.id,
-              westRikishiId: west.id,
-              winnerId: winner?.id ?? null,
-              kimariteId: kimarite?.id ?? null,
+              eastRikishiId: eastDbId,
+              westRikishiId: westDbId,
+              winnerId: winnerDbId,
+              kimariteId,
               highlightUrl,
             },
           });

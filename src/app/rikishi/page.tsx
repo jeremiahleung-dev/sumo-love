@@ -1,27 +1,8 @@
 import { db } from "@/lib/db";
 import RikishiCard from "@/components/rikishi/RikishiCard";
+import { isSanyaku, rankSortKey } from "@/lib/ranks";
 
 export const revalidate = 3600;
-
-const RANK_ORDER = [
-  "Yokozuna",
-  "Ozeki",
-  "Sekiwake",
-  "Komusubi",
-  "Maegashira",
-];
-
-function rankOrder(rank: string | null): number {
-  if (!rank) return 99;
-  const idx = RANK_ORDER.findIndex((r) => rank.startsWith(r));
-  if (idx === -1) return 99;
-  // For Maegashira, sort by the number after the rank
-  if (rank.startsWith("Maegashira")) {
-    const num = parseInt(rank.replace(/\D/g, "")) || 99;
-    return 4 + num / 100;
-  }
-  return idx;
-}
 
 export default async function RikishiPage() {
   const allRikishi = await db.rikishi.findMany({
@@ -36,26 +17,14 @@ export default async function RikishiPage() {
   });
 
   const sorted = [...allRikishi].sort(
-    (a, b) => rankOrder(a.currentRank) - rankOrder(b.currentRank)
+    (a, b) => rankSortKey(a.currentRank) - rankSortKey(b.currentRank)
   );
 
-  const sanyaku = sorted.filter((r) =>
-    ["Yokozuna", "Ozeki", "Sekiwake", "Komusubi"].some((rank) =>
-      r.currentRank?.startsWith(rank)
-    )
-  );
-  const maegashira = sorted.filter((r) =>
-    r.currentRank?.startsWith("Maegashira")
-  );
-  const other = sorted.filter(
-    (r) =>
-      !sanyaku.includes(r) && !maegashira.includes(r)
-  );
+  const sanyaku = sorted.filter((r) => isSanyaku(r.currentRank));
+  const maegashira = sorted.filter((r) => r.currentRank?.startsWith("Maegashira"));
+  const other = sorted.filter((r) => !isSanyaku(r.currentRank) && !r.currentRank?.startsWith("Maegashira"));
 
-  function renderGrid(
-    rikishi: typeof sorted,
-    latestBashoId?: string
-  ) {
+  const grid = (rikishi: typeof sorted) => {
     if (rikishi.length === 0) return null;
     return (
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
@@ -78,7 +47,7 @@ export default async function RikishiPage() {
         })}
       </div>
     );
-  }
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
@@ -102,27 +71,25 @@ export default async function RikishiPage() {
                 <span className="w-2 h-6 bg-[#C0292A] rounded inline-block" />
                 Sanyaku
               </h2>
-              {renderGrid(sanyaku)}
+              {grid(sanyaku)}
             </section>
           )}
-
           {maegashira.length > 0 && (
             <section>
               <h2 className="font-display font-bold text-xl mb-4 flex items-center gap-2">
                 <span className="w-2 h-6 bg-[#1A1A1A] rounded inline-block" />
                 Maegashira
               </h2>
-              {renderGrid(maegashira)}
+              {grid(maegashira)}
             </section>
           )}
-
           {other.length > 0 && (
             <section>
               <h2 className="font-display font-bold text-xl mb-4 flex items-center gap-2">
                 <span className="w-2 h-6 bg-[#D4A97A] rounded inline-block" />
                 Other
               </h2>
-              {renderGrid(other)}
+              {grid(other)}
             </section>
           )}
         </div>

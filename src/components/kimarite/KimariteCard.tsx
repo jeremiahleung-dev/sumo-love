@@ -1,17 +1,5 @@
 import Link from "next/link";
-import dynamic from "next/dynamic";
-
-const ANIMATION_MAP: Record<string, React.ComponentType> = {};
-
-const CATEGORY_COLORS: Record<string, string> = {
-  Push:    "bg-[#C0292A]/10 text-[#C0292A] border-[#C0292A]/30",
-  Throw:   "bg-[#1A1A1A]/10 text-[#1A1A1A] border-[#1A1A1A]/30",
-  Trip:    "bg-[#D4A97A]/30 text-[#8B4513] border-[#D4A97A]",
-  Lift:    "bg-[#2D6A4F]/10 text-[#2D6A4F] border-[#2D6A4F]/30",
-  Pull:    "bg-[#8B1A1A]/10 text-[#8B1A1A] border-[#8B1A1A]/30",
-  Twist:   "bg-[#EDE0CC] text-[#1A1A1A] border-[#D4A97A]",
-  Special: "bg-gradient-to-r from-[#C0292A]/10 to-[#D4A97A]/10 text-[#8B4513] border-[#D4A97A]",
-};
+import { CATEGORY_COLORS } from "@/lib/kimarite-categories";
 
 export default function KimariteCard({
   id,

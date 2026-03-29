@@ -48,7 +48,6 @@ export default async function RikishiProfilePage({
 
   return (
     <div>
-      {/* ── Hero banner ─────────────────────────────────────────── */}
       <div className="bg-[#1A1A1A] text-[#FAF7F2]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
           <Link
@@ -59,7 +58,6 @@ export default async function RikishiProfilePage({
           </Link>
 
           <div className="flex flex-col md:flex-row gap-8 items-start">
-            {/* Photo */}
             <div className="relative w-36 h-48 md:w-48 md:h-64 rounded-lg overflow-hidden bg-[#EDE0CC] flex-shrink-0">
               {rikishi.imageUrl ? (
                 <Image
@@ -78,7 +76,6 @@ export default async function RikishiProfilePage({
               )}
             </div>
 
-            {/* Details */}
             <div className="flex-1">
               <div className="flex items-start gap-3 flex-wrap mb-2">
                 {rikishi.currentRank && (
@@ -93,7 +90,6 @@ export default async function RikishiProfilePage({
               </p>
               <p className="text-[#EDE0CC] text-sm mb-6">{rikishi.heyaEn} Stable</p>
 
-              {/* Stats row */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div>
                   <p className="text-[10px] uppercase tracking-widest text-[#D4A97A] mb-1">
@@ -141,7 +137,6 @@ export default async function RikishiProfilePage({
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* ── Basho history ─────────────────────────────────────── */}
           <div className="md:col-span-2">
             <h2 className="font-display font-bold text-xl mb-4">
               Basho History
@@ -204,7 +199,6 @@ export default async function RikishiProfilePage({
             </div>
           </div>
 
-          {/* ── Profile sidebar ───────────────────────────────────── */}
           <div>
             <h2 className="font-display font-bold text-xl mb-4">Profile</h2>
             <div className="bg-[#FAF7F2] border border-[#EDE0CC] rounded-lg p-5 space-y-4">

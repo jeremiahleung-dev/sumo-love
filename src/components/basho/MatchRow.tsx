@@ -33,7 +33,6 @@ export default function MatchRow({
   return (
     <div className="border border-[#EDE0CC] rounded-lg overflow-hidden mb-2">
       <div className="flex items-center p-3 gap-3">
-        {/* East */}
         <Link
           href={`/rikishi/${eastId}`}
           className={`flex-1 font-display font-semibold text-right hover:text-[#C0292A] transition-colors ${
@@ -48,7 +47,6 @@ export default function MatchRow({
           )}
         </Link>
 
-        {/* VS + kimarite */}
         <div className="flex flex-col items-center min-w-[80px]">
           <span className="text-[10px] text-[#D4A97A] font-bold uppercase tracking-widest">
             vs
@@ -63,7 +61,6 @@ export default function MatchRow({
           )}
         </div>
 
-        {/* West */}
         <Link
           href={`/rikishi/${westId}`}
           className={`flex-1 font-display font-semibold hover:text-[#C0292A] transition-colors ${
@@ -78,7 +75,6 @@ export default function MatchRow({
           {westShikona}
         </Link>
 
-        {/* Highlight toggle */}
         {highlightUrl && (
           <button
             onClick={() => setExpanded((v) => !v)}
@@ -95,7 +91,6 @@ export default function MatchRow({
         )}
       </div>
 
-      {/* Embedded highlight */}
       {expanded && highlightUrl && (
         <div className="px-3 pb-3">
           <YoutubeEmbed url={highlightUrl} title={`${eastShikona} vs ${westShikona}`} />

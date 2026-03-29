@@ -8,56 +8,45 @@ import { ChevronRight, Zap } from "lucide-react";
 
 export const revalidate = 1800;
 
+const BASHO_WITH_ENTRIES = {
+  include: {
+    entries: {
+      include: { rikishi: true },
+      orderBy: { wins: "desc" } as const,
+      take: 15,
+    },
+  },
+} as const;
+
 async function getHomeData() {
-  const activeBasho = await db.basho.findFirst({
-    where: { isActive: true },
-    include: {
-      entries: {
-        include: { rikishi: true },
-        orderBy: { wins: "desc" },
-        take: 15,
-      },
-    },
-  });
+  const [activeBasho, latestBashoFallback, featured, recentHighlights] =
+    await Promise.all([
+      db.basho.findFirst({ where: { isActive: true }, ...BASHO_WITH_ENTRIES }),
+      db.basho.findFirst({ orderBy: { sumoApiId: "desc" }, ...BASHO_WITH_ENTRIES }),
+      db.rikishi.findMany({
+        where: {
+          OR: [
+            { currentRank: { startsWith: "Yokozuna" } },
+            { currentRank: { startsWith: "Ozeki" } },
+          ],
+        },
+        take: 4,
+        include: {
+          bashoEntries: {
+            orderBy: { basho: { sumoApiId: "desc" } },
+            take: 1,
+          },
+        },
+      }),
+      db.match.findMany({
+        where: { highlightUrl: { not: null } },
+        orderBy: [{ basho: { sumoApiId: "desc" } }, { day: "desc" }],
+        take: 3,
+        include: { eastRikishi: true, westRikishi: true, basho: true },
+      }),
+    ]);
 
-  const latestBasho = activeBasho ?? (await db.basho.findFirst({
-    orderBy: { sumoApiId: "desc" },
-    include: {
-      entries: {
-        include: { rikishi: true },
-        orderBy: { wins: "desc" },
-        take: 15,
-      },
-    },
-  }));
-
-  const featured = await db.rikishi.findMany({
-    where: {
-      OR: [
-        { currentRank: { startsWith: "Yokozuna" } },
-        { currentRank: { startsWith: "Ozeki" } },
-      ],
-    },
-    take: 4,
-    include: {
-      bashoEntries: {
-        orderBy: { basho: { sumoApiId: "desc" } },
-        take: 1,
-      },
-    },
-  });
-
-  const recentHighlights = await db.match.findMany({
-    where: { highlightUrl: { not: null } },
-    orderBy: [{ basho: { sumoApiId: "desc" } }, { day: "desc" }],
-    take: 3,
-    include: {
-      eastRikishi: true,
-      westRikishi: true,
-      basho: true,
-    },
-  });
-
+  const latestBasho = activeBasho ?? latestBashoFallback;
   return { latestBasho, featured, recentHighlights };
 }
 
@@ -76,7 +65,6 @@ export default async function HomePage() {
 
   return (
     <div>
-      {/* ── Hero ─────────────────────────────────────────────────── */}
       <section className="relative bg-[#1A1A1A] text-[#FAF7F2] overflow-hidden texture-washi">
         <div className="absolute right-0 top-0 w-[600px] h-[600px] -translate-y-1/4 translate-x-1/4 opacity-10">
           <div className="w-full h-full rounded-full border-[24px] border-[#D4A97A]" />
