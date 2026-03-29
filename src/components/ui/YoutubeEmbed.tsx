@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Play } from "lucide-react";
 
 function extractVideoId(url: string): string | null {
@@ -29,10 +30,11 @@ export default function YoutubeEmbed({
         aria-label={`Play ${title ?? "match highlight"}`}
       >
         {/* Thumbnail */}
-        <img
+        <Image
           src={thumb}
           alt={title ?? "Match highlight"}
-          className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+          fill
+          className="object-cover opacity-80 group-hover:opacity-100 transition-opacity"
         />
         {/* Play button */}
         <span className="absolute inset-0 flex items-center justify-center">

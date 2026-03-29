@@ -1,9 +1,85 @@
 import Link from "next/link";
 import { db } from "@/lib/db";
-import RecordPill from "@/components/ui/RecordPill";
 import { MapPin, CalendarDays, Trophy } from "lucide-react";
 
 export const revalidate = 3600;
+
+type BashoWithMeta = {
+  id: string;
+  nameEn: string;
+  nameJp: string;
+  year: number;
+  isActive: boolean;
+  venue: string;
+  location: string;
+  startDate: Date;
+  endDate: Date;
+  entries: Array<{ rikishi: { shikonaEn: string } }>;
+  _count: { matches: number };
+};
+
+function BashoCard({ basho, large = false }: { basho: BashoWithMeta; large?: boolean }) {
+  const winner = basho.entries[0]?.rikishi;
+  const startStr = new Date(basho.startDate).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
+  const endStr = new Date(basho.endDate).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+
+  return (
+    <Link
+      href={`/basho/${basho.id}`}
+      className={`group block bg-[#FAF7F2] border rounded-lg overflow-hidden hover:shadow-lg transition-all ${
+        basho.isActive
+          ? "border-[#C0292A] shadow-md"
+          : "border-[#EDE0CC] hover:border-[#C0292A]"
+      }`}
+    >
+      <div
+        className={`px-4 py-3 flex items-center justify-between ${
+          basho.isActive ? "bg-[#C0292A] text-white" : "bg-[#1A1A1A] text-[#FAF7F2]"
+        }`}
+      >
+        <div>
+          <p className="font-display font-bold text-base leading-tight">{basho.nameEn}</p>
+          <p className={`text-xs ${basho.isActive ? "text-white/70" : "text-[#D4A97A]"}`}>
+            {basho.nameJp} · {basho.year}
+          </p>
+        </div>
+        {basho.isActive && (
+          <span className="text-[10px] font-bold bg-white/20 px-2 py-0.5 rounded-full animate-pulse">
+            LIVE
+          </span>
+        )}
+      </div>
+
+      <div className={`p-4 ${large ? "space-y-3" : "space-y-2"}`}>
+        <div className="flex items-center gap-2 text-sm text-[#1A1A1A]/60">
+          <MapPin size={14} className="text-[#D4A97A] flex-shrink-0" />
+          {basho.venue}, {basho.location}
+        </div>
+        <div className="flex items-center gap-2 text-sm text-[#1A1A1A]/60">
+          <CalendarDays size={14} className="text-[#D4A97A] flex-shrink-0" />
+          {startStr} – {endStr}
+        </div>
+        {winner && (
+          <div className="flex items-center gap-2 text-sm">
+            <Trophy size={14} className="text-[#C0292A] flex-shrink-0" />
+            <span className="font-display font-semibold">{winner.shikonaEn}</span>
+            <span className="text-[10px] text-[#C0292A]">優勝</span>
+          </div>
+        )}
+        <div className="text-xs text-[#1A1A1A]/40">
+          {basho._count.matches} bouts recorded
+        </div>
+      </div>
+    </Link>
+  );
+}
 
 export default async function BashoPage() {
   const allBasho = await db.basho.findMany({
@@ -26,80 +102,7 @@ export default async function BashoPage() {
     if (!byYear[b.year]) byYear[b.year] = [];
     byYear[b.year].push(b);
   }
-  const years = Object.keys(byYear)
-    .map(Number)
-    .sort((a, b) => b - a);
-
-  function BashoCard({
-    basho,
-    large = false,
-  }: {
-    basho: (typeof allBasho)[number];
-    large?: boolean;
-  }) {
-    const winner = basho.entries[0]?.rikishi;
-    const startStr = new Date(basho.startDate).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    });
-    const endStr = new Date(basho.endDate).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-
-    return (
-      <Link
-        href={`/basho/${basho.id}`}
-        className={`group block bg-[#FAF7F2] border rounded-lg overflow-hidden hover:shadow-lg transition-all ${
-          basho.isActive
-            ? "border-[#C0292A] shadow-md"
-            : "border-[#EDE0CC] hover:border-[#C0292A]"
-        }`}
-      >
-        <div
-          className={`px-4 py-3 flex items-center justify-between ${
-            basho.isActive ? "bg-[#C0292A] text-white" : "bg-[#1A1A1A] text-[#FAF7F2]"
-          }`}
-        >
-          <div>
-            <p className="font-display font-bold text-base leading-tight">
-              {basho.nameEn}
-            </p>
-            <p className={`text-xs ${basho.isActive ? "text-white/70" : "text-[#D4A97A]"}`}>
-              {basho.nameJp} · {basho.year}
-            </p>
-          </div>
-          {basho.isActive && (
-            <span className="text-[10px] font-bold bg-white/20 px-2 py-0.5 rounded-full animate-pulse">
-              LIVE
-            </span>
-          )}
-        </div>
-
-        <div className={`p-4 ${large ? "space-y-3" : "space-y-2"}`}>
-          <div className="flex items-center gap-2 text-sm text-[#1A1A1A]/60">
-            <MapPin size={14} className="text-[#D4A97A] flex-shrink-0" />
-            {basho.venue}, {basho.location}
-          </div>
-          <div className="flex items-center gap-2 text-sm text-[#1A1A1A]/60">
-            <CalendarDays size={14} className="text-[#D4A97A] flex-shrink-0" />
-            {startStr} – {endStr}
-          </div>
-          {winner && (
-            <div className="flex items-center gap-2 text-sm">
-              <Trophy size={14} className="text-[#C0292A] flex-shrink-0" />
-              <span className="font-display font-semibold">{winner.shikonaEn}</span>
-              <span className="text-[10px] text-[#C0292A]">優勝</span>
-            </div>
-          )}
-          <div className="text-xs text-[#1A1A1A]/40">
-            {basho._count.matches} bouts recorded
-          </div>
-        </div>
-      </Link>
-    );
-  }
+  const years = Object.keys(byYear).map(Number).sort((a, b) => b - a);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { db } from "@/lib/db";
 import KimariteCard from "@/components/kimarite/KimariteCard";
 import { KIMARITE_CATEGORIES } from "@/lib/kimarite-categories";
@@ -55,7 +56,7 @@ export default async function KimaritePage({
       </div>
 
       <div className="flex flex-wrap gap-2 mb-10">
-        <a
+        <Link
           href="/kimarite"
           className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors border ${
             !category
@@ -64,12 +65,12 @@ export default async function KimaritePage({
           }`}
         >
           All ({allKimarite.length})
-        </a>
+        </Link>
         {KIMARITE_CATEGORIES.map((cat) => {
           const count = countByCategory[cat] ?? 0;
           if (count === 0) return null;
           return (
-            <a
+            <Link
               key={cat}
               href={`/kimarite?category=${cat}`}
               className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors border ${
@@ -79,7 +80,7 @@ export default async function KimaritePage({
               }`}
             >
               {cat} ({count})
-            </a>
+            </Link>
           );
         })}
       </div>
