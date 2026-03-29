@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Rikishi {
+  id           String       @id @default(cuid())
+  sumoApiId    String       @unique
+  shikona      String
+  shikonaEn    String
+  heya         String
+  heyaEn       String
+  nationality  String       @default("Japan")
+  birthdate    DateTime?
+  heightCm     Int?
+  weightKg     Int?
+  imageUrl     String?
+  currentRank  String?
+  division     String       @default("Makuuchi")
+  debut        DateTime?
+  biography    String?
+  updatedAt    DateTime     @updatedAt
+  bashoEntries BashoEntry[]
+  winsAs       Match[]      @relation("Winner")
+  eastMatches  Match[]      @relation("EastRikishi")
+  westMatches  Match[]      @relation("WestRikishi")
+}
+
+model Basho {
+  id        String       @id @default(cuid())
+  sumoApiId String       @unique
+  year      Int
+  month     Int
+  nameJp    String
+  nameEn    String
+  location  String
+  venue     String
+  startDate DateTime
+  endDate   DateTime
+  isActive  Boolean      @default(false)
+  entries   BashoEntry[]
+  matches   Match[]
+}
+
+model BashoEntry {
+  id           String  @id @default(cuid())
+  rikishiId    String
+  bashoId      String
+  rank         String
+  wins         Int     @default(0)
+  losses       Int     @default(0)
+  absences     Int     @default(0)
+  yusho        Boolean @default(false)
+  specialPrize String?
+  rikishi      Rikishi @relation(fields: [rikishiId], references: [id])
+  basho        Basho   @relation(fields: [bashoId], references: [id])
+
+  @@unique([rikishiId, bashoId])
+}
+
+model Match {
+  id            String    @id @default(cuid())
+  bashoId       String
+  day           Int
+  eastRikishiId String
+  westRikishiId String
+  winnerId      String?
+  kimariteId    String?
+  highlightUrl  String?
+  basho         Basho     @relation(fields: [bashoId], references: [id])
+  eastRikishi   Rikishi   @relation("EastRikishi", fields: [eastRikishiId], references: [id])
+  westRikishi   Rikishi   @relation("WestRikishi", fields: [westRikishiId], references: [id])
+  winner        Rikishi?  @relation("Winner", fields: [winnerId], references: [id])
+  kimarite      Kimarite? @relation(fields: [kimariteId], references: [id])
+
+  @@unique([bashoId, day, eastRikishiId, westRikishiId])
+}
+
+model Kimarite {
+  id          String  @id @default(cuid())
+  nameJp      String  @unique
+  nameEn      String
+  category    String
+  description String
+  animationId String?
+  matches     Match[]
+}
