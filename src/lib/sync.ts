@@ -1,6 +1,7 @@
 import { db } from "./db";
 import {
-  fetchBashoList,
+  recentBashoIds,
+  currentBashoId,
   fetchBanzuke,
   fetchTorikumi,
   fetchRikishi,
@@ -31,16 +32,8 @@ export async function syncAll(): Promise<{ bashoSynced: number; rikishiSynced: n
   let rikishiSynced = 0;
   let matchesSynced = 0;
 
-  // Fetch once — derive latestId from the same list rather than a second API call
-  const bashoList = await fetchBashoList();
-  bashoList.sort((a, b) => b.bashoId.localeCompare(a.bashoId));
-  const latestId = bashoList[0]?.bashoId;
-  if (!latestId) return { bashoSynced: 0, rikishiSynced: 0, matchesSynced: 0 };
-
-  const toSync = bashoList
-    .map((b) => b.bashoId)
-    .filter((id) => id <= latestId)
-    .slice(0, 3);
+  const latestId = currentBashoId();
+  const toSync = recentBashoIds(3);
 
   // Pre-load all kimarite into a name→id map to avoid per-bout DB lookups
   const allKimarite = await db.kimarite.findMany({ select: { id: true, nameEn: true } });
