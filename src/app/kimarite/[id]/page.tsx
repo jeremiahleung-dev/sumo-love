@@ -3,18 +3,8 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import MatchRow from "@/components/basho/MatchRow";
 import { ChevronLeft } from "lucide-react";
-import dynamic from "next/dynamic";
+import KimariteAnimation from "@/components/kimarite/KimariteAnimation";
 import { CATEGORY_COLORS } from "@/lib/kimarite-categories";
-
-const ANIMATION_COMPONENTS: Record<string, React.ComponentType> = {
-  push:    dynamic(() => import("@/components/kimarite/animations/PushAnimation"),    { ssr: false }),
-  throw:   dynamic(() => import("@/components/kimarite/animations/ThrowAnimation"),   { ssr: false }),
-  trip:    dynamic(() => import("@/components/kimarite/animations/TripAnimation"),    { ssr: false }),
-  lift:    dynamic(() => import("@/components/kimarite/animations/LiftAnimation"),    { ssr: false }),
-  twist:   dynamic(() => import("@/components/kimarite/animations/TwistAnimation"),   { ssr: false }),
-  pull:    dynamic(() => import("@/components/kimarite/animations/PushAnimation"),    { ssr: false }), // reuse push anim mirrored
-  special: dynamic(() => import("@/components/kimarite/animations/SpecialAnimation"), { ssr: false }),
-};
 
 export const revalidate = 86400;
 
@@ -45,7 +35,6 @@ export default async function KimariteDetailPage({
   if (!kimarite) notFound();
 
   const animKey = kimarite.animationId ?? "special";
-  const Animation = ANIMATION_COMPONENTS[animKey] ?? ANIMATION_COMPONENTS["special"];
   const catStyle = CATEGORY_COLORS[kimarite.category] ?? "bg-gray-100 text-gray-700 border-gray-300";
 
   return (
@@ -59,7 +48,7 @@ export default async function KimariteDetailPage({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
         <div className="bg-[#EDE0CC] rounded-xl p-8 flex items-center justify-center min-h-[220px]">
-          <Animation />
+          <KimariteAnimation animationId={animKey} />
         </div>
         <div className="flex flex-col justify-center">
           <span
