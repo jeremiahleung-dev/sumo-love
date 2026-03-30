@@ -1,4 +1,5 @@
 {
+  "buildCommand": "npx prisma db push && npm run build",
   "crons": [
     {
       "path": "/api/sync",

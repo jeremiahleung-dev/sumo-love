@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import KimariteCard from "@/components/kimarite/KimariteCard";
 import { KIMARITE_CATEGORIES } from "@/lib/kimarite-categories";
 
-export const revalidate = 86400;
+export const dynamic = "force-dynamic";
 
 export default async function KimaritePage({
   searchParams,

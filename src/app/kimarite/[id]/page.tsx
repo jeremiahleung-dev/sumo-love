@@ -6,7 +6,7 @@ import { ChevronLeft } from "lucide-react";
 import KimariteAnimation from "@/components/kimarite/KimariteAnimation";
 import { CATEGORY_COLORS } from "@/lib/kimarite-categories";
 
-export const revalidate = 86400;
+export const dynamic = "force-dynamic";
 
 export default async function KimariteDetailPage({
   params,
