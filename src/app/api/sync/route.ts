@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { syncAll } from "@/lib/sync";
 
 export const maxDuration = 300; // 5 min — needed for full sync on Vercel
@@ -12,6 +13,9 @@ export async function POST(req: Request) {
 
   try {
     const result = await syncAll();
+    revalidatePath("/");
+    revalidatePath("/rikishi");
+    revalidatePath("/basho");
     return NextResponse.json({ ok: true, ...result });
   } catch (err) {
     console.error("Sync failed:", err);
