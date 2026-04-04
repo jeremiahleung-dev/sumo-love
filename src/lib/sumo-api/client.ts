@@ -53,11 +53,17 @@ export function recentBashoIds(count: number): string[] {
 }
 
 export async function fetchBanzuke(bashoId: string): Promise<SumoApiBanzukeEntry[]> {
-  return apiFetch<SumoApiBanzukeEntry[]>(`/api/basho/${bashoId}/banzuke/Makuuchi`);
+  const res = await apiFetch<{ east: SumoApiBanzukeEntry[]; west: SumoApiBanzukeEntry[] }>(
+    `/api/basho/${bashoId}/banzuke/Makuuchi`
+  );
+  return [...(res.east ?? []), ...(res.west ?? [])];
 }
 
 export async function fetchTorikumi(bashoId: string, day: number): Promise<SumoApiTorikumiEntry[]> {
-  return apiFetch<SumoApiTorikumiEntry[]>(`/api/basho/${bashoId}/torikumi/Makuuchi/${day}`);
+  const res = await apiFetch<{ torikumi: SumoApiTorikumiEntry[] }>(
+    `/api/basho/${bashoId}/torikumi/Makuuchi/${day}`
+  );
+  return res.torikumi ?? [];
 }
 
 export async function fetchRikishi(id: number): Promise<SumoApiRikishi> {
