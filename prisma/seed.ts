@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { KIMARITE_DATA } from "../src/lib/kimarite-seed-data";

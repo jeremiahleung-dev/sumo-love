@@ -6,10 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "lint": "eslint",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
-    "db:seed": "ts-node --skip-project prisma/seed.ts",
+    "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
     "postinstall": "prisma generate"
   },
@@ -29,14 +31,21 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/cheerio": "^0.22.35",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/pg": "^8.20.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
+    "jest": "^30.3.0",
+    "jest-environment-jsdom": "^30.3.0",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

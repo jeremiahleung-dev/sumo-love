@@ -9,6 +9,27 @@ This file provides guidance to AI assistants (Claude and others) working in this
 **Deploy target:** Vercel
 **Status:** Active development
 
+## User Stories
+
+See `STORIES.md` for the full set of user stories (US-01 through US-30) covering every page and key component. When building or modifying a feature, reference the relevant story to ensure the change serves the intended user need.
+
+---
+
+## Who This Is For
+
+Sumo fans — casual viewers and enthusiasts — who want a clean, English-friendly way to follow active tournaments. Most English sumo coverage is fragmented across social media or hard-to-navigate Japanese sites. This app gives fans one place to track standings, rikishi profiles, bout results, and winning techniques in real time.
+
+## Problem We're Solving
+
+There is no good English-language sumo tracker that combines live basho standings, rikishi profiles, match history, and kimarite (technique) education in one place. sumo-love fills that gap with a modern, well-designed web app that syncs daily from official data sources.
+
+## Goals
+
+- Any fan can open the app during a basho and immediately see current standings and today's results
+- Rikishi profiles give enough career context to follow a wrestler across tournaments
+- The kimarite encyclopedia makes the sport more accessible to newcomers
+- The app stays current automatically via daily cron sync — no manual data entry
+
 ---
 
 ## Development Branch
@@ -220,11 +241,14 @@ Never commit `.env` or any secrets to the repository.
 ## Testing
 
 ```bash
+npm test           # Jest + React Testing Library
 npm run lint       # ESLint check
 npm run build      # TypeScript + Next.js build (catches type errors)
 ```
 
-All type errors must resolve before merging.
+- Test files live alongside source: `src/components/ui/RankBadge.test.tsx` next to `RankBadge.tsx`
+- All type errors must resolve before merging
+- Run `npm test` after every new feature to verify nothing broke
 
 ---
 
