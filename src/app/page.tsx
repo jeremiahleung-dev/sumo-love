@@ -67,17 +67,26 @@ export default async function HomePage() {
     <div className="bg-[#0A0A0A]">
 
       {/* ── Hero ───────────────────────────────────────────────────── */}
-      <section className="relative min-h-[88vh] flex items-center justify-center overflow-hidden bg-[#0A0A0A]">
-        {/* Gradient blobs */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/3 w-[700px] h-[700px] rounded-full glow-crimson blur-[140px] opacity-60" />
-          <div className="absolute top-1/2 right-1/4 w-[500px] h-[500px] rounded-full glow-clay blur-[120px] opacity-40" />
-          <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] rounded-full glow-dark-red blur-[100px] opacity-50" />
-        </div>
+      <section className="relative min-h-[88vh] flex items-center justify-center overflow-hidden">
+        {/* Full-coverage gradient mesh — the Lovable technique */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `
+              radial-gradient(ellipse 80% 60% at 20% 40%, #C0292A55 0%, transparent 60%),
+              radial-gradient(ellipse 60% 50% at 80% 20%, #8B1A1A44 0%, transparent 60%),
+              radial-gradient(ellipse 70% 60% at 60% 80%, #D4A97A33 0%, transparent 60%),
+              radial-gradient(ellipse 50% 40% at 10% 80%, #C0292A22 0%, transparent 50%),
+              #0A0A0A
+            `
+          }}
+        />
 
-        {/* Noise grain overlay */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
-          style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")" }} />
+        {/* Noise grain overlay for texture */}
+        <div
+          className="absolute inset-0 opacity-[0.06] pointer-events-none mix-blend-overlay"
+          style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }}
+        />
 
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           {latestBasho?.isActive && (
