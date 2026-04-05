@@ -29,21 +29,21 @@ export default function RikishiCard({
   return (
     <Link
       href={`/rikishi/${id}`}
-      className="group bg-[#FAF7F2] border border-[#EDE0CC] rounded-lg overflow-hidden hover:border-[#C0292A] hover:shadow-lg transition-all duration-200"
+      className="group bg-[#141414] border border-white/5 rounded-xl overflow-hidden hover:border-[#C0292A]/40 hover:shadow-xl hover:shadow-[#C0292A]/5 transition-all duration-300"
     >
       {/* Photo */}
-      <div className="relative aspect-[3/4] bg-[#EDE0CC] overflow-hidden">
+      <div className="relative aspect-[3/4] bg-[#1A1A1A] overflow-hidden">
         {imageUrl ? (
           <Image
             src={imageUrl}
             alt={shikonaEn}
             fill
-            className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
+            className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-5xl text-[#D4A97A] font-display font-black select-none">
+            <span className="text-5xl text-[#D4A97A]/20 font-display font-black select-none">
               力
             </span>
           </div>
@@ -57,9 +57,9 @@ export default function RikishiCard({
 
       {/* Info */}
       <div className="p-3">
-        <p className="font-display font-bold text-base leading-tight">{shikonaEn}</p>
-        <p className="text-xs text-[#1A1A1A]/50 mb-1">{shikona}</p>
-        <p className="text-xs text-[#D4A97A]">{heya} Stable</p>
+        <p className="font-display font-bold text-base leading-tight text-white">{shikonaEn}</p>
+        <p className="text-xs text-white/30 mb-1">{shikona}</p>
+        <p className="text-xs text-[#D4A97A]/60">{heya} Stable</p>
         {wins !== undefined && losses !== undefined && (
           <div className="mt-2">
             <RecordPill wins={wins} losses={losses} absences={absences} />

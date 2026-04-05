@@ -36,7 +36,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${notoSerifJP.variable} h-full`}>
-      <body className="min-h-full flex flex-col bg-[#FAF7F2] text-[#1A1A1A] antialiased">
+      <body className="min-h-full flex flex-col bg-[#0A0A0A] text-[#FAFAF9] antialiased">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

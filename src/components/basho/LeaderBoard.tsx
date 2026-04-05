@@ -19,31 +19,31 @@ export default function LeaderBoard({ entries }: { entries: LeaderEntry[] }) {
   });
 
   return (
-    <div className="overflow-hidden rounded-lg border border-[#EDE0CC]">
+    <div className="overflow-hidden rounded-xl border border-white/5 bg-[#141414]">
       <table className="w-full text-sm">
         <thead>
-          <tr className="bg-[#1A1A1A] text-[#FAF7F2] text-xs uppercase tracking-wider">
+          <tr className="bg-[#0A0A0A] text-white/30 text-xs uppercase tracking-wider border-b border-white/5">
             <th className="px-4 py-3 text-left w-8">#</th>
             <th className="px-4 py-3 text-left">Rikishi</th>
             <th className="px-4 py-3 text-left hidden sm:table-cell">Rank</th>
             <th className="px-4 py-3 text-right">Record</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-[#EDE0CC]">
+        <tbody className="divide-y divide-white/5">
           {sorted.slice(0, 15).map((entry, i) => (
             <tr
               key={entry.rikishiId}
-              className={`transition-colors hover:bg-[#EDE0CC]/50 ${
+              className={`transition-colors hover:bg-white/3 ${
                 i === 0 ? "bg-[#C0292A]/5" : ""
               }`}
             >
-              <td className="px-4 py-3 text-[#D4A97A] font-mono font-bold">
+              <td className="px-4 py-3 text-[#D4A97A] font-mono font-bold text-xs">
                 {i + 1}
               </td>
               <td className="px-4 py-3">
                 <Link
                   href={`/rikishi/${entry.rikishiId}`}
-                  className="font-display font-semibold hover:text-[#C0292A] transition-colors flex items-center gap-2"
+                  className="font-display font-semibold text-white hover:text-[#C0292A] transition-colors flex items-center gap-2"
                 >
                   {entry.shikonaEn}
                   {entry.yusho && (

@@ -64,64 +64,77 @@ export default async function HomePage() {
   })) ?? [];
 
   return (
-    <div>
-      <section className="relative bg-[#1A1A1A] text-[#FAF7F2] overflow-hidden texture-washi">
-        <div className="absolute right-0 top-0 w-[600px] h-[600px] -translate-y-1/4 translate-x-1/4 opacity-10">
-          <div className="w-full h-full rounded-full border-[24px] border-[#D4A97A]" />
+    <div className="bg-[#0A0A0A]">
+
+      {/* ── Hero ───────────────────────────────────────────────────── */}
+      <section className="relative min-h-[88vh] flex items-center justify-center overflow-hidden bg-[#0A0A0A]">
+        {/* Gradient blobs */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/4 left-1/3 w-[700px] h-[700px] rounded-full glow-crimson blur-[140px] opacity-60" />
+          <div className="absolute top-1/2 right-1/4 w-[500px] h-[500px] rounded-full glow-clay blur-[120px] opacity-40" />
+          <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] rounded-full glow-dark-red blur-[100px] opacity-50" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-28">
-          <div className="max-w-2xl">
-            {latestBasho?.isActive && (
-              <span className="inline-flex items-center gap-1.5 bg-[#C0292A] text-white text-xs font-bold px-3 py-1 rounded-full mb-4 animate-pulse">
-                <Zap size={12} />
-                LIVE — {latestBasho.nameEn}
-              </span>
-            )}
-            <h1 className="font-display font-black text-5xl md:text-7xl leading-none mb-2 text-[#C0292A]">
-              相撲
-            </h1>
-            <h2 className="font-display font-bold text-4xl md:text-5xl leading-tight mb-4">
-              Sumo Love
-            </h2>
-            <p className="text-[#EDE0CC] text-lg md:text-xl leading-relaxed mb-8 max-w-lg">
-              Follow every rikishi through each basho. Live standings, bout
-              results, and the techniques behind every win.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/rikishi"
-                className="bg-[#C0292A] text-white px-6 py-3 rounded font-semibold hover:bg-[#8B1A1A] transition-colors flex items-center gap-2"
-              >
-                All Rikishi <ChevronRight size={16} />
-              </Link>
-              <Link
-                href="/basho"
-                className="border border-[#EDE0CC]/40 text-[#FAF7F2] px-6 py-3 rounded font-semibold hover:bg-white/10 transition-colors"
-              >
-                Basho Archive
-              </Link>
+        {/* Noise grain overlay */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+          style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")" }} />
+
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+          {latestBasho?.isActive && (
+            <div className="inline-flex items-center gap-2 bg-[#C0292A]/10 border border-[#C0292A]/30 text-[#C0292A] text-xs font-semibold px-4 py-1.5 rounded-full mb-8 backdrop-blur-sm">
+              <Zap size={11} className="animate-pulse" />
+              LIVE — {latestBasho.nameEn}
             </div>
+          )}
+
+          <h1 className="font-display font-black text-8xl md:text-[11rem] leading-none text-[#C0292A] mb-2 select-none">
+            相撲
+          </h1>
+          <h2 className="font-display font-bold text-4xl md:text-6xl text-white leading-tight mb-5">
+            Sumo Love
+          </h2>
+          <p className="text-white/50 text-lg md:text-xl max-w-xl mx-auto leading-relaxed mb-10">
+            Follow every rikishi through each basho. Live standings, bout
+            results, and the techniques behind every win.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/rikishi"
+              className="bg-[#C0292A] hover:bg-[#A01F20] text-white px-7 py-3 rounded-lg font-semibold transition-all duration-200 flex items-center gap-2 shadow-lg shadow-[#C0292A]/25"
+            >
+              All Rikishi <ChevronRight size={16} />
+            </Link>
+            <Link
+              href="/basho"
+              className="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-7 py-3 rounded-lg font-semibold transition-all duration-200 backdrop-blur-sm"
+            >
+              Basho Archive
+            </Link>
           </div>
         </div>
+
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0A0A0A] to-transparent pointer-events-none" />
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
+
         {/* ── Live Standings ───────────────────────────────────────── */}
         {latestBasho && (
-          <section className="py-12">
-            <div className="flex items-center justify-between mb-6">
+          <section className="py-16">
+            <div className="flex items-center justify-between mb-8">
               <div>
-                <h2 className="font-display font-bold text-2xl">
+                <h2 className="font-display font-bold text-2xl text-white">
                   {latestBasho.isActive ? "Live Standings" : "Final Standings"}
                 </h2>
-                <p className="text-[#D4A97A] text-sm mt-0.5">
+                <p className="text-[#D4A97A] text-sm mt-1">
                   {latestBasho.nameEn} · {latestBasho.location}
                 </p>
               </div>
               <Link
                 href={`/basho/${latestBasho.id}`}
-                className="text-sm text-[#C0292A] font-medium hover:underline flex items-center gap-1"
+                className="text-sm text-white/40 hover:text-[#C0292A] font-medium transition-colors flex items-center gap-1"
               >
                 Full results <ChevronRight size={14} />
               </Link>
@@ -129,9 +142,9 @@ export default async function HomePage() {
             {leaderEntries.length > 0 ? (
               <LeaderBoard entries={leaderEntries} />
             ) : (
-              <div className="rounded-lg border border-dashed border-[#EDE0CC] p-12 text-center text-[#1A1A1A]/40">
-                <p className="font-display text-xl mb-2">No basho data yet</p>
-                <p className="text-sm">POST to /api/sync to pull live standings</p>
+              <div className="rounded-xl border border-dashed border-white/10 p-16 text-center">
+                <p className="font-display text-xl text-white/30 mb-2">No basho data yet</p>
+                <p className="text-sm text-white/20">POST to /api/sync to pull live standings</p>
               </div>
             )}
           </section>
@@ -139,12 +152,12 @@ export default async function HomePage() {
 
         {/* ── Featured Rikishi ─────────────────────────────────────── */}
         {featured.length > 0 && (
-          <section className="py-8 border-t border-[#EDE0CC]">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="font-display font-bold text-2xl">Top Rank</h2>
+          <section className="py-10 border-t border-white/5">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="font-display font-bold text-2xl text-white">Top Rank</h2>
               <Link
                 href="/rikishi"
-                className="text-sm text-[#C0292A] font-medium hover:underline flex items-center gap-1"
+                className="text-sm text-white/40 hover:text-[#C0292A] font-medium transition-colors flex items-center gap-1"
               >
                 All rikishi <ChevronRight size={14} />
               </Link>
@@ -154,20 +167,20 @@ export default async function HomePage() {
                 <Link
                   key={r.id}
                   href={`/rikishi/${r.id}`}
-                  className="group bg-[#FAF7F2] border border-[#EDE0CC] rounded-lg overflow-hidden hover:border-[#C0292A] hover:shadow-lg transition-all"
+                  className="group bg-[#141414] border border-white/5 rounded-xl overflow-hidden hover:border-[#C0292A]/50 hover:shadow-xl hover:shadow-[#C0292A]/5 transition-all duration-300"
                 >
-                  <div className="relative aspect-[3/4] bg-[#EDE0CC]">
+                  <div className="relative aspect-[3/4] bg-[#1A1A1A]">
                     {r.imageUrl ? (
                       <Image
                         src={r.imageUrl}
                         alt={r.shikonaEn}
                         fill
-                        className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                        className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
                         sizes="25vw"
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-4xl text-[#D4A97A] font-display font-black select-none">
+                        <span className="text-4xl text-[#D4A97A]/40 font-display font-black select-none">
                           力
                         </span>
                       </div>
@@ -179,8 +192,8 @@ export default async function HomePage() {
                     )}
                   </div>
                   <div className="p-3">
-                    <p className="font-display font-bold text-sm">{r.shikonaEn}</p>
-                    <p className="text-xs text-[#1A1A1A]/40">{r.shikona}</p>
+                    <p className="font-display font-bold text-sm text-white">{r.shikonaEn}</p>
+                    <p className="text-xs text-white/30">{r.shikona}</p>
                   </div>
                 </Link>
               ))}
@@ -190,21 +203,23 @@ export default async function HomePage() {
 
         {/* ── Recent Highlights ────────────────────────────────────── */}
         {recentHighlights.length > 0 && (
-          <section className="py-8 border-t border-[#EDE0CC]">
-            <h2 className="font-display font-bold text-2xl mb-6">
+          <section className="py-10 border-t border-white/5">
+            <h2 className="font-display font-bold text-2xl text-white mb-8">
               Recent Highlights
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {recentHighlights.map((m) => (
-                <div key={m.id} className="flex flex-col gap-2">
-                  <YoutubeEmbed
-                    url={m.highlightUrl!}
-                    title={`${m.eastRikishi.shikonaEn} vs ${m.westRikishi.shikonaEn}`}
-                  />
-                  <p className="text-xs text-[#1A1A1A]/60 text-center">
-                    <span className="font-semibold">{m.eastRikishi.shikonaEn}</span>
+                <div key={m.id} className="flex flex-col gap-3">
+                  <div className="rounded-xl overflow-hidden">
+                    <YoutubeEmbed
+                      url={m.highlightUrl!}
+                      title={`${m.eastRikishi.shikonaEn} vs ${m.westRikishi.shikonaEn}`}
+                    />
+                  </div>
+                  <p className="text-xs text-white/40 text-center">
+                    <span className="font-semibold text-white/60">{m.eastRikishi.shikonaEn}</span>
                     {" vs "}
-                    <span className="font-semibold">{m.westRikishi.shikonaEn}</span>
+                    <span className="font-semibold text-white/60">{m.westRikishi.shikonaEn}</span>
                     {" · "}
                     {m.basho.nameEn} Day {m.day}
                   </p>
@@ -216,22 +231,20 @@ export default async function HomePage() {
 
         {/* ── No data state ────────────────────────────────────────── */}
         {!latestBasho && (
-          <section className="py-20 text-center">
-            <p className="font-display text-2xl text-[#D4A97A] mb-2">
-              No data loaded yet
-            </p>
-            <p className="text-[#1A1A1A]/50 text-sm mb-6">
-              POST to /api/sync to pull live data from sumo-api.com
-            </p>
+          <section className="py-24 text-center">
+            <p className="font-display text-2xl text-white/20 mb-2">No data loaded yet</p>
+            <p className="text-white/20 text-sm mb-8">POST to /api/sync to pull live data</p>
             <Link
               href="/kimarite"
-              className="bg-[#C0292A] text-white px-6 py-3 rounded font-semibold hover:bg-[#8B1A1A] transition-colors"
+              className="bg-[#C0292A] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#A01F20] transition-colors"
             >
               Browse Kimarite Techniques
             </Link>
           </section>
         )}
       </div>
+
+      <div className="h-20" />
     </div>
   );
 }

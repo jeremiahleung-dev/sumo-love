@@ -1,14 +1,14 @@
 const RANK_STYLES: Record<string, string> = {
   Yokozuna:   "bg-[#C0292A] text-white",
   Ozeki:      "bg-[#8B1A1A] text-white",
-  Sekiwake:   "bg-[#D4A97A] text-[#1A1A1A]",
-  Komusubi:   "bg-[#EDE0CC] text-[#1A1A1A] border border-[#D4A97A]",
-  Maegashira: "bg-[#1A1A1A] text-[#FAF7F2]",
+  Sekiwake:   "bg-[#D4A97A]/20 text-[#D4A97A] border border-[#D4A97A]/30",
+  Komusubi:   "bg-white/5 text-white/60 border border-white/10",
+  Maegashira: "bg-white/5 text-white/50 border border-white/5",
 };
 
 function getRankStyle(rank: string): string {
   const base = Object.keys(RANK_STYLES).find((r) => rank.startsWith(r));
-  return base ? RANK_STYLES[base] : "bg-gray-400 text-white";
+  return base ? RANK_STYLES[base] : "bg-white/5 text-white/50";
 }
 
 export default function RankBadge({
