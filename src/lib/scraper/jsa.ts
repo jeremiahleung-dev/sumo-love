@@ -1,47 +1,32 @@
 import * as cheerio from "cheerio";
+import { createHash } from "crypto";
 
 const JSA_BASE = "https://www.sumo.or.jp";
 
-/**
- * Checks whether a URL actually returns an image (HEAD request).
- * Prevents storing broken URLs in the database.
- */
-async function isReachable(url: string): Promise<boolean> {
+// MD5 hash of JSA's "NO PHOTO" placeholder (15,931 bytes, same file for all wrestlers without photos)
+const JSA_PLACEHOLDER_HASH = "726a2354b01656601eb866b2c7191e14";
+
+async function isPlaceholder(url: string): Promise<boolean> {
   try {
-    const res = await fetch(url, {
-      method: "HEAD",
-      signal: AbortSignal.timeout(5000),
-    });
-    return res.ok;
+    const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) return true;
+    const buf = await res.arrayBuffer();
+    const hash = createHash("md5").update(Buffer.from(buf)).digest("hex");
+    return hash === JSA_PLACEHOLDER_HASH;
   } catch {
-    return false;
+    return true;
   }
 }
 
 /**
- * Tries to resolve a JSA photo by constructing the URL directly from nskId.
- * JSA serves wrestler photos at predictable paths — no HTML scraping needed.
- * Tries known URL patterns and HEAD-checks each before returning.
+ * Scrapes the JSA English data profile page for a rikishi photo.
+ * The correct URL pattern is EnSumoDataRikishi/profile/{nskId}/
+ * Photos live at /img/sumo_data/rikishi/270x474/{photo_id}.jpg —
+ * the photo_id differs from nskId, so we must scrape to find it.
  */
-async function tryDirectJSAPhoto(nskId: number): Promise<string | null> {
-  const candidates = [
-    `${JSA_BASE}/img/rikishi/${nskId}.jpg`,
-    `${JSA_BASE}/image/rikishi/scaled/200/${nskId}.jpg`,
-    `${JSA_BASE}/image/rikishi/${nskId}.jpg`,
-  ];
-  for (const url of candidates) {
-    if (await isReachable(url)) return url;
-  }
-  return null;
-}
-
-/**
- * Falls back to HTML scraping of the JSA English profile page.
- * Tries a broad set of selectors to handle JSA site redesigns.
- */
-async function scrapeJSAProfilePage(nskId: number): Promise<string | null> {
+async function scrapeJSADataProfile(nskId: number): Promise<string | null> {
   try {
-    const url = `${JSA_BASE}/EnRikishiMain/0/0/profile/${nskId}`;
+    const url = `${JSA_BASE}/EnSumoDataRikishi/profile/${nskId}/`;
     const res = await fetch(url, {
       headers: { "User-Agent": "sumo-love/1.0 (educational sumo tracker)" },
       signal: AbortSignal.timeout(8000),
@@ -51,12 +36,10 @@ async function scrapeJSAProfilePage(nskId: number): Promise<string | null> {
     const html = await res.text();
     const $ = cheerio.load(html);
 
-    // Try multiple selectors across JSA site versions
+    // Find any img whose src contains the sumo_data rikishi path
     const selectors = [
-      ".mdl-rikishi-prof__photo img",
-      ".rikishi-photo img",
-      ".rikishiPhoto img",
-      ".js-prof-photo img",
+      'img[src*="sumo_data/rikishi"]',
+      'img[src*="/img/rikishi"]',
       'img[src*="rikishi"]',
       'meta[property="og:image"]',
     ];
@@ -66,7 +49,9 @@ async function scrapeJSAProfilePage(nskId: number): Promise<string | null> {
       const src = el.attr("src") ?? el.attr("content");
       if (src) {
         const resolved = src.startsWith("http") ? src : `${JSA_BASE}${src}`;
-        if (await isReachable(resolved)) return resolved;
+        // Reject JSA's placeholder — download and hash-check
+        if (await isPlaceholder(resolved)) return null;
+        return resolved;
       }
     }
 
@@ -78,16 +63,15 @@ async function scrapeJSAProfilePage(nskId: number): Promise<string | null> {
 
 /**
  * Main entry point for JSA photos.
- * Tries direct URL construction first (faster, no scraping), then falls back to HTML scraping.
+ * Scrapes the full-res data profile page. Returns null if JSA has no real photo.
  */
 export async function scrapeRikishiPhoto(nskId: number): Promise<string | null> {
-  return (await tryDirectJSAPhoto(nskId)) ?? (await scrapeJSAProfilePage(nskId));
+  return scrapeJSADataProfile(nskId);
 }
 
 /**
  * Fetches a rikishi photo from Wikipedia by their English shikona.
- * Tries the name directly, then with "(sumo)" disambiguation.
- * HEAD-checks the returned URL before returning it.
+ * Used as a last resort when JSA has no photo.
  */
 export async function fetchWikipediaPhoto(shikonaEn: string): Promise<string | null> {
   const candidates = [shikonaEn, `${shikonaEn}_(sumo)`];
@@ -100,7 +84,7 @@ export async function fetchWikipediaPhoto(shikonaEn: string): Promise<string | n
       if (!res.ok) continue;
       const data = (await res.json()) as { thumbnail?: { source: string } };
       const src = data.thumbnail?.source;
-      if (src && (await isReachable(src))) return src;
+      if (src) return src;
     } catch {
       // try next candidate
     }
