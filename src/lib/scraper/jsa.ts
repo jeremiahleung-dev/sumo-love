@@ -32,6 +32,30 @@ export async function scrapeRikishiPhoto(
 }
 
 /**
+ * Fetches a rikishi photo from Wikipedia by their English shikona.
+ * Tries the name directly, then with "(sumo)" disambiguation.
+ */
+export async function fetchWikipediaPhoto(
+  shikonaEn: string
+): Promise<string | null> {
+  const candidates = [shikonaEn, `${shikonaEn}_(sumo)`];
+  for (const title of candidates) {
+    try {
+      const res = await fetch(
+        `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`,
+        { signal: AbortSignal.timeout(6000) }
+      );
+      if (!res.ok) continue;
+      const data = await res.json() as { thumbnail?: { source: string } };
+      if (data.thumbnail?.source) return data.thumbnail.source;
+    } catch {
+      // try next candidate
+    }
+  }
+  return null;
+}
+
+/**
  * Scrapes the JSA site for the current active basho ID in "YYYYMM" format.
  */
 export async function scrapeCurrentBashoId(): Promise<string | null> {

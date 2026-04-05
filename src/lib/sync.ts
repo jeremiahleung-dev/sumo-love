@@ -6,7 +6,7 @@ import {
   fetchTorikumi,
   fetchRikishi,
 } from "./sumo-api/client";
-import { scrapeRikishiPhoto } from "./scraper/jsa";
+import { scrapeRikishiPhoto, fetchWikipediaPhoto } from "./scraper/jsa";
 import { findMatchHighlight } from "./scraper/youtube";
 import { rankToDivision } from "./ranks";
 
@@ -83,6 +83,9 @@ export async function syncAll(): Promise<{ bashoSynced: number; rikishiSynced: n
       let imageUrl: string | null = null;
       if (rikishiData.nskId) {
         imageUrl = await scrapeRikishiPhoto(rikishiData.nskId);
+      }
+      if (!imageUrl) {
+        imageUrl = await fetchWikipediaPhoto(entry.shikonaEn);
       }
 
       const rikishi = await db.rikishi.upsert({
