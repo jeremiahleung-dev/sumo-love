@@ -25,8 +25,8 @@ async function isReachable(url: string): Promise<boolean> {
  */
 async function tryDirectJSAPhoto(nskId: number): Promise<string | null> {
   const candidates = [
+    `${JSA_BASE}/img/rikishi/${nskId}.jpg`,
     `${JSA_BASE}/image/rikishi/scaled/200/${nskId}.jpg`,
-    `${JSA_BASE}/image/rikishi/200/${nskId}.jpg`,
     `${JSA_BASE}/image/rikishi/${nskId}.jpg`,
   ];
   for (const url of candidates) {
