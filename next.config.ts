@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "img.youtube.com" },
-      { protocol: "https", hostname: "*.sumo.or.jp" },
+      { protocol: "https", hostname: "www.sumo.or.jp" },
       { protocol: "https", hostname: "upload.wikimedia.org" },
     ],
   },
