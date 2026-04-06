@@ -8,8 +8,10 @@ import YoutubeEmbed from "@/components/ui/YoutubeEmbed";
 interface Props {
   eastId: string;
   eastShikona: string;
+  eastRecord?: { wins: number; losses: number } | null;
   westId: string;
   westShikona: string;
+  westRecord?: { wins: number; losses: number } | null;
   winnerId: string | null;
   kimariteEn: string | null;
   kimariteId: string | null;
@@ -19,8 +21,10 @@ interface Props {
 export default function MatchRow({
   eastId,
   eastShikona,
+  eastRecord,
   westId,
   westShikona,
+  westRecord,
   winnerId,
   kimariteEn,
   kimariteId,
@@ -31,64 +35,64 @@ export default function MatchRow({
   const westWon = winnerId === westId;
 
   return (
-    <div className="border border-[#EDE0CC] rounded-lg overflow-hidden mb-2">
-      <div className="flex items-center p-3 gap-3">
-        <Link
-          href={`/rikishi/${eastId}`}
-          className={`flex-1 font-display font-semibold text-right hover:text-[#C0292A] transition-colors ${
-            eastWon ? "text-[#1A1A1A]" : "text-[#1A1A1A]/40"
-          }`}
-        >
-          {eastShikona}
-          {eastWon && (
-            <span className="ml-1 text-[10px] text-[#2D6A4F] font-mono align-middle">
-              ●
-            </span>
-          )}
-        </Link>
+    <div className="border border-white/10 rounded-lg overflow-hidden mb-2">
+      <div className="flex items-center p-3 gap-2">
 
-        <div className="flex flex-col items-center min-w-[80px]">
-          <span className="text-[10px] text-[#D4A97A] font-bold uppercase tracking-widest">
-            vs
-          </span>
+        {/* East */}
+        <div className="flex-1 text-right">
+          <Link href={`/rikishi/${eastId}`} className={`font-display font-semibold hover:text-[#C0292A] transition-colors ${!winnerId || eastWon ? "opacity-100" : "opacity-35"}`}>
+            {eastWon && <span className="mr-1 text-[10px] text-[#52B788] align-middle">●</span>}
+            {eastShikona}
+          </Link>
+          {eastRecord != null && (
+            <p className="text-[11px] font-mono text-white/50 mt-0.5">
+              {eastRecord.wins}W–{eastRecord.losses}L
+            </p>
+          )}
+        </div>
+
+        {/* VS divider */}
+        <span className="text-[10px] text-[#D4A97A] font-bold uppercase tracking-widest flex-shrink-0 px-1">
+          vs
+        </span>
+
+        {/* West */}
+        <div className="flex-1">
+          <Link href={`/rikishi/${westId}`} className={`font-display font-semibold hover:text-[#C0292A] transition-colors ${!winnerId || westWon ? "opacity-100" : "opacity-35"}`}>
+            {westShikona}
+            {westWon && <span className="ml-1 text-[10px] text-[#52B788] align-middle">●</span>}
+          </Link>
+          {westRecord != null && (
+            <p className="text-[11px] font-mono text-white/50 mt-0.5">
+              {westRecord.wins}W–{westRecord.losses}L
+            </p>
+          )}
+        </div>
+
+        {/* Kimarite + highlight — right side */}
+        <div className="flex items-center gap-2 flex-shrink-0">
           {kimariteEn && (
             <Link
               href={kimariteId ? `/kimarite/${kimariteId}` : "#"}
-              className="text-[10px] bg-[#EDE0CC] text-[#1A1A1A]/70 px-2 py-0.5 rounded mt-0.5 hover:bg-[#D4A97A] transition-colors text-center"
+              className="text-[10px] bg-white/5 border border-white/10 text-white/50 px-2 py-1 rounded hover:border-[#D4A97A] hover:text-[#D4A97A] transition-colors whitespace-nowrap"
             >
               {kimariteEn}
             </Link>
           )}
-        </div>
-
-        <Link
-          href={`/rikishi/${westId}`}
-          className={`flex-1 font-display font-semibold hover:text-[#C0292A] transition-colors ${
-            westWon ? "text-[#1A1A1A]" : "text-[#1A1A1A]/40"
-          }`}
-        >
-          {westWon && (
-            <span className="mr-1 text-[10px] text-[#2D6A4F] font-mono align-middle">
-              ●
-            </span>
+          {highlightUrl && (
+            <button
+              onClick={() => setExpanded((v) => !v)}
+              className="flex items-center gap-1 text-xs text-[#C0292A] hover:text-[#8B1A1A] transition-colors"
+              aria-label="Toggle highlight"
+            >
+              {expanded
+                ? <ChevronDown size={16} className="rotate-180 transition-transform" />
+                : <Play size={14} />
+              }
+              <span className="hidden sm:inline">Highlight</span>
+            </button>
           )}
-          {westShikona}
-        </Link>
-
-        {highlightUrl && (
-          <button
-            onClick={() => setExpanded((v) => !v)}
-            className="ml-2 flex items-center gap-1 text-xs text-[#C0292A] hover:text-[#8B1A1A] transition-colors font-medium"
-            aria-label="Toggle highlight"
-          >
-            {expanded ? (
-              <ChevronDown size={16} className="rotate-180 transition-transform" />
-            ) : (
-              <Play size={14} />
-            )}
-            <span className="hidden sm:inline">Highlight</span>
-          </button>
-        )}
+        </div>
       </div>
 
       {expanded && highlightUrl && (

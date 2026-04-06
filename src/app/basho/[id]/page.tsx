@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { db } from "@/lib/db";
 import LeaderBoard from "@/components/basho/LeaderBoard";
-import MatchRow from "@/components/basho/MatchRow";
+import BoutsSection from "@/components/basho/BoutsSection";
 import { ChevronLeft, MapPin, CalendarDays, Trophy } from "lucide-react";
 
 export const revalidate = 1800;
@@ -46,6 +46,34 @@ export default async function BashoDetailPage({
   }));
 
   const winner = basho.entries.find((e) => e.yusho)?.rikishi;
+
+  // Top 4 by tournament record (entries already ordered wins desc)
+  const top4Ids = basho.entries.slice(0, 4).map((e) => e.rikishiId);
+
+  // Compute each rikishi's record going INTO each day (after day D-1)
+  // Matches are already ordered day asc from the query
+  const cumW = new Map<string, number>();
+  const cumL = new Map<string, number>();
+  type Rec = { wins: number; losses: number };
+  const preBoutRecord = new Map<string, Map<number, Rec>>();
+
+  for (const m of basho.matches) {
+    for (const rid of [m.eastRikishiId, m.westRikishiId]) {
+      if (!preBoutRecord.has(rid)) preBoutRecord.set(rid, new Map());
+      if (!preBoutRecord.get(rid)!.has(m.day)) {
+        preBoutRecord.get(rid)!.set(m.day, {
+          wins: cumW.get(rid) ?? 0,
+          losses: cumL.get(rid) ?? 0,
+        });
+      }
+    }
+    if (m.winnerId) {
+      const loser = m.winnerId === m.eastRikishiId ? m.westRikishiId : m.eastRikishiId;
+      cumW.set(m.winnerId, (cumW.get(m.winnerId) ?? 0) + 1);
+      cumL.set(loser, (cumL.get(loser) ?? 0) + 1);
+    }
+  }
+
   const days = Array.from(new Set(basho.matches.map((m) => m.day))).sort((a, b) => a - b);
   const matchesByDay: Record<number, typeof basho.matches> = {};
   for (const m of basho.matches) {
@@ -115,7 +143,7 @@ export default async function BashoDetailPage({
             {leaderEntries.length > 0 ? (
               <LeaderBoard entries={leaderEntries} />
             ) : (
-              <p className="text-[#1A1A1A]/40 text-sm">No standings yet.</p>
+              <p className="text-white/40 text-sm">No standings yet.</p>
             )}
           </div>
 
@@ -125,34 +153,31 @@ export default async function BashoDetailPage({
             </h2>
 
             {days.length === 0 ? (
-              <p className="text-[#1A1A1A]/40 text-sm">
+              <p className="text-white/40 text-sm">
                 No bout results available yet.
               </p>
             ) : (
-              <div className="space-y-8">
-                {days.map((day) => (
-                  <div key={day}>
-                    <h3 className="text-xs uppercase tracking-widest font-bold text-[#D4A97A] mb-3 flex items-center gap-2">
-                      <span className="h-px flex-1 bg-[#EDE0CC]" />
-                      Day {day}
-                      <span className="h-px flex-1 bg-[#EDE0CC]" />
-                    </h3>
-                    {matchesByDay[day].map((m) => (
-                      <MatchRow
-                        key={m.id}
-                        eastId={m.eastRikishiId}
-                        eastShikona={m.eastRikishi.shikonaEn}
-                        westId={m.westRikishiId}
-                        westShikona={m.westRikishi.shikonaEn}
-                        winnerId={m.winnerId}
-                        kimariteEn={m.kimarite?.nameEn ?? null}
-                        kimariteId={m.kimariteId}
-                        highlightUrl={m.highlightUrl}
-                      />
-                    ))}
-                  </div>
-                ))}
-              </div>
+              <BoutsSection
+                defaultDay={days[days.length - 1]}
+                featuredIds={top4Ids}
+                isActive={basho.isActive}
+                days={days.map((day) => ({
+                  day,
+                  matches: matchesByDay[day].map((m) => ({
+                    id: m.id,
+                    eastRikishiId: m.eastRikishiId,
+                    eastShikona: m.eastRikishi.shikonaEn,
+                    eastRecord: preBoutRecord.get(m.eastRikishiId)?.get(day) ?? null,
+                    westRikishiId: m.westRikishiId,
+                    westShikona: m.westRikishi.shikonaEn,
+                    westRecord: preBoutRecord.get(m.westRikishiId)?.get(day) ?? null,
+                    winnerId: m.winnerId,
+                    kimariteEn: m.kimarite?.nameEn ?? null,
+                    kimariteId: m.kimariteId,
+                    highlightUrl: m.highlightUrl,
+                  })),
+                }))}
+              />
             )}
           </div>
         </div>
