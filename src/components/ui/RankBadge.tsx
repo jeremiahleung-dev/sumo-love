@@ -1,8 +1,8 @@
 const RANK_STYLES: Record<string, string> = {
   Yokozuna:   "bg-[#C0292A] text-white",
   Ozeki:      "bg-[#8B1A1A] text-white",
-  Sekiwake:   "bg-black/70 text-blue-400 border border-blue-400/50",
-  Komusubi:   "bg-black/70 text-emerald-400 border border-emerald-400/50",
+  Sekiwake:   "bg-black/70 text-white border border-blue-400/50",
+  Komusubi:   "bg-black/70 text-white border border-emerald-400/50",
   Maegashira: "bg-black text-white border border-white/10",
 };
 
