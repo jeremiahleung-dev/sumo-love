@@ -50,6 +50,30 @@ export default async function BashoDetailPage({
   // Top 4 by tournament record (entries already ordered wins desc)
   const top4Ids = basho.entries.slice(0, 4).map((e) => e.rikishiId);
 
+  // Compute each rikishi's record going INTO each day (after day D-1)
+  // Matches are already ordered day asc from the query
+  const cumW = new Map<string, number>();
+  const cumL = new Map<string, number>();
+  type Rec = { wins: number; losses: number };
+  const preBoutRecord = new Map<string, Map<number, Rec>>();
+
+  for (const m of basho.matches) {
+    for (const rid of [m.eastRikishiId, m.westRikishiId]) {
+      if (!preBoutRecord.has(rid)) preBoutRecord.set(rid, new Map());
+      if (!preBoutRecord.get(rid)!.has(m.day)) {
+        preBoutRecord.get(rid)!.set(m.day, {
+          wins: cumW.get(rid) ?? 0,
+          losses: cumL.get(rid) ?? 0,
+        });
+      }
+    }
+    if (m.winnerId) {
+      const loser = m.winnerId === m.eastRikishiId ? m.westRikishiId : m.eastRikishiId;
+      cumW.set(m.winnerId, (cumW.get(m.winnerId) ?? 0) + 1);
+      cumL.set(loser, (cumL.get(loser) ?? 0) + 1);
+    }
+  }
+
   const days = Array.from(new Set(basho.matches.map((m) => m.day))).sort((a, b) => a - b);
   const matchesByDay: Record<number, typeof basho.matches> = {};
   for (const m of basho.matches) {
@@ -143,8 +167,10 @@ export default async function BashoDetailPage({
                       id: m.id,
                       eastRikishiId: m.eastRikishiId,
                       eastShikona: m.eastRikishi.shikonaEn,
+                      eastRecord: preBoutRecord.get(m.eastRikishiId)?.get(day) ?? null,
                       westRikishiId: m.westRikishiId,
                       westShikona: m.westRikishi.shikonaEn,
+                      westRecord: preBoutRecord.get(m.westRikishiId)?.get(day) ?? null,
                       winnerId: m.winnerId,
                       kimariteEn: m.kimarite?.nameEn ?? null,
                       kimariteId: m.kimariteId,

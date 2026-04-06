@@ -7,8 +7,10 @@ interface Match {
   id: string;
   eastRikishiId: string;
   eastShikona: string;
+  eastRecord: { wins: number; losses: number } | null;
   westRikishiId: string;
   westShikona: string;
+  westRecord: { wins: number; losses: number } | null;
   winnerId: string | null;
   kimariteEn: string | null;
   kimariteId: string | null;
@@ -47,8 +49,10 @@ export default function DaySection({
           key={m.id}
           eastId={m.eastRikishiId}
           eastShikona={m.eastShikona}
+          eastRecord={m.eastRecord}
           westId={m.westRikishiId}
           westShikona={m.westShikona}
+          westRecord={m.westRecord}
           winnerId={m.winnerId}
           kimariteEn={m.kimariteEn}
           kimariteId={m.kimariteId}
