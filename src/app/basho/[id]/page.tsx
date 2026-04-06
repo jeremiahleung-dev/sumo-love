@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { db } from "@/lib/db";
 import LeaderBoard from "@/components/basho/LeaderBoard";
-import MatchRow from "@/components/basho/MatchRow";
+import DaySection from "@/components/basho/DaySection";
 import { ChevronLeft, MapPin, CalendarDays, Trophy } from "lucide-react";
 
 export const revalidate = 1800;
@@ -131,26 +131,21 @@ export default async function BashoDetailPage({
             ) : (
               <div className="space-y-8">
                 {days.map((day) => (
-                  <div key={day}>
-                    <h3 className="text-xs uppercase tracking-widest font-bold text-[#D4A97A] mb-3 flex items-center gap-2">
-                      <span className="h-px flex-1 bg-white/10" />
-                      Day {day}
-                      <span className="h-px flex-1 bg-white/10" />
-                    </h3>
-                    {matchesByDay[day].map((m) => (
-                      <MatchRow
-                        key={m.id}
-                        eastId={m.eastRikishiId}
-                        eastShikona={m.eastRikishi.shikonaEn}
-                        westId={m.westRikishiId}
-                        westShikona={m.westRikishi.shikonaEn}
-                        winnerId={m.winnerId}
-                        kimariteEn={m.kimarite?.nameEn ?? null}
-                        kimariteId={m.kimariteId}
-                        highlightUrl={m.highlightUrl}
-                      />
-                    ))}
-                  </div>
+                  <DaySection
+                    key={day}
+                    day={day}
+                    matches={matchesByDay[day].map((m) => ({
+                      id: m.id,
+                      eastRikishiId: m.eastRikishiId,
+                      eastShikona: m.eastRikishi.shikonaEn,
+                      westRikishiId: m.westRikishiId,
+                      westShikona: m.westRikishi.shikonaEn,
+                      winnerId: m.winnerId,
+                      kimariteEn: m.kimarite?.nameEn ?? null,
+                      kimariteId: m.kimariteId,
+                      highlightUrl: m.highlightUrl,
+                    }))}
+                  />
                 ))}
               </div>
             )}
