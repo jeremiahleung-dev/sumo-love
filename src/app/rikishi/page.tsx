@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import RikishiCard from "@/components/rikishi/RikishiCard";
+import RikishiGrid from "@/components/rikishi/RikishiGrid";
 import { isSanyaku, rankSortKey } from "@/lib/ranks";
 
 export const revalidate = 3600;
@@ -25,34 +25,26 @@ export default async function RikishiPage() {
     (a, b) => rankSortKey(a.currentRank) - rankSortKey(b.currentRank)
   );
 
-  const sanyaku = sorted.filter((r) => isSanyaku(r.currentRank));
-  const maegashira = sorted.filter((r) => r.currentRank?.startsWith("Maegashira"));
-  const other = sorted.filter((r) => !isSanyaku(r.currentRank) && !r.currentRank?.startsWith("Maegashira"));
-
-  const grid = (rikishi: typeof sorted) => {
-    if (rikishi.length === 0) return null;
-    return (
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {rikishi.map((r) => {
-          const entry = r.bashoEntries[0];
-          return (
-            <RikishiCard
-              key={r.id}
-              id={r.id}
-              shikonaEn={r.shikonaEn}
-              shikona={r.shikona}
-              currentRank={r.currentRank}
-              heya={r.heyaEn}
-              imageUrl={r.imageUrl}
-              wins={entry?.wins}
-              losses={entry?.losses}
-              absences={entry?.absences}
-            />
-          );
-        })}
-      </div>
-    );
+  const toItem = (r: (typeof sorted)[number]) => {
+    const entry = r.bashoEntries[0];
+    return {
+      id: r.id,
+      shikonaEn: r.shikonaEn,
+      shikona: r.shikona,
+      currentRank: r.currentRank,
+      heyaEn: r.heyaEn,
+      imageUrl: r.imageUrl,
+      wins: entry?.wins,
+      losses: entry?.losses,
+      absences: entry?.absences,
+    };
   };
+
+  const sanyaku = sorted.filter((r) => isSanyaku(r.currentRank)).map(toItem);
+  const maegashira = sorted.filter((r) => r.currentRank?.startsWith("Maegashira")).map(toItem);
+  const other = sorted
+    .filter((r) => !isSanyaku(r.currentRank) && !r.currentRank?.startsWith("Maegashira"))
+    .map(toItem);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
@@ -76,7 +68,7 @@ export default async function RikishiPage() {
                 <span className="w-2 h-6 bg-[#C0292A] rounded inline-block" />
                 Sanyaku
               </h2>
-              {grid(sanyaku)}
+              <RikishiGrid rikishi={sanyaku} />
             </section>
           )}
           {maegashira.length > 0 && (
@@ -85,7 +77,7 @@ export default async function RikishiPage() {
                 <span className="w-2 h-6 bg-[#1A1A1A] rounded inline-block" />
                 Maegashira
               </h2>
-              {grid(maegashira)}
+              <RikishiGrid rikishi={maegashira} />
             </section>
           )}
           {other.length > 0 && (
@@ -94,7 +86,7 @@ export default async function RikishiPage() {
                 <span className="w-2 h-6 bg-[#D4A97A] rounded inline-block" />
                 Other
               </h2>
-              {grid(other)}
+              <RikishiGrid rikishi={other} />
             </section>
           )}
         </div>

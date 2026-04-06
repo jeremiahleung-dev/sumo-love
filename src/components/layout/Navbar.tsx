@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, Suspense } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Heart } from "lucide-react";
 import KimariteSubNav from "./KimariteSubNav";
+import NavFavoriteBadge from "./NavFavoriteBadge";
 
 const NAV_LINKS = [
   { href: "/rikishi", label: "Rikishi" },
@@ -15,6 +16,8 @@ const NAV_LINKS = [
 export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+
+  const myRikishiActive = pathname.startsWith("/my-rikishi");
 
   return (
     <header className="sticky top-0 z-50 bg-[#0A0A0A]/80 backdrop-blur-md border-b border-white/5">
@@ -51,6 +54,24 @@ export default function Navbar() {
               </Link>
             );
           })}
+
+          {/* My Rikishi */}
+          <Link
+            href="/my-rikishi"
+            className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+              myRikishiActive
+                ? "bg-[#C0292A] text-white"
+                : "text-white/50 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <Heart size={13} className="mr-1.5" />
+            My Rikishi
+            {!myRikishiActive && (
+              <Suspense fallback={null}>
+                <NavFavoriteBadge />
+              </Suspense>
+            )}
+          </Link>
         </nav>
 
         {/* Mobile toggle */}
@@ -66,7 +87,7 @@ export default function Navbar() {
       {/* Mobile menu — animated slide */}
       <nav
         className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-[#0A0A0A] ${
-          open ? "max-h-48 border-t border-white/5" : "max-h-0"
+          open ? "max-h-64 border-t border-white/5" : "max-h-0"
         }`}
       >
         <div className="px-4 py-3 flex flex-col gap-1">
@@ -84,6 +105,23 @@ export default function Navbar() {
               {label}
             </Link>
           ))}
+          <Link
+            href="/my-rikishi"
+            onClick={() => setOpen(false)}
+            className={`flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+              myRikishiActive
+                ? "bg-[#C0292A] text-white"
+                : "text-white/50 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <Heart size={13} className="mr-1.5" />
+            My Rikishi
+            {!myRikishiActive && (
+              <Suspense fallback={null}>
+                <NavFavoriteBadge />
+              </Suspense>
+            )}
+          </Link>
         </div>
       </nav>
 

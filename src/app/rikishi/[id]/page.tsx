@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import RankBadge from "@/components/ui/RankBadge";
 import RecordPill from "@/components/ui/RecordPill";
 import { ChevronLeft, Scale, Ruler, Calendar, MapPin } from "lucide-react";
+import FavoriteButton from "@/components/rikishi/FavoriteButton";
 
 export const revalidate = 3600;
 
@@ -77,10 +78,11 @@ export default async function RikishiProfilePage({
             </div>
 
             <div className="flex-1">
-              <div className="flex items-start gap-3 flex-wrap mb-2">
+              <div className="flex items-center gap-3 flex-wrap mb-2">
                 {rikishi.currentRank && (
                   <RankBadge rank={rikishi.currentRank} size="md" />
                 )}
+                <FavoriteButton rikishiId={rikishi.id} variant="pill" />
               </div>
               <h1 className="font-display font-black text-4xl md:text-5xl mb-1">
                 {rikishi.shikonaEn}
