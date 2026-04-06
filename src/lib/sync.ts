@@ -53,8 +53,9 @@ export async function syncAll(): Promise<{ bashoSynced: number; rikishiSynced: n
   for (const bashoId of toSync) {
     const { year, month, start, end } = bashoIdToDate(bashoId);
     const names = BASHO_NAMES[month] ?? { jp: "場所", en: "Basho", location: "Japan", venue: "Kokugikan" };
-    // The most recently available basho (first in toSync) is the active one
-    const isActive = bashoId === toSync[0];
+    // Only mark a basho as live if today actually falls within its dates
+    const now = new Date();
+    const isActive = bashoId === toSync[0] && now >= start && now <= end;
 
     const basho = await db.basho.upsert({
       where: { sumoApiId: bashoId },

@@ -4,7 +4,27 @@ import { db } from "@/lib/db";
 import LeaderBoard from "@/components/basho/LeaderBoard";
 import RankBadge from "@/components/ui/RankBadge";
 import YoutubeEmbed from "@/components/ui/YoutubeEmbed";
+import NextBashoCountdown from "@/components/ui/NextBashoCountdown";
 import { ChevronRight, Zap } from "lucide-react";
+import { nextBashoId } from "@/lib/sumo-api/client";
+
+const BASHO_NAMES: Record<number, { en: string; jp: string }> = {
+  1:  { en: "Hatsu Basho",  jp: "初場所" },
+  3:  { en: "Haru Basho",   jp: "春場所" },
+  5:  { en: "Natsu Basho",  jp: "夏場所" },
+  7:  { en: "Nagoya Basho", jp: "名古屋場所" },
+  9:  { en: "Aki Basho",    jp: "秋場所" },
+  11: { en: "Kyushu Basho", jp: "九州場所" },
+};
+
+function getNextBashoStartDate(bashoId: string): Date {
+  const year = parseInt(bashoId.slice(0, 4));
+  const month = parseInt(bashoId.slice(4, 6));
+  const firstOfMonth = new Date(year, month - 1, 1);
+  const dow = firstOfMonth.getDay(); // 0 = Sunday
+  const firstSunday = dow === 0 ? 1 : 8 - dow;
+  return new Date(year, month - 1, firstSunday + 7);
+}
 
 export const revalidate = 1800;
 
@@ -52,6 +72,11 @@ async function getHomeData() {
 
 export default async function HomePage() {
   const { latestBasho, featured, recentHighlights } = await getHomeData();
+
+  const upcomingId = nextBashoId();
+  const upcomingMonth = parseInt(upcomingId.slice(4, 6));
+  const upcomingNames = BASHO_NAMES[upcomingMonth] ?? { en: "Next Basho", jp: "場所" };
+  const upcomingStart = getNextBashoStartDate(upcomingId);
 
   const leaderEntries = latestBasho?.entries.map((e) => ({
     rikishiId: e.rikishiId,
@@ -121,6 +146,16 @@ export default async function HomePage() {
               Basho Archive
             </Link>
           </div>
+
+          {!latestBasho?.isActive && (
+            <div className="mt-14">
+              <NextBashoCountdown
+                targetDate={upcomingStart.toISOString()}
+                bashoName={upcomingNames.en}
+                bashoNameJp={upcomingNames.jp}
+              />
+            </div>
+          )}
         </div>
 
         {/* Bottom fade */}
