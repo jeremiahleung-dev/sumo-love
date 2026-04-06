@@ -26,7 +26,7 @@ function getNextBashoStartDate(bashoId: string): Date {
   return new Date(year, month - 1, firstSunday + 7);
 }
 
-export const revalidate = 1800;
+export const revalidate = 300;
 
 const BASHO_WITH_ENTRIES = {
   include: {
@@ -73,6 +73,11 @@ async function getHomeData() {
 export default async function HomePage() {
   const { latestBasho, featured, recentHighlights } = await getHomeData();
 
+  const now = new Date();
+  const isBashoLive = !!latestBasho &&
+    now >= new Date(latestBasho.startDate) &&
+    now <= new Date(latestBasho.endDate);
+
   const upcomingId = nextBashoId();
   const upcomingMonth = parseInt(upcomingId.slice(4, 6));
   const upcomingNames = BASHO_NAMES[upcomingMonth] ?? { en: "Next Basho", jp: "場所" };
@@ -114,7 +119,7 @@ export default async function HomePage() {
         />
 
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-          {latestBasho?.isActive && (
+          {isBashoLive && (
             <div className="inline-flex items-center gap-2 bg-[#C0292A]/10 border border-[#C0292A]/30 text-[#C0292A] text-xs font-semibold px-4 py-1.5 rounded-full mb-8 backdrop-blur-sm">
               <Zap size={11} className="animate-pulse" />
               LIVE — {latestBasho.nameEn}
@@ -147,7 +152,7 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          {!latestBasho?.isActive && (
+          {!isBashoLive && (
             <div className="mt-14">
               <NextBashoCountdown
                 targetDate={upcomingStart.toISOString()}
@@ -170,7 +175,7 @@ export default async function HomePage() {
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h2 className="font-display font-bold text-2xl text-white">
-                  {latestBasho.isActive ? "Live Standings" : "Final Standings"}
+                  {isBashoLive ? "Live Standings" : "Final Standings"}
                 </h2>
                 <p className="text-[#D4A97A] text-sm mt-1">
                   {latestBasho.nameEn} · {latestBasho.location}
