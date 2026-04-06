@@ -282,21 +282,38 @@ export default function FavoritesGrid() {
                 Day {latestDay} Results
               </h2>
               <div className="rounded-xl border border-white/5 divide-y divide-white/5 overflow-hidden">
-                {todayResults.map(({ rikishi: r, match: m }, i) => (
-                  <div key={i} className="flex items-center justify-between px-4 py-3">
-                    <div className="flex items-center gap-2">
+                {todayResults.slice(0, 3).map(({ rikishi: r, match: m }, i) => (
+                  <div key={i} className="flex items-center justify-between px-4 py-3 gap-3">
+                    <div className="flex items-center gap-2 min-w-0">
                       <span className={`w-2 h-2 rounded-full flex-shrink-0 ${m.won ? "bg-[#2D6A4F]" : "bg-[#C0292A]"}`} />
-                      <Link href={`/rikishi/${r.id}`} className="font-display font-bold text-sm hover:text-[#C0292A] transition-colors">
-                        {r.shikonaEn}
-                      </Link>
+                      <div className="min-w-0">
+                        <Link href={`/rikishi/${r.id}`} className="font-display font-bold text-sm hover:text-[#C0292A] transition-colors block truncate">
+                          {r.shikonaEn}
+                        </Link>
+                        <p className="text-xs text-white/30 truncate">vs {m.opponentEn}</p>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-xs text-white/40">vs {m.opponentEn}</p>
-                      {m.kimariteEn && <p className="text-[10px] text-white/20">{m.kimariteEn}</p>}
-                    </div>
+                    {m.kimariteEn && (
+                      <span className="flex-shrink-0 text-[10px] font-medium px-2 py-0.5 rounded bg-white/5 text-white/40 border border-white/10">
+                        {m.kimariteEn}
+                      </span>
+                    )}
                   </div>
                 ))}
+                {todayResults.length > 3 && (
+                  <Link
+                    href={`/basho/${basho!.id}`}
+                    className="flex items-center justify-center px-4 py-2.5 text-xs text-[#D4A97A] hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    See all Day {latestDay} results →
+                  </Link>
+                )}
               </div>
+              {todayResults.length <= 3 && (
+                <Link href={`/basho/${basho!.id}`} className="mt-2 block text-xs text-white/20 hover:text-[#D4A97A] transition-colors">
+                  Full basho results →
+                </Link>
+              )}
             </section>
           )}
         </div>
