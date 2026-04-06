@@ -11,11 +11,15 @@ function getRankStyle(rank: string): string {
   return base ? RANK_STYLES[base] : "bg-white/5 text-white/50";
 }
 
-// "Sekiwake 1 East" → "Sekiwake", "Maegashira 4 West" → "Maegashira 4 West"
+// "Sekiwake 1 East" → "Sekiwake", "Maegashira 4 West" → "M4W"
 function formatRank(rank: string): string {
   const SANYAKU = ["Yokozuna", "Ozeki", "Sekiwake", "Komusubi"];
   const title = SANYAKU.find((r) => rank.startsWith(r));
   if (title) return title;
+
+  const m = rank.match(/Maegashira\s+(\d+)\s+(East|West)/i);
+  if (m) return `M${m[1]}${m[2][0].toUpperCase()}`;
+
   return rank;
 }
 
