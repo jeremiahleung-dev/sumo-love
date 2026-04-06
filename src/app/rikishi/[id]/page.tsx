@@ -35,9 +35,6 @@ export default async function RikishiProfilePage({
   const winPct = totalBouts > 0 ? Math.round((totalWins / totalBouts) * 100) : 0;
   const yushoCount = rikishi.bashoEntries.filter((e) => e.yusho).length;
 
-  const debut = rikishi.debut
-    ? new Date(rikishi.debut).toLocaleDateString("en-US", { month: "long", year: "numeric" })
-    : null;
   const birthdate = rikishi.birthdate
     ? new Date(rikishi.birthdate).toLocaleDateString("en-US", {
         month: "long",
@@ -243,17 +240,6 @@ export default async function RikishiProfilePage({
                       Born
                     </p>
                     <p className="font-medium">{birthdate}</p>
-                  </div>
-                </div>
-              )}
-              {debut && (
-                <div className="flex items-start gap-3">
-                  <Calendar size={16} className="text-[#D4A97A] flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-[10px] uppercase tracking-widest text-[#D4A97A]">
-                      Debut
-                    </p>
-                    <p className="font-medium">{debut}</p>
                   </div>
                 </div>
               )}
