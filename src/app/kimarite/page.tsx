@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { db } from "@/lib/db";
-import KimariteCard from "@/components/kimarite/KimariteCard";
 import { KIMARITE_CATEGORIES } from "@/lib/kimarite-categories";
+import CategorySection from "@/components/kimarite/CategorySection";
 
 export const dynamic = "force-dynamic";
 
@@ -17,34 +17,24 @@ export default async function KimaritePage({
     include: { _count: { select: { matches: true } } },
   });
 
-  const filtered = category
-    ? allKimarite.filter((k) => k.category === category)
-    : allKimarite;
+  const items = allKimarite.map((k) => ({
+    id: k.id,
+    nameEn: k.nameEn,
+    nameJp: k.nameJp,
+    category: k.category,
+    description: k.description,
+    usageCount: k._count.matches,
+  }));
 
-  // Build category grouping and counts in one pass
-  const byCategory: Record<string, typeof allKimarite> = {};
+  const filtered = category ? items.filter((k) => k.category === category) : items;
+
+  const byCategory: Record<string, typeof items> = {};
   const countByCategory: Record<string, number> = {};
-  for (const k of allKimarite) {
+  for (const k of items) {
     byCategory[k.category] ??= [];
     byCategory[k.category].push(k);
     countByCategory[k.category] = (countByCategory[k.category] ?? 0) + 1;
   }
-
-  const grid = (items: typeof allKimarite) => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {items.map((k) => (
-        <KimariteCard
-          key={k.id}
-          id={k.id}
-          nameEn={k.nameEn}
-          nameJp={k.nameJp}
-          category={k.category}
-          description={k.description}
-          usageCount={k._count.matches}
-        />
-      ))}
-    </div>
-  );
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
@@ -55,6 +45,7 @@ export default async function KimaritePage({
         </p>
       </div>
 
+      {/* Category filter */}
       <div className="flex flex-wrap gap-2 mb-10">
         <Link
           href="/kimarite"
@@ -90,7 +81,7 @@ export default async function KimaritePage({
           No techniques found. Run /api/sync or npm run db:seed.
         </p>
       ) : category ? (
-        grid(filtered)
+        <CategorySection items={filtered} />
       ) : (
         <div className="space-y-12">
           {KIMARITE_CATEGORIES.filter((cat) => byCategory[cat]?.length > 0).map((cat) => (
@@ -102,7 +93,7 @@ export default async function KimaritePage({
                   ({byCategory[cat].length})
                 </span>
               </h2>
-              {grid(byCategory[cat])}
+              <CategorySection items={byCategory[cat]} />
             </section>
           ))}
         </div>
