@@ -141,10 +141,10 @@ export default async function RikishiProfilePage({
             <h2 className="font-display font-bold text-xl mb-4">
               Basho History
             </h2>
-            <div className="overflow-hidden rounded-lg border border-[#EDE0CC]">
+            <div className="overflow-hidden rounded-lg border border-white/10">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-[#1A1A1A] text-[#FAF7F2] text-xs uppercase tracking-wider">
+                  <tr className="bg-white/5 text-white/50 text-xs uppercase tracking-wider">
                     <th className="px-4 py-3 text-left">Basho</th>
                     <th className="px-4 py-3 text-left">Rank</th>
                     <th className="px-4 py-3 text-right">Record</th>
@@ -153,11 +153,11 @@ export default async function RikishiProfilePage({
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#EDE0CC]">
+                <tbody className="divide-y divide-white/5">
                   {rikishi.bashoEntries.map((entry) => (
                     <tr
                       key={entry.id}
-                      className={`hover:bg-[#EDE0CC]/40 transition-colors ${
+                      className={`hover:bg-white/5 transition-colors ${
                         entry.yusho ? "bg-[#C0292A]/5" : ""
                       }`}
                     >
@@ -169,7 +169,7 @@ export default async function RikishiProfilePage({
                           <span className="font-semibold">
                             {entry.basho.nameEn}
                           </span>
-                          <span className="text-[#1A1A1A]/40 ml-1 text-xs">
+                          <span className="text-white/40 ml-1 text-xs">
                             {entry.basho.year}
                           </span>
                         </Link>
@@ -201,7 +201,7 @@ export default async function RikishiProfilePage({
 
           <div>
             <h2 className="font-display font-bold text-xl mb-4">Profile</h2>
-            <div className="bg-[#FAF7F2] border border-[#EDE0CC] rounded-lg p-5 space-y-4">
+            <div className="bg-[#FAF7F2] border border-[#EDE0CC] rounded-lg p-5 space-y-4 text-[#1A1A1A]">
               {rikishi.nationality && (
                 <div className="flex items-center gap-3">
                   <MapPin size={16} className="text-[#D4A97A] flex-shrink-0" />
@@ -262,7 +262,7 @@ export default async function RikishiProfilePage({
             {rikishi.biography && (
               <div className="mt-6">
                 <h3 className="font-display font-semibold mb-2">About</h3>
-                <p className="text-sm text-[#1A1A1A]/70 leading-relaxed">
+                <p className="text-sm text-white/60 leading-relaxed">
                   {rikishi.biography}
                 </p>
               </div>

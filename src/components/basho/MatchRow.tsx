@@ -31,17 +31,17 @@ export default function MatchRow({
   const westWon = winnerId === westId;
 
   return (
-    <div className="border border-[#EDE0CC] rounded-lg overflow-hidden mb-2">
+    <div className="border border-white/10 rounded-lg overflow-hidden mb-2">
       <div className="flex items-center p-3 gap-3">
         <Link
           href={`/rikishi/${eastId}`}
           className={`flex-1 font-display font-semibold text-right hover:text-[#C0292A] transition-colors ${
-            eastWon ? "text-[#1A1A1A]" : "text-[#1A1A1A]/40"
+            eastWon ? "text-white" : "text-white/35"
           }`}
         >
           {eastShikona}
           {eastWon && (
-            <span className="ml-1 text-[10px] text-[#2D6A4F] font-mono align-middle">
+            <span className="ml-1 text-[10px] text-[#52B788] font-mono align-middle">
               ●
             </span>
           )}
@@ -54,7 +54,7 @@ export default function MatchRow({
           {kimariteEn && (
             <Link
               href={kimariteId ? `/kimarite/${kimariteId}` : "#"}
-              className="text-[10px] bg-[#EDE0CC] text-[#1A1A1A]/70 px-2 py-0.5 rounded mt-0.5 hover:bg-[#D4A97A] transition-colors text-center"
+              className="text-[10px] bg-white/10 text-white/60 px-2 py-0.5 rounded mt-0.5 hover:bg-[#D4A97A] hover:text-white transition-colors text-center"
             >
               {kimariteEn}
             </Link>
@@ -64,11 +64,11 @@ export default function MatchRow({
         <Link
           href={`/rikishi/${westId}`}
           className={`flex-1 font-display font-semibold hover:text-[#C0292A] transition-colors ${
-            westWon ? "text-[#1A1A1A]" : "text-[#1A1A1A]/40"
+            westWon ? "text-white" : "text-white/35"
           }`}
         >
           {westWon && (
-            <span className="mr-1 text-[10px] text-[#2D6A4F] font-mono align-middle">
+            <span className="mr-1 text-[10px] text-[#52B788] font-mono align-middle">
               ●
             </span>
           )}

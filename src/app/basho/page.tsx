@@ -114,7 +114,7 @@ export default async function BashoPage() {
       </div>
 
       {allBasho.length === 0 ? (
-        <div className="text-center py-24 text-[#1A1A1A]/40">
+        <div className="text-center py-24 text-white/40">
           <p className="font-display text-2xl mb-2">No basho data</p>
           <p className="text-sm">POST to /api/sync to load tournament data</p>
         </div>

@@ -30,6 +30,20 @@ export function currentBashoId(): string {
   return `${year}${String(month).padStart(2, "0")}`;
 }
 
+/** Returns the next basho ID after the current one (YYYYMM). */
+export function nextBashoId(): string {
+  const ODD_MONTHS = [1, 3, 5, 7, 9, 11];
+  const now = new Date();
+  let year = now.getFullYear();
+  let month = now.getMonth() + 1;
+  if (month % 2 === 0) month += 1; // even → next odd
+  else month += 2; // already odd → skip to the one after
+  if (month > 12) { month = 1; year += 1; }
+  // snap to nearest odd month (handles edge cases)
+  if (!ODD_MONTHS.includes(month)) month += 1;
+  return `${year}${String(month).padStart(2, "0")}`;
+}
+
 /** Returns the last N basho IDs in descending order, starting from the current one. */
 export function recentBashoIds(count: number): string[] {
   const ODD_MONTHS = [11, 9, 7, 5, 3, 1];
@@ -50,6 +64,21 @@ export function recentBashoIds(count: number): string[] {
     }
   }
   return ids;
+}
+
+/** Checks if sumo-api.com has data for a given basho. Returns true if the banzuke has entries. */
+export async function bashoHasData(bashoId: string): Promise<boolean> {
+  try {
+    const res = await fetch(`${BASE}/api/basho/${bashoId}/banzuke/Makuuchi`, {
+      headers: { Accept: "application/json" },
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!res.ok) return false;
+    const data = await res.json() as { east?: unknown[]; west?: unknown[] };
+    return Array.isArray(data.east) && data.east.length > 0;
+  } catch {
+    return false;
+  }
 }
 
 export async function fetchBanzuke(bashoId: string): Promise<SumoApiBanzukeEntry[]> {

@@ -1,7 +1,9 @@
 import { db } from "./db";
 import {
   recentBashoIds,
+  nextBashoId,
   currentBashoId,
+  bashoHasData,
   fetchBanzuke,
   fetchTorikumi,
   fetchRikishi,
@@ -33,16 +35,26 @@ export async function syncAll(): Promise<{ bashoSynced: number; rikishiSynced: n
   let matchesSynced = 0;
 
   const latestId = currentBashoId();
+  const upcoming = nextBashoId();
   const toSync = recentBashoIds(3);
+
+  // If the next basho's banzuke has landed on sumo-api.com, pull it in
+  if (!toSync.includes(upcoming) && await bashoHasData(upcoming)) {
+    console.log(`Next basho ${upcoming} has data — including in sync`);
+    toSync.unshift(upcoming);
+  }
 
   // Pre-load all kimarite into a name→id map to avoid per-bout DB lookups
   const allKimarite = await db.kimarite.findMany({ select: { id: true, nameEn: true } });
   const kimariteByName = new Map(allKimarite.map((k) => [k.nameEn, k.id]));
 
+  const latestBashoId = toSync[0];
+
   for (const bashoId of toSync) {
     const { year, month, start, end } = bashoIdToDate(bashoId);
     const names = BASHO_NAMES[month] ?? { jp: "場所", en: "Basho", location: "Japan", venue: "Kokugikan" };
-    const isActive = bashoId === latestId;
+    // The most recently available basho (first in toSync) is the active one
+    const isActive = bashoId === toSync[0];
 
     const basho = await db.basho.upsert({
       where: { sumoApiId: bashoId },
@@ -91,8 +103,7 @@ export async function syncAll(): Promise<{ bashoSynced: number; rikishiSynced: n
       const rikishi = await db.rikishi.upsert({
         where: { sumoApiId: String(entry.rikishiID) },
         update: {
-          currentRank: entry.rank,
-          division,
+          ...(bashoId === latestBashoId && { currentRank: entry.rank, division }),
           shikonaEn: entry.shikonaEn,
           shikona: entry.shikonaJp ?? entry.shikonaEn,
           ...(imageUrl && { imageUrl }),

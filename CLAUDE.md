@@ -277,6 +277,27 @@ When working in this repository:
 
 ---
 
+## Known Bugs & Hard Rules
+
+### Sync: Only update `currentRank` from the most recent basho
+
+**Bug (fixed):** `syncAll()` loops through the last 3 basho in descending order. The loop used to update `currentRank` on every iteration, meaning the *oldest* basho processed last would overwrite the correct current rank with stale data (e.g. a Sekiwake would show as Maegashira from two basho ago).
+
+**Fix in `src/lib/sync.ts`:** `currentRank` and `division` are only written to the DB when `bashoId === latestBashoId` (the first/most recent basho in `toSync`). Older basho iterations still upsert `BashoEntry` and `Match` records, but must never touch `currentRank`.
+
+**Rule:** Never change this behaviour. If you refactor the sync loop, always guard `currentRank` updates behind a `bashoId === toSync[0]` check.
+
+---
+
+### Before pushing or deploying
+
+1. Trigger a manual sync (`POST /api/sync`) against the running dev server and confirm it returns `{ ok: true }`.
+2. Query the API (`GET /api/rikishi`) and spot-check that Sanyaku wrestlers (Yokozuna, Ozeki, Sekiwake, Komusubi) have the correct ranks.
+3. Hard-refresh the browser and verify the Rikishi page groups wrestlers correctly (Sanyaku section vs Maegashira section).
+4. Only push / deploy after all three checks pass.
+
+---
+
 ## CI/CD
 
 Deployed via Vercel. Push to the feature branch triggers a Vercel preview deploy.

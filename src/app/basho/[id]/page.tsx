@@ -115,7 +115,7 @@ export default async function BashoDetailPage({
             {leaderEntries.length > 0 ? (
               <LeaderBoard entries={leaderEntries} />
             ) : (
-              <p className="text-[#1A1A1A]/40 text-sm">No standings yet.</p>
+              <p className="text-white/40 text-sm">No standings yet.</p>
             )}
           </div>
 
@@ -125,7 +125,7 @@ export default async function BashoDetailPage({
             </h2>
 
             {days.length === 0 ? (
-              <p className="text-[#1A1A1A]/40 text-sm">
+              <p className="text-white/40 text-sm">
                 No bout results available yet.
               </p>
             ) : (
@@ -133,9 +133,9 @@ export default async function BashoDetailPage({
                 {days.map((day) => (
                   <div key={day}>
                     <h3 className="text-xs uppercase tracking-widest font-bold text-[#D4A97A] mb-3 flex items-center gap-2">
-                      <span className="h-px flex-1 bg-[#EDE0CC]" />
+                      <span className="h-px flex-1 bg-white/10" />
                       Day {day}
-                      <span className="h-px flex-1 bg-[#EDE0CC]" />
+                      <span className="h-px flex-1 bg-white/10" />
                     </h3>
                     {matchesByDay[day].map((m) => (
                       <MatchRow
