@@ -5,7 +5,12 @@ import { isSanyaku, rankSortKey } from "@/lib/ranks";
 export const revalidate = 3600;
 
 export default async function RikishiPage() {
+  const latestBasho = await db.basho.findFirst({ orderBy: { sumoApiId: "desc" } });
+
   const allRikishi = await db.rikishi.findMany({
+    where: latestBasho
+      ? { bashoEntries: { some: { bashoId: latestBasho.id } } }
+      : undefined,
     orderBy: { currentRank: "asc" },
     include: {
       bashoEntries: {
