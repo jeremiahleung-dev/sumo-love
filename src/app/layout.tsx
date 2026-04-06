@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 const notoSerifJP = Noto_Serif_JP({
-  subsets: ["latin"],
+  subsets: ["latin", "japanese"],
   weight: ["400", "700", "900"],
   display: "swap",
   variable: "--font-display",
