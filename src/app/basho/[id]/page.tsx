@@ -46,6 +46,10 @@ export default async function BashoDetailPage({
   }));
 
   const winner = basho.entries.find((e) => e.yusho)?.rikishi;
+
+  // Top 4 by tournament record (entries already ordered wins desc)
+  const top4Ids = basho.entries.slice(0, 4).map((e) => e.rikishiId);
+
   const days = Array.from(new Set(basho.matches.map((m) => m.day))).sort((a, b) => a - b);
   const matchesByDay: Record<number, typeof basho.matches> = {};
   for (const m of basho.matches) {
@@ -134,6 +138,7 @@ export default async function BashoDetailPage({
                   <DaySection
                     key={day}
                     day={day}
+                    featuredIds={top4Ids}
                     matches={matchesByDay[day].map((m) => ({
                       id: m.id,
                       eastRikishiId: m.eastRikishiId,

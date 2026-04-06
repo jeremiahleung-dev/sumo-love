@@ -15,14 +15,24 @@ interface Match {
   highlightUrl: string | null;
 }
 
-const PREVIEW_COUNT = 3;
-
-export default function DaySection({ day, matches }: { day: number; matches: Match[] }) {
+export default function DaySection({
+  day,
+  matches,
+  featuredIds,
+}: {
+  day: number;
+  matches: Match[];
+  featuredIds: string[];
+}) {
   const [expanded, setExpanded] = useState(false);
 
-  // Show last N by default — final bouts of the day are highest-ranked
-  const visible = expanded ? matches : matches.slice(-PREVIEW_COUNT);
-  const hidden = matches.length - PREVIEW_COUNT;
+  const featured = new Set(featuredIds);
+  // Bouts involving at least one top-4 rikishi (by tournament record)
+  const preview = matches.filter(
+    (m) => featured.has(m.eastRikishiId) || featured.has(m.westRikishiId)
+  );
+  const visible = expanded ? matches : preview;
+  const hiddenCount = matches.length - preview.length;
 
   return (
     <div>
@@ -31,15 +41,6 @@ export default function DaySection({ day, matches }: { day: number; matches: Mat
         Day {day}
         <span className="h-px flex-1 bg-white/10" />
       </h3>
-
-      {!expanded && hidden > 0 && (
-        <button
-          onClick={() => setExpanded(true)}
-          className="w-full text-xs text-white/30 hover:text-[#D4A97A] py-2 mb-1 transition-colors"
-        >
-          ↑ {hidden} earlier bout{hidden !== 1 ? "s" : ""} hidden
-        </button>
-      )}
 
       {visible.map((m) => (
         <MatchRow
@@ -55,12 +56,21 @@ export default function DaySection({ day, matches }: { day: number; matches: Mat
         />
       ))}
 
+      {!expanded && hiddenCount > 0 && (
+        <button
+          onClick={() => setExpanded(true)}
+          className="w-full text-xs text-white/30 hover:text-[#D4A97A] py-2 mt-1 transition-colors"
+        >
+          + {hiddenCount} more bout{hiddenCount !== 1 ? "s" : ""} this day
+        </button>
+      )}
+
       {expanded && (
         <button
           onClick={() => setExpanded(false)}
           className="w-full text-xs text-white/30 hover:text-[#D4A97A] py-2 mt-1 transition-colors"
         >
-          ↑ Show fewer bouts
+          Show fewer bouts
         </button>
       )}
     </div>
