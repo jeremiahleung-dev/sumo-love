@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { Menu, X } from "lucide-react";
+import KimariteSubNav from "./KimariteSubNav";
 
 const NAV_LINKS = [
   { href: "/rikishi", label: "Rikishi" },
@@ -62,9 +63,13 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile menu */}
-      {open && (
-        <nav className="md:hidden border-t border-white/5 px-4 py-3 flex flex-col gap-1 bg-[#0A0A0A]">
+      {/* Mobile menu — animated slide */}
+      <nav
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-[#0A0A0A] ${
+          open ? "max-h-48 border-t border-white/5" : "max-h-0"
+        }`}
+      >
+        <div className="px-4 py-3 flex flex-col gap-1">
           {NAV_LINKS.map(({ href, label }) => (
             <Link
               key={href}
@@ -79,7 +84,14 @@ export default function Navbar() {
               {label}
             </Link>
           ))}
-        </nav>
+        </div>
+      </nav>
+
+      {/* Kimarite category sub-nav */}
+      {pathname.startsWith("/kimarite") && (
+        <Suspense fallback={null}>
+          <KimariteSubNav />
+        </Suspense>
       )}
     </header>
   );
