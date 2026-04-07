@@ -39,13 +39,13 @@ export default function MatchRow({
       <div className="flex items-center p-3 gap-2">
 
         {/* East */}
-        <div className={`flex-1 text-right transition-opacity ${!winnerId || eastWon ? "opacity-100" : "opacity-35"}`}>
-          <Link href={`/rikishi/${eastId}`} className="font-display font-semibold hover:text-[#C0292A] transition-colors">
+        <div className="flex-1 text-right">
+          <Link href={`/rikishi/${eastId}`} className={`font-display font-semibold hover:text-[#C0292A] transition-colors ${!winnerId || eastWon ? "opacity-100" : "opacity-35"}`}>
             {eastWon && <span className="mr-1 text-[10px] text-[#52B788] align-middle">●</span>}
             {eastShikona}
           </Link>
           {eastRecord != null && (
-            <p className="text-[11px] font-mono text-white/35 mt-0.5">
+            <p className="text-[11px] font-mono text-white/50 mt-0.5">
               {eastRecord.wins}W–{eastRecord.losses}L
             </p>
           )}
@@ -57,13 +57,13 @@ export default function MatchRow({
         </span>
 
         {/* West */}
-        <div className={`flex-1 transition-opacity ${!winnerId || westWon ? "opacity-100" : "opacity-35"}`}>
-          <Link href={`/rikishi/${westId}`} className="font-display font-semibold hover:text-[#C0292A] transition-colors">
+        <div className="flex-1">
+          <Link href={`/rikishi/${westId}`} className={`font-display font-semibold hover:text-[#C0292A] transition-colors ${!winnerId || westWon ? "opacity-100" : "opacity-35"}`}>
             {westShikona}
             {westWon && <span className="ml-1 text-[10px] text-[#52B788] align-middle">●</span>}
           </Link>
           {westRecord != null && (
-            <p className="text-[11px] font-mono text-white/35 mt-0.5">
+            <p className="text-[11px] font-mono text-white/50 mt-0.5">
               {westRecord.wins}W–{westRecord.losses}L
             </p>
           )}

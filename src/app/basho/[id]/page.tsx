@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { db } from "@/lib/db";
 import LeaderBoard from "@/components/basho/LeaderBoard";
-import DaySection from "@/components/basho/DaySection";
+import BoutsSection from "@/components/basho/BoutsSection";
 import { ChevronLeft, MapPin, CalendarDays, Trophy } from "lucide-react";
 
 export const revalidate = 1800;
@@ -157,28 +157,27 @@ export default async function BashoDetailPage({
                 No bout results available yet.
               </p>
             ) : (
-              <div className="space-y-8">
-                {days.map((day) => (
-                  <DaySection
-                    key={day}
-                    day={day}
-                    featuredIds={top4Ids}
-                    matches={matchesByDay[day].map((m) => ({
-                      id: m.id,
-                      eastRikishiId: m.eastRikishiId,
-                      eastShikona: m.eastRikishi.shikonaEn,
-                      eastRecord: preBoutRecord.get(m.eastRikishiId)?.get(day) ?? null,
-                      westRikishiId: m.westRikishiId,
-                      westShikona: m.westRikishi.shikonaEn,
-                      westRecord: preBoutRecord.get(m.westRikishiId)?.get(day) ?? null,
-                      winnerId: m.winnerId,
-                      kimariteEn: m.kimarite?.nameEn ?? null,
-                      kimariteId: m.kimariteId,
-                      highlightUrl: m.highlightUrl,
-                    }))}
-                  />
-                ))}
-              </div>
+              <BoutsSection
+                defaultDay={days[days.length - 1]}
+                featuredIds={top4Ids}
+                isActive={basho.isActive}
+                days={days.map((day) => ({
+                  day,
+                  matches: matchesByDay[day].map((m) => ({
+                    id: m.id,
+                    eastRikishiId: m.eastRikishiId,
+                    eastShikona: m.eastRikishi.shikonaEn,
+                    eastRecord: preBoutRecord.get(m.eastRikishiId)?.get(day) ?? null,
+                    westRikishiId: m.westRikishiId,
+                    westShikona: m.westRikishi.shikonaEn,
+                    westRecord: preBoutRecord.get(m.westRikishiId)?.get(day) ?? null,
+                    winnerId: m.winnerId,
+                    kimariteEn: m.kimarite?.nameEn ?? null,
+                    kimariteId: m.kimariteId,
+                    highlightUrl: m.highlightUrl,
+                  })),
+                }))}
+              />
             )}
           </div>
         </div>

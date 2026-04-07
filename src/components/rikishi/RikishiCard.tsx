@@ -10,6 +10,8 @@ interface Props {
   currentRank: string | null;
   heya: string;
   imageUrl: string | null;
+  nameOrigin?: string | null;
+  biography?: string | null;
   wins?: number;
   losses?: number;
   absences?: number;
@@ -22,6 +24,8 @@ export default function RikishiCard({
   currentRank,
   heya,
   imageUrl,
+  nameOrigin,
+  biography,
   wins,
   losses,
   absences,
@@ -29,10 +33,10 @@ export default function RikishiCard({
   return (
     <Link
       href={`/rikishi/${id}`}
-      className="group bg-[#141414] border border-white/5 rounded-xl overflow-hidden hover:border-[#C0292A]/40 hover:shadow-xl hover:shadow-[#C0292A]/5 transition-all duration-300"
+      className="group bg-[#141414] border border-white/5 rounded-xl overflow-hidden hover:border-[#C0292A]/40 hover:shadow-xl hover:shadow-[#C0292A]/5 transition-all duration-300 flex flex-col"
     >
       {/* Photo */}
-      <div className="relative aspect-[3/4] bg-[#1A1A1A] overflow-hidden">
+      <div className="relative aspect-[3/4] bg-[#1A1A1A] overflow-hidden flex-shrink-0">
         {imageUrl ? (
           <Image
             src={imageUrl}
@@ -56,14 +60,22 @@ export default function RikishiCard({
       </div>
 
       {/* Info */}
-      <div className="p-3">
+      <div className="p-3 flex flex-col flex-1">
         <p className="font-display font-bold text-base leading-tight text-white">{shikonaEn}</p>
-        <p className="text-xs text-white/30 mb-1">{shikona}</p>
+        <p className="text-xs text-white/30">{shikona}</p>
+        {nameOrigin && (
+          <p className="text-[10px] text-[#C0292A]/60 italic mb-1">{nameOrigin}</p>
+        )}
         <p className="text-xs text-[#D4A97A]/60">{heya} Stable</p>
         {wins !== undefined && losses !== undefined && (
           <div className="mt-2">
             <RecordPill wins={wins} losses={losses} absences={absences} />
           </div>
+        )}
+        {biography && (
+          <p className="mt-3 text-[11px] text-white/35 leading-relaxed line-clamp-3 italic">
+            {biography}
+          </p>
         )}
       </div>
     </Link>

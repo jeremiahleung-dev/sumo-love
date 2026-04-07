@@ -34,6 +34,8 @@ export default async function RikishiPage() {
       currentRank: r.currentRank,
       heyaEn: r.heyaEn,
       imageUrl: r.imageUrl,
+      biography: r.biography,
+      nameOrigin: r.nameOrigin,
       wins: entry?.wins,
       losses: entry?.losses,
       absences: entry?.absences,
@@ -56,7 +58,7 @@ export default async function RikishiPage() {
       </div>
 
       {allRikishi.length === 0 ? (
-        <div className="text-center py-24 text-[#1A1A1A]/40">
+        <div className="text-center py-24 text-white/40">
           <p className="font-display text-2xl mb-2">No rikishi loaded</p>
           <p className="text-sm">POST to /api/sync to load the current banzuke</p>
         </div>
@@ -74,7 +76,7 @@ export default async function RikishiPage() {
           {maegashira.length > 0 && (
             <section>
               <h2 className="font-display font-bold text-xl mb-4 flex items-center gap-2">
-                <span className="w-2 h-6 bg-[#1A1A1A] rounded inline-block" />
+                <span className="w-2 h-6 bg-white/20 rounded inline-block" />
                 Maegashira
               </h2>
               <RikishiGrid rikishi={maegashira} />

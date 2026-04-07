@@ -10,6 +10,8 @@ interface RikishiItem {
   currentRank: string | null;
   heyaEn: string;
   imageUrl: string | null;
+  biography?: string | null;
+  nameOrigin?: string | null;
   wins?: number;
   losses?: number;
   absences?: number;
@@ -28,6 +30,8 @@ export default function RikishiGrid({ rikishi }: { rikishi: RikishiItem[] }) {
             currentRank={r.currentRank}
             heya={r.heyaEn}
             imageUrl={r.imageUrl}
+            biography={r.biography}
+            nameOrigin={r.nameOrigin}
             wins={r.wins}
             losses={r.losses}
             absences={r.absences}
