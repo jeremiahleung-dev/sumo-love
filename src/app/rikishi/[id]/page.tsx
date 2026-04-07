@@ -35,9 +35,6 @@ export default async function RikishiProfilePage({
   const winPct = totalBouts > 0 ? Math.round((totalWins / totalBouts) * 100) : 0;
   const yushoCount = rikishi.bashoEntries.filter((e) => e.yusho).length;
 
-  const debut = rikishi.debut
-    ? new Date(rikishi.debut).toLocaleDateString("en-US", { month: "long", year: "numeric" })
-    : null;
   const birthdate = rikishi.birthdate
     ? new Date(rikishi.birthdate).toLocaleDateString("en-US", {
         month: "long",
@@ -85,9 +82,12 @@ export default async function RikishiProfilePage({
               <h1 className="font-display font-black text-4xl md:text-5xl mb-1">
                 {rikishi.shikonaEn}
               </h1>
-              <p className="font-display text-[#D4A97A] text-xl mb-4">
+              <p className="font-display text-[#D4A97A] text-xl">
                 {rikishi.shikona}
               </p>
+              {rikishi.nameOrigin && (
+                <p className="text-sm text-[#EDE0CC]/60 italic mt-1 mb-3">{rikishi.nameOrigin}</p>
+              )}
               <p className="text-[#EDE0CC] text-sm mb-6">{rikishi.heyaEn} Stable</p>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -243,17 +243,6 @@ export default async function RikishiProfilePage({
                       Born
                     </p>
                     <p className="font-medium">{birthdate}</p>
-                  </div>
-                </div>
-              )}
-              {debut && (
-                <div className="flex items-start gap-3">
-                  <Calendar size={16} className="text-[#D4A97A] flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-[10px] uppercase tracking-widest text-[#D4A97A]">
-                      Debut
-                    </p>
-                    <p className="font-medium">{debut}</p>
                   </div>
                 </div>
               )}
