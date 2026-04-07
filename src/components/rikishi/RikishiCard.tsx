@@ -10,6 +10,7 @@ interface Props {
   currentRank: string | null;
   heya: string;
   imageUrl: string | null;
+  nameOrigin?: string | null;
   biography?: string | null;
   wins?: number;
   losses?: number;
@@ -23,6 +24,7 @@ export default function RikishiCard({
   currentRank,
   heya,
   imageUrl,
+  nameOrigin,
   biography,
   wins,
   losses,
@@ -60,7 +62,10 @@ export default function RikishiCard({
       {/* Info */}
       <div className="p-3 flex flex-col flex-1">
         <p className="font-display font-bold text-base leading-tight">{shikonaEn}</p>
-        <p className="text-xs text-[#1A1A1A]/50 mb-1">{shikona}</p>
+        <p className="text-xs text-[#1A1A1A]/50">{shikona}</p>
+        {nameOrigin && (
+          <p className="text-[10px] text-[#C0292A]/70 italic mb-1">{nameOrigin}</p>
+        )}
         <p className="text-xs text-[#D4A97A]">{heya} Stable</p>
         {wins !== undefined && losses !== undefined && (
           <div className="mt-2">

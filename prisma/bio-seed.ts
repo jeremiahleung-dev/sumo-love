@@ -108,14 +108,121 @@ const bios: Record<string, string> = {
     "He found sumo by accident. Daniel Ivanov, born in Elhovo, Bulgaria, followed a countryman's invitation to Japan and discovered he was built for the dohyo — heavy, powerful, with a thrusting style that sent bigger men backwards before they had time to think. He became only the second Bulgarian to reach the professional ranks, rose to sekiwake, and finished as tournament runner-up twice without ever claiming the championship he deserved. He obtained Japanese citizenship in March 2022, retired after September 2024, and stayed in sumo as a coach — a man who arrived by accident and stayed for a lifetime.",
 };
 
+const nameOrigins: Record<string, string> = {
+  Terunofuji:
+    "照ノ富士 — "Sunshine of Mount Fuji." 照 (teru) means to shine or illuminate; 富士 is Japan's sacred mountain. His name is the Isegahama stable tradition carried to its highest expression — a wrestler named for the light that falls on an immortal peak.",
+
+  Hoshoryu:
+    "豊昇龍 — "Abundant Rising Dragon." 豊 (hō) is abundance and plenty; 昇 (shō) means to rise or ascend; 龍 (ryū) is the dragon of Chinese and Japanese mythology, a creature of power, transformation, and heaven. A name built for ascent.",
+
+  Kirishima:
+    "霧島 — "Mist Island." 霧 (kiri) is fog or mist; 島 (shima) is island. Named for the Kirishima mountain range in Kagoshima, a volcanic chain where clouds swallow the peaks. It is one of the oldest and most storied shikona in Miyakonishiki stable history, last borne fifty years before this wrestler claimed it.",
+
+  Kotozakura:
+    "琴桜 — "Koto and Cherry Blossom." 琴 (koto) is the traditional Japanese plucked string instrument — the hereditary prefix of Sadogatake stable, passed through every generation of its wrestlers. 桜 (zakura/sakura) is the cherry blossom, Japan's symbol of fleeting, perfect beauty. A name that joins music and the most beloved flower in one breath.",
+
+  Onosato:
+    "大の里 — "The Great Village." 大 (ō) means great or vast; 里 (sato) is a village or hometown, the place a person comes from. A name of deliberate modesty from an Oitekaze wrestler — greatness rooted in where he began.",
+
+  Atamifuji:
+    "熱海富士 — "Atami's Fuji." 熱海 (Atami) is his coastal hometown in Shizuoka, its own name meaning "hot sea" — a city of hot springs beside the Pacific. 富士 invokes the dignity of Japan's sacred mountain. An Isegahama stable name that grounds the mountain in the warmth of a specific place.",
+
+  Gonoyama:
+    "豪ノ山 — "Mountain of Power." 豪 (gō) means powerful, mighty, or heroic; ノ is a possessive particle; 山 (yama) is the mountain. Chosen to evoke something immovable and formidable, the name is a promise made before a single bout is fought.",
+
+  Daieisho:
+    "大栄翔 — "Great Glorious Soar." 大 (dai) means great; 栄 (ei) is glory, prosperity, or splendour; 翔 (shō) means to soar or take flight. An Oitekaze stable name — the same house as Endō — built from three characters that each reach upward.",
+
+  Takakeisho:
+    "貴景勝 — "Noble Celebrated Victory." 貴 (taka) means noble or precious; 景 (kei) is a scene, a view, or an occasion; 勝 (shō) is victory. A Tokiwayama stable name that names the moment of winning as something rare and honoured.",
+
+  Tobizaru:
+    "翔猿 — "Flying Monkey." 翔 (tobi) means to soar or fly; 猿 (saru) is the monkey. He chose it for the year of his birth and the nature of his sumo — darting, airborne, impossible to hold. An Oitekaze wrestler who named himself after the thing that makes him impossible to beat.",
+
+  Nishikigi:
+    "錦木 — "Brocade Tree." 錦 (nishiki) is the gold-threaded brocade fabric of imperial Japan, sumptuous and dense with colour; 木 (gi/ki) is a tree. The nishikigi is a real plant — the Japanese spindletree — known for its vivid scarlet autumn leaves. It is also the subject of a classical Noh play about longing and faithful return.",
+
+  Midorifuji:
+    "翠富士 — "Emerald Fuji." 翠 (midori) is the deep green of jade or an emerald, a colour of living things and precious stones; 富士 is the sacred mountain. The Isegahama stable suffix meets a colour that does not belong to rock and snow — an unexpected name for an unexpected wrestler.",
+
+  Abi:
+    "阿炎 — "Sacred Flame." 阿 (a) is a Sanskrit-origin syllable from Buddhist mantras, the first sound of the universe; 炎 (en/bi) is flame or blaze. Given to him by his mentor Terao, the name carries something of fire's nature — brilliant, uncontainable, and impossible to look away from.",
+
+  Kotoshoho:
+    "琴勝峰 — "Koto Victory Peak." 琴 (koto) is the Sadogatake stable prefix, the plucked string instrument; 勝 (shō) means victory; 峰 (hō) is a mountain summit. A Sadogatake name that builds from the stable's musical tradition upward to the highest point.",
+
+  Shonannoumi:
+    "湘南乃海 — "Sea of Shōnan." 湘南 names the beloved Kanagawa coastline south of Tokyo, one of Japan's most romanticised stretches of shore; 乃 (no) is an archaic and literary possessive particle; 海 (umi) is the sea. The name writes his hometown into the ring.",
+
+  Roga:
+    "狼雅 — "Elegant Wolf." 狼 (rō) is the wolf — fierce, solitary, untamed; 雅 (ga) is elegance, refinement, and classical beauty. A name that holds two opposing forces in tension, as if to say: the wildness is not incompatible with grace.",
+
+  Takanosho:
+    "隆の勝 — "Rising Victory." 隆 (taka/ryū) means to rise, to swell, to prosper; の (no) is the possessive; 勝 (shō) is victory. A Tokiwayama stable name built from the momentum of ascent, given to a wrestler whose sumo has always moved forward.",
+
+  Wakamotoharu:
+    "若元春 — "Young Origin of Spring." 若 (waka) means young; 元 (moto) is origin, foundation, or the root of something; 春 (haru) is spring — the season of renewal and beginning. An Arashio stable name shared in spirit with his brothers, each of whose shikona begins with 若 (Waka, young).",
+
+  Hiradoumi:
+    "平戸海 — "Sea of Hirado." 平戸 (Hirado) is his hometown on the tip of Nagasaki — a city whose own name means "flat gate" or "peaceful gateway," historically Japan's window to the world. 海 (umi) is the sea that surrounds it. A name that wears a place like an identity.",
+
+  Kinbozan:
+    "金峰山 — "Golden Peak Mountain." 金 (kin) is gold; 峰 (bō) is a summit or ridge; 山 (zan) is a mountain. Kinbōzan is also the name of a sacred mountain in Miyagi Prefecture, associated with the deity of the Konpira shrine. The name carries both mineral richness and spiritual elevation.",
+
+  Takarafuji:
+    "宝富士 — "Treasure of Fuji." 宝 (takara) means treasure, jewel, or something irreplaceable; 富士 is the sacred mountain. An Isegahama stable name that frames the mountain not as backdrop but as the thing most worth protecting — as if Fuji itself were a gift.",
+
+  Meisei:
+    "明生 — "Bright Life." 明 (mei) means bright, clear, or luminous; 生 (sei) is life or the act of living. One of the simplest names in the top division — two characters, two syllables, a statement rather than an image. A Tatsunami stable name of unusual directness.",
+
+  Endo:
+    "遠藤 — "Distant Wisteria." His family surname, worn as his shikona without alteration. 遠 (en) means far or distant; 藤 (dō/tō) is the wisteria vine, a plant bound to Japanese aristocracy through the ancient Fujiwara clan. An Oitekaze wrestler who needed no ring name — the one he was born with held enough.",
+
+  Mitakeumi:
+    "御嶽海 — "Sea of the Sacred Peak." 御嶽 (Mitake) refers to Mount Ontake, the sacred stratovolcano that towers over Nagano, his home prefecture — a mountain that erupted catastrophically in 2014. 海 (umi) is the sea, used here to evoke vastness and depth. A Dewanoumi stable name that pairs a specific sacred mountain with the limitlessness of ocean.",
+
+  Tamawashi:
+    "玉鷲 — "Jewel Eagle." 玉 (tama) means jewel, gem, or something perfectly round and precious; 鷲 (washi) is the eagle, Japan's symbol of fierce and lofty power. A Kataonami stable name that pairs delicacy with predatory force — an unlikely combination, much like the wrestler himself.",
+
+  Nishikifuji:
+    "錦富士 — "Brocade Fuji." 錦 (nishiki) is the gold-threaded brocade of imperial Japan, dense and luminous; 富士 is the sacred mountain. An Isegahama stable name that clothes the mountain in silk — the same stable suffix as Midorifuji and Takarafuji, each giving Fuji a different hue.",
+
+  Sadanoumi:
+    "佐田の海 — "Sea of Sada." 佐田 (Sada) is a place name echoing his father's ring name — the lineage written directly into the shikona; の (no) is the possessive; 海 (umi) is the sea. A Sakaigawa stable name that is also an act of filial devotion.",
+
+  Ichiyamamoto:
+    "一山本 — "One Mountain Root." 一 (ichi) means one or first; 山 (yama) is a mountain; 本 (moto) is a root, an origin, or the base of something. A name that grounds itself at the very beginning — one mountain, traced all the way to its foundation.",
+
+  Hokutofuji:
+    "北勝富士 — "Northern Victory at Fuji." 北 (hoku) is north; 勝 (to) is victory; 富士 is Mount Fuji. The Hakkaku stable prefix 北勝 (Hokuto, "northern victory") is carried by all the stable's wrestlers as a mark of lineage — a tradition that stretches back through generations.",
+
+  Myogiryu:
+    "妙義龍 — "Dragon of Mount Myogi." 妙義 (Myōgi) is a dramatic, craggy mountain range in Gunma Prefecture, its peaks worn by time into strange, jagged shapes. 龍 (ryū) is the dragon of Japanese and Chinese mythology. A Takasago stable name that puts the force of myth inside the landscape of his home.",
+
+  Oho:
+    "王鵬 — "King Roc." 王 (ō) means king or sovereign; 鵬 (hō) is the mythical roc of classical Chinese literature — the enormous bird of Zhuangzi that rises ninety thousand li on the wind and makes the sky itself look small. A name of immense ambition, given to a boy from a lineage that expected nothing less.",
+
+  Asanoyama:
+    "朝乃山 — "Mountain of the Morning." 朝 (asa) means morning — the first light; 乃 (no) is the archaic literary possessive; 山 (yama) is the mountain. The Takasago stable prefix 朝 (Asa) is shared by all the stable's wrestlers across generations. A name that puts the mountain at the beginning of the day, when everything is still possible.",
+
+  Aoiyama:
+    "碧山 — "Azure Mountain." 碧 (aoi) is the deep blue-green of jade, sea-glass, or the ocean at depth — not quite blue, not quite green, richer than both; 山 (yama) is the mountain. A name of colour and solidity, given to a man who became both: a mountain in an azure country that was never his own.",
+};
+
 async function main() {
-  console.log("Seeding rikishi biographies…");
+  console.log("Seeding rikishi biographies and name origins…");
   let updated = 0;
 
-  for (const [shikonaEn, biography] of Object.entries(bios)) {
+  for (const shikonaEn of Object.keys(bios)) {
+    const data: { biography: string; nameOrigin?: string } = {
+      biography: bios[shikonaEn],
+    };
+    if (nameOrigins[shikonaEn]) {
+      data.nameOrigin = nameOrigins[shikonaEn];
+    }
     const result = await db.rikishi.updateMany({
       where: { shikonaEn: { contains: shikonaEn, mode: "insensitive" } },
-      data: { biography },
+      data,
     });
     if (result.count > 0) {
       console.log(`  ✓ ${shikonaEn} (${result.count} row)`);

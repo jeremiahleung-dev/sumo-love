@@ -22,6 +22,7 @@ model Rikishi {
   division     String       @default("Makuuchi")
   debut        DateTime?
   biography    String?
+  nameOrigin   String?
   updatedAt    DateTime     @updatedAt
   bashoEntries BashoEntry[]
   winsAs       Match[]      @relation("Winner")

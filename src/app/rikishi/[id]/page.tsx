@@ -82,9 +82,12 @@ export default async function RikishiProfilePage({
               <h1 className="font-display font-black text-4xl md:text-5xl mb-1">
                 {rikishi.shikonaEn}
               </h1>
-              <p className="font-display text-[#D4A97A] text-xl mb-4">
+              <p className="font-display text-[#D4A97A] text-xl">
                 {rikishi.shikona}
               </p>
+              {rikishi.nameOrigin && (
+                <p className="text-sm text-[#EDE0CC]/60 italic mt-1 mb-3">{rikishi.nameOrigin}</p>
+              )}
               <p className="text-[#EDE0CC] text-sm mb-6">{rikishi.heyaEn} Stable</p>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">

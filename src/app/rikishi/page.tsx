@@ -39,6 +39,7 @@ export default async function RikishiPage() {
               currentRank={r.currentRank}
               heya={r.heyaEn}
               imageUrl={r.imageUrl}
+              nameOrigin={r.nameOrigin}
               biography={r.biography}
               wins={entry?.wins}
               losses={entry?.losses}
