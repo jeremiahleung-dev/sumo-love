@@ -113,7 +113,7 @@ const nameOrigins: Record<string, string> = {
     "照ノ富士 — "Sunshine of Mount Fuji." 照 (teru) means to shine or illuminate; 富士 is Japan's sacred mountain. His name is the Isegahama stable tradition carried to its highest expression — a wrestler named for the light that falls on an immortal peak.",
 
   Hoshoryu:
-    "豊昇龍 — "Abundant Rising Dragon." 豊 (hō) is abundance and plenty; 昇 (shō) means to rise or ascend; 龍 (ryū) is the dragon of Chinese and Japanese mythology, a creature of power, transformation, and heaven. A name built for ascent.",
+    "豊昇龍 — "Abundant Rising Dragon." 豊 (hō) is abundance and plenty; 昇 (shō) means to rise or ascend; 龍 (ryū) is the dragon of East Asian mythology. The 昇龍 in his name also quietly echoes the 青龍 in his uncle Asashōryū's shikona — a lineage written in kanji, one dragon answering another.",
 
   Kirishima:
     "霧島 — "Mist Island." 霧 (kiri) is fog or mist; 島 (shima) is island. Named for the Kirishima mountain range in Kagoshima, a volcanic chain where clouds swallow the peaks. It is one of the oldest and most storied shikona in Miyakonishiki stable history, last borne fifty years before this wrestler claimed it.",
@@ -164,7 +164,7 @@ const nameOrigins: Record<string, string> = {
     "若元春 — "Young Origin of Spring." 若 (waka) means young; 元 (moto) is origin, foundation, or the root of something; 春 (haru) is spring — the season of renewal and beginning. An Arashio stable name shared in spirit with his brothers, each of whose shikona begins with 若 (Waka, young).",
 
   Hiradoumi:
-    "平戸海 — "Sea of Hirado." 平戸 (Hirado) is his hometown on the tip of Nagasaki — a city whose own name means "flat gate" or "peaceful gateway," historically Japan's window to the world. 海 (umi) is the sea that surrounds it. A name that wears a place like an identity.",
+    "平戸海 — "Sea of Hirado." 平戸 (Hirado) is his hometown — a city at the tip of Nagasaki whose name means "peaceful gateway," and which served as Japan's first great international trading port, receiving Chinese, Dutch, and Portuguese ships before Dejima replaced it. 海 (umi) is the sea. A name that wears a place of uncommon historical weight like an identity.",
 
   Kinbozan:
     "金峰山 — "Golden Peak Mountain." 金 (kin) is gold; 峰 (bō) is a summit or ridge; 山 (zan) is a mountain. Kinbōzan is also the name of a sacred mountain in Miyagi Prefecture, associated with the deity of the Konpira shrine. The name carries both mineral richness and spiritual elevation.",
@@ -188,16 +188,16 @@ const nameOrigins: Record<string, string> = {
     "錦富士 — "Brocade Fuji." 錦 (nishiki) is the gold-threaded brocade of imperial Japan, dense and luminous; 富士 is the sacred mountain. An Isegahama stable name that clothes the mountain in silk — the same stable suffix as Midorifuji and Takarafuji, each giving Fuji a different hue.",
 
   Sadanoumi:
-    "佐田の海 — "Sea of Sada." 佐田 (Sada) is a place name echoing his father's ring name — the lineage written directly into the shikona; の (no) is the possessive; 海 (umi) is the sea. A Sakaigawa stable name that is also an act of filial devotion.",
+    "佐田の海 — "Sea of Cape Sada." 佐田 (Sada) echoes his father's ring name — the lineage written directly into the shikona — and refers to Cape Sada, the westernmost point of Shikoku island, where the land finally runs out of room and gives way entirely to ocean. の (no) is the possessive; 海 (umi) is the sea that follows.",
 
   Ichiyamamoto:
-    "一山本 — "One Mountain Root." 一 (ichi) means one or first; 山 (yama) is a mountain; 本 (moto) is a root, an origin, or the base of something. A name that grounds itself at the very beginning — one mountain, traced all the way to its foundation.",
+    "一山本 — "Yamamoto the First." 山本 (Yamamoto) — mountain root, or base of the mountain — is Japan's most common surname; 一 (ichi) was added simply because another professional wrestler already carried that name. What began as a practical solution became something else: a name that declares primacy, the original, the one.",
 
   Hokutofuji:
-    "北勝富士 — "Northern Victory at Fuji." 北 (hoku) is north; 勝 (to) is victory; 富士 is Mount Fuji. The Hakkaku stable prefix 北勝 (Hokuto, "northern victory") is carried by all the stable's wrestlers as a mark of lineage — a tradition that stretches back through generations.",
+    "北勝富士 — "North Star of Fuji." 北勝 (Hokuto) is the Hakkaku stable prefix carried by every wrestler in the house — and it evokes 北斗七星, the Big Dipper, the celestial formation East Asian astronomers used for navigation across centuries of open sea. 富士 is Japan's sacred mountain. To bear this name is to stand at the intersection of heaven and earth.",
 
   Myogiryu:
-    "妙義龍 — "Dragon of Mount Myogi." 妙義 (Myōgi) is a dramatic, craggy mountain range in Gunma Prefecture, its peaks worn by time into strange, jagged shapes. 龍 (ryū) is the dragon of Japanese and Chinese mythology. A Takasago stable name that puts the force of myth inside the landscape of his home.",
+    "妙義龍 — "Dragon of Mount Myogi." 妙義 (Myōgi) — "wondrous duty" — is a sacred, jagged mountain range in Gunma Prefecture, one of Japan's Three Strangest Mountains, its peaks eroded by time into shapes too unlikely to be anything but deliberate. 龍 (ryū) is the dragon. A name that puts the force of myth inside the most improbable landscape in Japan.",
 
   Oho:
     "王鵬 — "King Roc." 王 (ō) means king or sovereign; 鵬 (hō) is the mythical roc of classical Chinese literature — the enormous bird of Zhuangzi that rises ninety thousand li on the wind and makes the sky itself look small. A name of immense ambition, given to a boy from a lineage that expected nothing less.",
