@@ -62,20 +62,22 @@ export default function RikishiCard({
       {/* Info */}
       <div className="p-3 flex flex-col flex-1">
         <p className="font-display font-bold text-base leading-tight text-white">{shikonaEn}</p>
-        <p className="text-xs text-white/30">{shikona}</p>
+        <p className="text-xs text-white/30 mb-0.5">{shikona}</p>
         {nameOrigin && (
-          <p className="text-[10px] text-[#C0292A]/60 italic mb-1">{nameOrigin}</p>
+          <p className="text-[11px] text-[#C0292A]/80 italic leading-snug mb-1 line-clamp-1">
+            {nameOrigin.split("—")[0].trim()}
+          </p>
         )}
         <p className="text-xs text-[#D4A97A]/60">{heya} Stable</p>
+        {biography && (
+          <p className="text-[11px] text-white/35 italic leading-snug mt-2 line-clamp-3">
+            {biography}
+          </p>
+        )}
         {wins !== undefined && losses !== undefined && (
           <div className="mt-2">
             <RecordPill wins={wins} losses={losses} absences={absences} />
           </div>
-        )}
-        {biography && (
-          <p className="mt-3 text-[11px] text-white/35 leading-relaxed line-clamp-3 italic">
-            {biography}
-          </p>
         )}
       </div>
     </Link>

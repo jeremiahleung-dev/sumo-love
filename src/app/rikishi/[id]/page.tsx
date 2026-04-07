@@ -84,11 +84,11 @@ export default async function RikishiProfilePage({
               <h1 className="font-display font-black text-4xl md:text-5xl mb-1">
                 {rikishi.shikonaEn}
               </h1>
-              <p className="font-display text-[#D4A97A] text-xl">
+              <p className="font-display text-[#D4A97A] text-xl mb-1">
                 {rikishi.shikona}
               </p>
               {rikishi.nameOrigin && (
-                <p className="text-sm text-[#EDE0CC]/60 italic mt-1 mb-3">{rikishi.nameOrigin}</p>
+                <p className="text-sm text-white/50 italic mb-4">{rikishi.nameOrigin}</p>
               )}
               <p className="text-[#EDE0CC] text-sm mb-6">{rikishi.heyaEn} Stable</p>
 
@@ -252,8 +252,8 @@ export default async function RikishiProfilePage({
 
             {rikishi.biography && (
               <div className="mt-6">
-                <h3 className="font-display font-semibold mb-2">About</h3>
-                <p className="text-sm text-white/60 leading-relaxed">
+                <h3 className="font-display font-semibold mb-3">Story</h3>
+                <p className="text-sm text-white/70 leading-relaxed italic">
                   {rikishi.biography}
                 </p>
               </div>
