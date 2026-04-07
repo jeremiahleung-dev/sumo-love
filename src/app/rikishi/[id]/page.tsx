@@ -7,7 +7,7 @@ import RecordPill from "@/components/ui/RecordPill";
 import { ChevronLeft, Scale, Ruler, Calendar, MapPin } from "lucide-react";
 import FavoriteButton from "@/components/rikishi/FavoriteButton";
 
-export const revalidate = 3600;
+export const revalidate = 0;
 
 export default async function RikishiProfilePage({
   params,
