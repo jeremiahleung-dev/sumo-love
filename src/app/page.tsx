@@ -1,10 +1,10 @@
 import Link from "next/link";
-import Image from "next/image";
 import { db } from "@/lib/db";
+import HeroSection from "@/components/home/HeroSection";
+import RikishiFilmstrip from "@/components/home/RikishiFilmstrip";
 import LeaderBoard from "@/components/basho/LeaderBoard";
-import RankBadge from "@/components/ui/RankBadge";
 import YoutubeEmbed from "@/components/ui/YoutubeEmbed";
-import { ChevronRight, Zap } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 export const revalidate = 1800;
 
@@ -30,7 +30,7 @@ async function getHomeData() {
             { currentRank: { startsWith: "Ozeki" } },
           ],
         },
-        take: 4,
+        take: 8,
         include: {
           bashoEntries: {
             orderBy: { basho: { sumoApiId: "desc" } },
@@ -53,185 +53,225 @@ async function getHomeData() {
 export default async function HomePage() {
   const { latestBasho, featured, recentHighlights } = await getHomeData();
 
-  const leaderEntries = latestBasho?.entries.map((e) => ({
-    rikishiId: e.rikishiId,
-    shikonaEn: e.rikishi.shikonaEn,
-    currentRank: e.rikishi.currentRank,
-    wins: e.wins,
-    losses: e.losses,
-    absences: e.absences,
-    yusho: e.yusho,
-  })) ?? [];
+  const leaderEntries =
+    latestBasho?.entries.map((e) => ({
+      rikishiId: e.rikishiId,
+      shikonaEn: e.rikishi.shikonaEn,
+      currentRank: e.rikishi.currentRank,
+      wins: e.wins,
+      losses: e.losses,
+      absences: e.absences,
+      yusho: e.yusho,
+    })) ?? [];
+
+  const filmstripRikishi = featured.map((r) => ({
+    id: r.id,
+    shikonaEn: r.shikonaEn,
+    shikona: r.shikona,
+    currentRank: r.currentRank,
+    heya: r.heya,
+    imageUrl: r.imageUrl,
+  }));
 
   return (
     <div>
-      <section className="relative bg-[#1A1A1A] text-[#FAF7F2] overflow-hidden texture-washi">
-        <div className="absolute right-0 top-0 w-[600px] h-[600px] -translate-y-1/4 translate-x-1/4 opacity-10">
-          <div className="w-full h-full rounded-full border-[24px] border-[#D4A97A]" />
-        </div>
+      {/* ── Hero ─────────────────────────────────────────────────── */}
+      <HeroSection
+        isActive={latestBasho?.isActive ?? false}
+        bashoName={latestBasho?.nameEn}
+      />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-28">
-          <div className="max-w-2xl">
-            {latestBasho?.isActive && (
-              <span className="inline-flex items-center gap-1.5 bg-[#C0292A] text-white text-xs font-bold px-3 py-1 rounded-full mb-4 animate-pulse">
-                <Zap size={12} />
-                LIVE — {latestBasho.nameEn}
+      {/* ── Basho ticker bar ─────────────────────────────────────── */}
+      {latestBasho && (
+        <div className="bg-[#C0292A] text-white">
+          <div className="max-w-7xl mx-auto px-6 sm:px-10 py-3 flex flex-wrap items-center justify-between gap-2 text-sm">
+            <div className="flex flex-wrap items-center gap-4">
+              <span className="font-bold tracking-wide">{latestBasho.nameEn}</span>
+              <span className="text-white/60 hidden sm:inline">·</span>
+              <span className="text-white/80 hidden sm:inline">
+                {latestBasho.location}
               </span>
-            )}
-            <h1 className="font-display font-black text-5xl md:text-7xl leading-none mb-2 text-[#C0292A]">
-              相撲
-            </h1>
-            <h2 className="font-display font-bold text-4xl md:text-5xl leading-tight mb-4">
-              Sumo Love
-            </h2>
-            <p className="text-[#EDE0CC] text-lg md:text-xl leading-relaxed mb-8 max-w-lg">
-              Follow every rikishi through each basho. Live standings, bout
-              results, and the techniques behind every win.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/rikishi"
-                className="bg-[#C0292A] text-white px-6 py-3 rounded font-semibold hover:bg-[#8B1A1A] transition-colors flex items-center gap-2"
-              >
-                All Rikishi <ChevronRight size={16} />
-              </Link>
-              <Link
-                href="/basho"
-                className="border border-[#EDE0CC]/40 text-[#FAF7F2] px-6 py-3 rounded font-semibold hover:bg-white/10 transition-colors"
-              >
-                Basho Archive
-              </Link>
+              <span className="text-white/60 hidden sm:inline">·</span>
+              <span className="text-white/80 hidden sm:inline">
+                {leaderEntries.length} Rikishi
+              </span>
             </div>
+            <Link
+              href={`/basho/${latestBasho.id}`}
+              className="flex items-center gap-1 text-white/80 hover:text-white font-medium text-xs tracking-[0.15em] uppercase transition-colors"
+            >
+              View Full Results <ChevronRight size={13} />
+            </Link>
           </div>
         </div>
-      </section>
+      )}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        {/* ── Live Standings ───────────────────────────────────────── */}
-        {latestBasho && (
-          <section className="py-12">
-            <div className="flex items-center justify-between mb-6">
+      {/* ── Standings ────────────────────────────────────────────── */}
+      {latestBasho && (
+        <section className="bg-[#0F0F0F] py-16 md:py-20">
+          <div className="max-w-7xl mx-auto px-6 sm:px-10">
+            <div className="flex items-end justify-between mb-8 gap-4">
               <div>
-                <h2 className="font-display font-bold text-2xl">
-                  {latestBasho.isActive ? "Live Standings" : "Final Standings"}
-                </h2>
-                <p className="text-[#D4A97A] text-sm mt-0.5">
-                  {latestBasho.nameEn} · {latestBasho.location}
+                <p className="text-[#C0292A] text-[11px] font-bold tracking-[0.3em] uppercase mb-2">
+                  {latestBasho.isActive ? "Current Standings" : "Final Standings"}
                 </p>
+                <h2 className="font-display font-bold text-[#FAF7F2] text-3xl md:text-4xl leading-tight">
+                  {latestBasho.nameEn}
+                </h2>
+                <p className="text-[#D4A97A] text-sm mt-1">{latestBasho.location}</p>
               </div>
               <Link
                 href={`/basho/${latestBasho.id}`}
-                className="text-sm text-[#C0292A] font-medium hover:underline flex items-center gap-1"
+                className="flex-none text-xs text-[#C0292A] font-bold tracking-[0.15em] uppercase hover:text-[#E03030] flex items-center gap-1 transition-colors"
               >
-                Full results <ChevronRight size={14} />
+                Full Results <ChevronRight size={13} />
               </Link>
             </div>
+
             {leaderEntries.length > 0 ? (
-              <LeaderBoard entries={leaderEntries} />
+              <div className="border border-[#C0292A]/15">
+                <LeaderBoard entries={leaderEntries} />
+              </div>
             ) : (
-              <div className="rounded-lg border border-dashed border-[#EDE0CC] p-12 text-center text-[#1A1A1A]/40">
-                <p className="font-display text-xl mb-2">No basho data yet</p>
-                <p className="text-sm">POST to /api/sync to pull live standings</p>
+              <div className="border border-dashed border-[#FAF7F2]/10 p-16 text-center">
+                <p className="font-display text-xl text-[#FAF7F2]/30 mb-2">
+                  No basho data yet
+                </p>
+                <p className="text-sm text-[#FAF7F2]/20">
+                  POST to /api/sync to pull live standings
+                </p>
               </div>
             )}
-          </section>
-        )}
+          </div>
+        </section>
+      )}
 
-        {/* ── Featured Rikishi ─────────────────────────────────────── */}
-        {featured.length > 0 && (
-          <section className="py-8 border-t border-[#EDE0CC]">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="font-display font-bold text-2xl">Top Rank</h2>
+      {/* ── Top Rank Filmstrip ───────────────────────────────────── */}
+      {filmstripRikishi.length > 0 && (
+        <section className="bg-[#FAF7F2] py-16 md:py-20">
+          <div className="max-w-7xl mx-auto px-6 sm:px-10">
+            <div className="flex items-end justify-between mb-8 gap-4">
+              <div>
+                <p className="text-[#C0292A] text-[11px] font-bold tracking-[0.3em] uppercase mb-2">
+                  横綱 · 大関
+                </p>
+                <h2 className="font-display font-bold text-[#1A1A1A] text-3xl md:text-4xl">
+                  Top Rank
+                </h2>
+              </div>
               <Link
                 href="/rikishi"
-                className="text-sm text-[#C0292A] font-medium hover:underline flex items-center gap-1"
+                className="flex-none text-xs text-[#C0292A] font-bold tracking-[0.15em] uppercase hover:text-[#E03030] flex items-center gap-1 transition-colors"
               >
-                All rikishi <ChevronRight size={14} />
+                All Rikishi <ChevronRight size={13} />
               </Link>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {featured.map((r) => (
-                <Link
-                  key={r.id}
-                  href={`/rikishi/${r.id}`}
-                  className="group bg-[#FAF7F2] border border-[#EDE0CC] rounded-lg overflow-hidden hover:border-[#C0292A] hover:shadow-lg transition-all"
-                >
-                  <div className="relative aspect-[3/4] bg-[#EDE0CC]">
-                    {r.imageUrl ? (
-                      <Image
-                        src={r.imageUrl}
-                        alt={r.shikonaEn}
-                        fill
-                        className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                        sizes="25vw"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-4xl text-[#D4A97A] font-display font-black select-none">
-                          力
-                        </span>
-                      </div>
-                    )}
-                    {r.currentRank && (
-                      <div className="absolute top-2 left-2">
-                        <RankBadge rank={r.currentRank} />
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-3">
-                    <p className="font-display font-bold text-sm">{r.shikonaEn}</p>
-                    <p className="text-xs text-[#1A1A1A]/40">{r.shikona}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
+            <RikishiFilmstrip rikishi={filmstripRikishi} />
+          </div>
+        </section>
+      )}
 
-        {/* ── Recent Highlights ────────────────────────────────────── */}
-        {recentHighlights.length > 0 && (
-          <section className="py-8 border-t border-[#EDE0CC]">
-            <h2 className="font-display font-bold text-2xl mb-6">
-              Recent Highlights
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              {recentHighlights.map((m) => (
-                <div key={m.id} className="flex flex-col gap-2">
+      {/* ── Recent Highlights ────────────────────────────────────── */}
+      {recentHighlights.length > 0 && (
+        <section className="bg-[#1A1A1A]">
+          <div className="border-b border-[#C0292A]/30">
+            <div className="max-w-7xl mx-auto px-6 sm:px-10 py-4">
+              <p className="text-[#FAF7F2] text-[11px] font-bold tracking-[0.35em] uppercase">
+                Recent Highlights
+              </p>
+            </div>
+          </div>
+
+          <div className="max-w-7xl mx-auto px-6 sm:px-10 py-12 md:py-16">
+            {recentHighlights.length >= 3 ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                {/* Primary — spans 2 columns */}
+                <div className="md:col-span-2 flex flex-col gap-3">
                   <YoutubeEmbed
-                    url={m.highlightUrl!}
-                    title={`${m.eastRikishi.shikonaEn} vs ${m.westRikishi.shikonaEn}`}
+                    url={recentHighlights[0].highlightUrl!}
+                    title={`${recentHighlights[0].eastRikishi.shikonaEn} vs ${recentHighlights[0].westRikishi.shikonaEn}`}
                   />
-                  <p className="text-xs text-[#1A1A1A]/60 text-center">
-                    <span className="font-semibold">{m.eastRikishi.shikonaEn}</span>
+                  <p className="font-mono text-[11px] text-[#FAF7F2]/40 uppercase tracking-widest">
+                    <span className="text-[#FAF7F2]/70">
+                      {recentHighlights[0].eastRikishi.shikonaEn}
+                    </span>
                     {" vs "}
-                    <span className="font-semibold">{m.westRikishi.shikonaEn}</span>
+                    <span className="text-[#FAF7F2]/70">
+                      {recentHighlights[0].westRikishi.shikonaEn}
+                    </span>
                     {" · "}
-                    {m.basho.nameEn} Day {m.day}
+                    {recentHighlights[0].basho.nameEn} Day{" "}
+                    {recentHighlights[0].day}
                   </p>
                 </div>
-              ))}
-            </div>
-          </section>
-        )}
 
-        {/* ── No data state ────────────────────────────────────────── */}
-        {!latestBasho && (
-          <section className="py-20 text-center">
-            <p className="font-display text-2xl text-[#D4A97A] mb-2">
-              No data loaded yet
-            </p>
-            <p className="text-[#1A1A1A]/50 text-sm mb-6">
-              POST to /api/sync to pull live data from sumo-api.com
-            </p>
-            <Link
-              href="/kimarite"
-              className="bg-[#C0292A] text-white px-6 py-3 rounded font-semibold hover:bg-[#8B1A1A] transition-colors"
-            >
-              Browse Kimarite Techniques
-            </Link>
-          </section>
-        )}
-      </div>
+                {/* Secondary — stacked */}
+                <div className="flex flex-col gap-4">
+                  {recentHighlights.slice(1).map((m) => (
+                    <div key={m.id} className="flex flex-col gap-2">
+                      <YoutubeEmbed
+                        url={m.highlightUrl!}
+                        title={`${m.eastRikishi.shikonaEn} vs ${m.westRikishi.shikonaEn}`}
+                      />
+                      <p className="font-mono text-[11px] text-[#FAF7F2]/40 uppercase tracking-widest">
+                        <span className="text-[#FAF7F2]/70">
+                          {m.eastRikishi.shikonaEn}
+                        </span>
+                        {" vs "}
+                        <span className="text-[#FAF7F2]/70">
+                          {m.westRikishi.shikonaEn}
+                        </span>
+                        {" · "}
+                        {m.basho.nameEn} Day {m.day}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {recentHighlights.map((m) => (
+                  <div key={m.id} className="flex flex-col gap-2">
+                    <YoutubeEmbed
+                      url={m.highlightUrl!}
+                      title={`${m.eastRikishi.shikonaEn} vs ${m.westRikishi.shikonaEn}`}
+                    />
+                    <p className="font-mono text-[11px] text-[#FAF7F2]/40 uppercase tracking-widest">
+                      <span className="text-[#FAF7F2]/70">
+                        {m.eastRikishi.shikonaEn}
+                      </span>
+                      {" vs "}
+                      <span className="text-[#FAF7F2]/70">
+                        {m.westRikishi.shikonaEn}
+                      </span>
+                      {" · "}
+                      {m.basho.nameEn} Day {m.day}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* ── No data state ────────────────────────────────────────── */}
+      {!latestBasho && (
+        <section className="bg-[#0F0F0F] py-32 text-center">
+          <p className="font-display text-2xl text-[#D4A97A] mb-2">
+            No data loaded yet
+          </p>
+          <p className="text-[#FAF7F2]/30 text-sm mb-8">
+            POST to /api/sync to pull live data from sumo-api.com
+          </p>
+          <Link
+            href="/kimarite"
+            className="bg-[#C0292A] text-white px-8 py-4 font-bold text-xs tracking-[0.18em] uppercase hover:bg-[#D93030] transition-colors"
+          >
+            Browse Kimarite Techniques
+          </Link>
+        </section>
+      )}
     </div>
   );
 }
