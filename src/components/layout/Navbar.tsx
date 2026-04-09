@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import NavFavoriteBadge from "@/components/layout/NavFavoriteBadge";
 
 const NAV_LINKS = [
   { href: "/rikishi", label: "Rikishi" },
@@ -45,6 +46,17 @@ export default function Navbar() {
               </Link>
             );
           })}
+          <Link
+            href="/my-rikishi"
+            className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 cursor-pointer ${
+              pathname.startsWith("/my-rikishi")
+                ? "text-[#FAFAFA] bg-[#27272A]"
+                : "text-[#A1A1AA] hover:text-[#FAFAFA] hover:bg-[#18181B]"
+            }`}
+          >
+            My Rikishi
+            <NavFavoriteBadge />
+          </Link>
         </nav>
 
         {/* Mobile toggle */}
@@ -74,6 +86,18 @@ export default function Navbar() {
               {label}
             </Link>
           ))}
+          <Link
+            href="/my-rikishi"
+            onClick={() => setOpen(false)}
+            className={`flex items-center px-3 py-2.5 rounded-md text-sm font-medium transition-colors duration-200 cursor-pointer ${
+              pathname.startsWith("/my-rikishi")
+                ? "text-[#FAFAFA] bg-[#27272A]"
+                : "text-[#A1A1AA] hover:text-[#FAFAFA] hover:bg-[#18181B]"
+            }`}
+          >
+            My Rikishi
+            <NavFavoriteBadge />
+          </Link>
         </nav>
       )}
     </header>
