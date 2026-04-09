@@ -38,18 +38,23 @@ export default function NextBashoCountdown({ targetDate, bashoName, bashoNameJp 
   ];
 
   return (
-    <div className="flex flex-col items-center gap-3">
-      <p className="text-white/40 text-xs uppercase tracking-widest">Next Basho</p>
-      <p className="font-display font-bold text-white text-xl">
-        {bashoName} <span className="text-[#D4A97A]">· {bashoNameJp}</span>
+    <div className="flex flex-col items-center gap-4">
+      <p className="text-[#52525B] text-xs uppercase tracking-[0.2em] font-medium">
+        Next Basho
       </p>
-      <div className="flex items-end gap-3">
+      <p className="font-display font-bold text-[#FAFAFA] text-xl">
+        {bashoName}{" "}
+        <span className="text-[#A1A1AA] font-normal">· {bashoNameJp}</span>
+      </p>
+      <div className="flex items-end gap-5">
         {units.map(({ label, value }) => (
-          <div key={label} className="flex flex-col items-center gap-1">
-            <span className="font-mono font-bold text-3xl text-white tabular-nums">
+          <div key={label} className="flex flex-col items-center gap-1.5">
+            <span className="font-mono font-bold text-4xl text-[#FAFAFA] tabular-nums leading-none">
               {String(value).padStart(2, "0")}
             </span>
-            <span className="text-[10px] uppercase tracking-widest text-white/30">{label}</span>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-[#3F3F46] font-medium">
+              {label}
+            </span>
           </div>
         ))}
       </div>
