@@ -25,7 +25,7 @@ export default function RikishiFilmstrip({
           <Link
             key={r.id}
             href={`/rikishi/${r.id}`}
-            className="group flex-none w-52 relative overflow-hidden bg-[#111111]"
+            className="group flex-none w-52 relative overflow-hidden rounded-xl bg-[#18181B] cursor-pointer"
             style={{ aspectRatio: "2/3" }}
           >
             {r.imageUrl ? (
@@ -33,22 +33,22 @@ export default function RikishiFilmstrip({
                 src={r.imageUrl}
                 alt={r.shikonaEn}
                 fill
-                className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-110"
+                className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
                 sizes="208px"
               />
             ) : (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-6xl text-[#D4A97A]/20 font-display font-black select-none">
-                  力
+              <div className="absolute inset-0 flex items-center justify-center bg-[#18181B]">
+                <span className="text-5xl text-[#27272A] font-display font-black select-none">
+                  —
                 </span>
               </div>
             )}
 
             {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-transparent transition-opacity duration-300 group-hover:from-black" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
 
-            {/* Content */}
-            <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-0 transition-transform duration-300 group-hover:-translate-y-1">
+            {/* Info */}
+            <div className="absolute bottom-0 left-0 right-0 p-4 transition-transform duration-300 group-hover:-translate-y-1">
               {r.currentRank && (
                 <div className="mb-2">
                   <RankBadge rank={r.currentRank} />
@@ -57,10 +57,8 @@ export default function RikishiFilmstrip({
               <p className="font-display font-bold text-white text-base leading-tight">
                 {r.shikonaEn}
               </p>
-              <p className="text-[#D4A97A] text-xs mt-0.5 leading-none">
-                {r.shikona}
-              </p>
-              <p className="text-white/35 text-[11px] mt-1">{r.heya} Stable</p>
+              <p className="text-[#A1A1AA] text-xs mt-0.5">{r.shikona}</p>
+              <p className="text-white/30 text-[11px] mt-1">{r.heya} Stable</p>
             </div>
           </Link>
         ))}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Noto_Serif_JP } from "next/font/google";
+import { Inter, Outfit } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import "./globals.css";
@@ -8,13 +8,15 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
+  preload: false,
 });
 
-const notoSerifJP = Noto_Serif_JP({
+const outfit = Outfit({
   subsets: ["latin"],
-  weight: ["400", "700", "900"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
   variable: "--font-display",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -35,8 +37,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${notoSerifJP.variable} h-full`}>
-      <body className="min-h-full flex flex-col bg-[#0A0A0A] text-[#FAFAF9] antialiased">
+    <html lang="en" className={`${inter.variable} ${outfit.variable} h-full`}>
+      <body className="min-h-full flex flex-col bg-[#09090B] text-[#FAFAFA] antialiased">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

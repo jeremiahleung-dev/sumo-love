@@ -2,171 +2,132 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 
 interface HeroSectionProps {
   isActive: boolean;
   bashoName?: string;
 }
 
-// Cubic bezier typed as required by Framer Motion
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 function fadeUp(delay: number) {
   return {
-    initial: { opacity: 0, y: 32 },
+    initial: { opacity: 0, y: 24 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.75, delay, ease: EASE },
+    transition: { duration: 0.65, delay, ease: EASE },
   };
 }
 
-const ringAnim = {
-  initial: { opacity: 0, scale: 0.75 },
-  animate: { opacity: 1, scale: 1 },
-  transition: { duration: 1.4, delay: 0.35, ease: EASE },
-};
+const STATS = [
+  { value: "42", label: "Active Rikishi" },
+  { value: "6", label: "Basho Per Year" },
+  { value: "15", label: "Days Per Basho" },
+];
 
 export default function HeroSection({ isActive, bashoName }: HeroSectionProps) {
-  const year = new Date().getFullYear();
-
   return (
-    <section className="relative min-h-screen bg-[#0D0D0D] text-[#FAF7F2] overflow-hidden flex flex-col">
-      {/* Grain overlay */}
+    <section className="relative min-h-screen bg-[#09090B] flex flex-col overflow-hidden">
+      {/* Subtle top glow */}
       <div
-        className="texture-grain absolute inset-0 pointer-events-none z-0"
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] pointer-events-none select-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at center top, rgba(220,38,38,0.07) 0%, transparent 65%)",
+        }}
         aria-hidden
       />
 
-      {/* Giant kanji watermark */}
-      <div
-        className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden"
-        aria-hidden
-      >
-        <span
-          className="font-display font-black text-white/[0.028] leading-none"
-          style={{ fontSize: "clamp(18rem, 55vw, 62rem)" }}
-        >
-          相撲
-        </span>
-      </div>
-
-      {/* Dohyo rings — bleed off right edge */}
-      <motion.div
-        {...ringAnim}
-        className="absolute pointer-events-none select-none z-0"
-        style={{
-          right: "-120px",
-          top: "50%",
-          translateY: "-50%",
-          width: 620,
-          height: 620,
-        }}
-        aria-hidden
-      >
-        <div className="absolute inset-0 rounded-full border border-[#D4A97A]/15" />
-        <div
-          className="absolute rounded-full border border-[#C0292A]/20"
-          style={{ inset: 68 }}
-        />
-        <div
-          className="absolute rounded-full border-2 border-[#D4A97A]/30"
-          style={{ inset: 140 }}
-        />
-        <div
-          className="absolute rounded-full bg-[#C0292A]/[0.06]"
-          style={{ inset: 210 }}
-        />
-      </motion.div>
-
       {/* Main content */}
       <div className="relative z-10 flex-1 flex items-center">
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 w-full py-28 md:py-36">
-          <div className="max-w-[58%] max-md:max-w-full">
-            {/* Overline + live badge */}
-            <motion.div
-              {...fadeUp(0)}
-              className="flex flex-wrap items-center gap-3 mb-6"
-            >
-              <span className="text-[#C0292A] text-[11px] font-bold tracking-[0.35em] uppercase">
-                MAKUUCHI · SANYAKU · {year}
+        <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 py-32 md:py-40">
+
+          {/* Status label */}
+          <motion.div {...fadeUp(0)} className="mb-8">
+            {isActive && bashoName ? (
+              <span className="inline-flex items-center gap-2 bg-[#DC2626]/10 border border-[#DC2626]/25 text-[#DC2626] text-xs font-semibold px-3 py-1.5 rounded-full">
+                <span className="animate-pulse-dot w-1.5 h-1.5 rounded-full bg-[#DC2626] inline-block" />
+                LIVE — {bashoName}
               </span>
-              {isActive && bashoName && (
-                <span className="inline-flex items-center gap-1.5 bg-[#C0292A] text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
-                  <span className="animate-pulse-dot w-1.5 h-1.5 rounded-full bg-white inline-block" />
-                  LIVE — {bashoName}
-                </span>
-              )}
-            </motion.div>
+            ) : (
+              <span className="text-[#52525B] text-xs font-medium tracking-[0.2em] uppercase">
+                Makuuchi Division · Live Tracker
+              </span>
+            )}
+          </motion.div>
 
-            {/* 力士 headline */}
-            <motion.h1
-              {...fadeUp(0.15)}
-              className="font-display font-black text-[#FAF7F2] leading-none"
-              style={{ fontSize: "clamp(5rem, 14vw, 11rem)" }}
+          {/* Headline */}
+          <motion.h1
+            {...fadeUp(0.1)}
+            className="font-display font-black text-[#FAFAFA] leading-[0.9] tracking-tight"
+            style={{ fontSize: "clamp(3.5rem, 10vw, 9rem)" }}
+          >
+            Follow Every
+            <br />
+            <span className="text-[#DC2626]">Bout.</span>
+          </motion.h1>
+
+          {/* Body copy */}
+          <motion.p
+            {...fadeUp(0.2)}
+            className="mt-8 text-[#A1A1AA] text-lg md:text-xl leading-relaxed max-w-[500px]"
+          >
+            The premier sumo basho tracker. Live standings, bout-by-bout
+            results, and the kimarite behind every victory — updated daily.
+          </motion.p>
+
+          {/* CTAs */}
+          <motion.div {...fadeUp(0.3)} className="mt-10 flex flex-wrap gap-3">
+            <Link
+              href="/rikishi"
+              className="inline-flex items-center gap-2 bg-[#DC2626] hover:bg-[#B91C1C] text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors duration-200 cursor-pointer"
             >
-              力士
-            </motion.h1>
-
-            {/* Tagline */}
-            <motion.p
-              {...fadeUp(0.3)}
-              className="font-display font-bold text-[#D4A97A] leading-tight mt-3"
-              style={{ fontSize: "clamp(1.4rem, 3.5vw, 2.75rem)" }}
+              All Rikishi <ArrowRight size={15} />
+            </Link>
+            <Link
+              href="/basho"
+              className="inline-flex items-center gap-2 bg-[#18181B] hover:bg-[#27272A] border border-[#3F3F46] text-[#FAFAFA] px-6 py-3 rounded-lg font-semibold text-sm transition-colors duration-200 cursor-pointer"
             >
-              The Dohyo Never Lies.
-            </motion.p>
-
-            {/* Body + history note */}
-            <motion.div {...fadeUp(0.45)} className="mt-8">
-              <p className="text-[#EDE0CC]/65 text-lg leading-relaxed max-w-[420px]">
-                Follow every rikishi through each basho. Live standings,
-                bout-by-bout results, and the ancient techniques behind every
-                victory.
-              </p>
-              <p className="text-[#D4A97A]/55 text-sm italic mt-4 tracking-wide">
-                ~1,500 years of living history
-              </p>
-            </motion.div>
-
-            {/* CTA buttons */}
-            <motion.div
-              {...fadeUp(0.6)}
-              className="mt-10 flex flex-wrap gap-4"
+              Basho Archive
+            </Link>
+            <Link
+              href="/kimarite"
+              className="inline-flex items-center text-[#52525B] hover:text-[#A1A1AA] px-4 py-3 text-sm font-medium transition-colors duration-200 cursor-pointer"
             >
-              <Link
-                href="/rikishi"
-                className="bg-[#C0292A] text-white px-8 py-4 font-bold text-xs tracking-[0.18em] uppercase hover:bg-[#D93030] transition-colors duration-200"
-              >
-                All Rikishi
-              </Link>
-              <Link
-                href="/basho"
-                className="border border-[#EDE0CC]/30 text-[#EDE0CC] px-8 py-4 font-medium text-xs tracking-[0.12em] uppercase hover:border-[#D4A97A] hover:text-[#D4A97A] transition-colors duration-200"
-              >
-                Basho Archive
-              </Link>
-              <Link
-                href="/kimarite"
-                className="border border-[#EDE0CC]/12 text-[#EDE0CC]/50 px-8 py-4 font-medium text-xs tracking-[0.12em] uppercase hover:border-[#EDE0CC]/30 hover:text-[#EDE0CC]/80 transition-colors duration-200"
-              >
-                Kimarite
-              </Link>
-            </motion.div>
-          </div>
+              Kimarite →
+            </Link>
+          </motion.div>
+
+          {/* Stats strip */}
+          <motion.div
+            {...fadeUp(0.45)}
+            className="mt-16 pt-8 border-t border-[#27272A] flex flex-wrap gap-10"
+          >
+            {STATS.map(({ value, label }) => (
+              <div key={label}>
+                <p className="font-display font-bold text-[#FAFAFA] text-3xl leading-none">
+                  {value}
+                </p>
+                <p className="text-[#52525B] text-xs mt-1.5 tracking-widest uppercase">
+                  {label}
+                </p>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </div>
 
       {/* Scroll indicator */}
       <motion.div
-        {...fadeUp(0.85)}
+        {...fadeUp(0.6)}
         className="relative z-10 flex justify-center pb-10"
         aria-hidden
       >
-        <div className="flex flex-col items-center gap-2 text-[#D4A97A]/40">
-          <span className="text-[9px] tracking-[0.3em] uppercase font-medium">
+        <div className="flex flex-col items-center gap-2 text-[#3F3F46]">
+          <span className="text-[9px] tracking-[0.35em] uppercase font-medium">
             Scroll
           </span>
-          <ChevronDown size={14} className="animate-bounce" />
+          <ChevronDown size={13} className="animate-bounce" />
         </div>
       </motion.div>
     </section>

@@ -1,23 +1,22 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-crimson: #C0292A;
-  --color-ink:     #0A0A0A;
-  --color-surface: #141414;
-  --color-border:  #222222;
-  --color-rice:    #FAFAF9;
-  --color-clay:    #D4A97A;
-  --color-sand:    #2A2A2A;
-  --color-jade:    #2D6A4F;
-  --color-mist:    #1C1C1C;
+  --color-brand:        #DC2626;
+  --color-brand-hover:  #B91C1C;
+  --color-win:          #22C55E;
+  --color-loss:         #DC2626;
+  --color-surface:      #18181B;
+  --color-elevated:     #27272A;
+  --color-border:       #3F3F46;
+  --color-muted:        #71717A;
 
   --font-sans:    "Inter", system-ui, sans-serif;
-  --font-display: "Noto Serif JP", serif;
+  --font-display: "Outfit", system-ui, sans-serif;
 }
 
 :root {
-  --background: #0A0A0A;
-  --foreground: #FAFAF9;
+  --background: #09090B;
+  --foreground: #FAFAFA;
 }
 
 * {
@@ -36,34 +35,7 @@ body {
 }
 
 .font-display {
-  font-family: "Noto Serif JP", serif;
-}
-
-/* Rank badge colours */
-.rank-yokozuna   { background: #C0292A; color: #fff; }
-.rank-ozeki      { background: #8B1A1A; color: #fff; }
-.rank-sekiwake   { background: #D4A97A; color: #0A0A0A; }
-.rank-komusubi   { background: #2A2A2A; color: #FAFAF9; border: 1px solid #444; }
-.rank-maegashira { background: #1C1C1C; color: #FAFAF9; border: 1px solid #333; }
-
-/* Gradient blob glow — hero background */
-.glow-crimson {
-  background: radial-gradient(ellipse at center, #C0292A33 0%, transparent 70%);
-}
-.glow-clay {
-  background: radial-gradient(ellipse at center, #D4A97A22 0%, transparent 70%);
-}
-.glow-dark-red {
-  background: radial-gradient(ellipse at center, #8B1A1A22 0%, transparent 70%);
-}
-
-/* Fine grain texture for dark hero sections */
-.texture-grain {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 256px 256px;
-  opacity: 0.045;
-  pointer-events: none;
+  font-family: "Outfit", system-ui, sans-serif;
 }
 
 /* Horizontal filmstrip scroll container */
@@ -89,8 +61,8 @@ body {
 /* Pulsing live dot */
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.45; transform: scale(0.8); }
+  50%       { opacity: 0.4; transform: scale(0.8); }
 }
 .animate-pulse-dot {
-  animation: pulse-dot 1.6s ease-in-out infinite;
+  animation: pulse-dot 1.8s ease-in-out infinite;
 }

@@ -19,44 +19,44 @@ export default function LeaderBoard({ entries }: { entries: LeaderEntry[] }) {
   });
 
   return (
-    <div className="overflow-hidden rounded-xl border border-white/5 bg-[#141414]">
+    <div className="overflow-hidden">
       <table className="w-full text-sm">
         <thead>
-          <tr className="bg-[#0A0A0A] text-white/30 text-xs uppercase tracking-wider border-b border-white/5">
-            <th className="px-4 py-3 text-left w-8">#</th>
-            <th className="px-4 py-3 text-left">Rikishi</th>
-            <th className="px-4 py-3 text-left hidden sm:table-cell">Rank</th>
-            <th className="px-4 py-3 text-right">Record</th>
+          <tr className="bg-[#18181B] text-[#52525B] text-[11px] uppercase tracking-[0.1em]">
+            <th className="px-5 py-3 text-left w-10 font-medium">#</th>
+            <th className="px-5 py-3 text-left font-medium">Rikishi</th>
+            <th className="px-5 py-3 text-left hidden sm:table-cell font-medium">Rank</th>
+            <th className="px-5 py-3 text-right font-medium">Record</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-white/5">
+        <tbody className="divide-y divide-[#27272A]">
           {sorted.slice(0, 15).map((entry, i) => (
             <tr
               key={entry.rikishiId}
-              className={`transition-colors hover:bg-white/3 ${
-                i === 0 ? "bg-[#C0292A]/5" : ""
+              className={`transition-colors duration-150 hover:bg-[#18181B] cursor-pointer ${
+                i === 0 ? "bg-[#DC2626]/[0.04]" : ""
               }`}
             >
-              <td className="px-4 py-3 text-[#D4A97A] font-mono font-bold text-xs">
+              <td className="px-5 py-3.5 text-[#3F3F46] font-mono text-xs font-medium">
                 {i + 1}
               </td>
-              <td className="px-4 py-3">
+              <td className="px-5 py-3.5">
                 <Link
                   href={`/rikishi/${entry.rikishiId}`}
-                  className="font-display font-semibold text-white hover:text-[#C0292A] transition-colors flex items-center gap-2"
+                  className="font-semibold text-[#FAFAFA] hover:text-[#DC2626] transition-colors duration-150 flex items-center gap-2 cursor-pointer"
                 >
                   {entry.shikonaEn}
                   {entry.yusho && (
-                    <span className="text-[10px] bg-[#C0292A] text-white px-1.5 py-0.5 rounded font-sans">
+                    <span className="text-[10px] bg-[#DC2626] text-white px-1.5 py-0.5 rounded font-medium">
                       優勝
                     </span>
                   )}
                 </Link>
               </td>
-              <td className="px-4 py-3 hidden sm:table-cell">
+              <td className="px-5 py-3.5 hidden sm:table-cell">
                 {entry.currentRank && <RankBadge rank={entry.currentRank} />}
               </td>
-              <td className="px-4 py-3 text-right">
+              <td className="px-5 py-3.5 text-right">
                 <RecordPill
                   wins={entry.wins}
                   losses={entry.losses}
