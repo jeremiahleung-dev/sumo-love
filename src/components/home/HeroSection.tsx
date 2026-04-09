@@ -3,10 +3,14 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
+import NextBashoCountdown from "@/components/ui/NextBashoCountdown";
 
 interface HeroSectionProps {
   isActive: boolean;
   bashoName?: string;
+  countdownDate?: string;
+  countdownBashoName?: string;
+  countdownBashoNameJp?: string;
 }
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -19,13 +23,13 @@ function fadeUp(delay: number) {
   };
 }
 
-const STATS = [
-  { value: "42", label: "Active Rikishi" },
-  { value: "6", label: "Basho Per Year" },
-  { value: "15", label: "Days Per Basho" },
-];
-
-export default function HeroSection({ isActive, bashoName }: HeroSectionProps) {
+export default function HeroSection({
+  isActive,
+  bashoName,
+  countdownDate,
+  countdownBashoName,
+  countdownBashoNameJp,
+}: HeroSectionProps) {
   return (
     <section className="relative min-h-screen bg-[#09090B] flex flex-col overflow-hidden">
       {/* Subtle top glow */}
@@ -98,22 +102,19 @@ export default function HeroSection({ isActive, bashoName }: HeroSectionProps) {
             </Link>
           </motion.div>
 
-          {/* Stats strip */}
-          <motion.div
-            {...fadeUp(0.45)}
-            className="mt-16 pt-8 border-t border-[#27272A] flex flex-wrap gap-10"
-          >
-            {STATS.map(({ value, label }) => (
-              <div key={label}>
-                <p className="font-display font-bold text-[#FAFAFA] text-3xl leading-none">
-                  {value}
-                </p>
-                <p className="text-[#52525B] text-xs mt-1.5 tracking-widest uppercase">
-                  {label}
-                </p>
-              </div>
-            ))}
-          </motion.div>
+          {/* Countdown — shown when no live basho */}
+          {!isActive && countdownDate && countdownBashoName && countdownBashoNameJp && (
+            <motion.div
+              {...fadeUp(0.45)}
+              className="mt-16 pt-8 border-t border-[#27272A]"
+            >
+              <NextBashoCountdown
+                targetDate={countdownDate}
+                bashoName={countdownBashoName}
+                bashoNameJp={countdownBashoNameJp}
+              />
+            </motion.div>
+          )}
         </div>
       </div>
 

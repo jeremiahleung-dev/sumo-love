@@ -4,7 +4,6 @@ import HeroSection from "@/components/home/HeroSection";
 import RikishiFilmstrip from "@/components/home/RikishiFilmstrip";
 import LeaderBoard from "@/components/basho/LeaderBoard";
 import YoutubeEmbed from "@/components/ui/YoutubeEmbed";
-import NextBashoCountdown from "@/components/ui/NextBashoCountdown";
 import { ChevronRight } from "lucide-react";
 import { nextBashoId } from "@/lib/sumo-api/client";
 
@@ -106,20 +105,10 @@ export default async function HomePage() {
       <HeroSection
         isActive={isBashoLive}
         bashoName={latestBasho?.nameEn}
+        countdownDate={!isBashoLive ? upcomingStart.toISOString() : undefined}
+        countdownBashoName={!isBashoLive ? upcomingNames.en : undefined}
+        countdownBashoNameJp={!isBashoLive ? upcomingNames.jp : undefined}
       />
-
-      {/* ── Countdown (when no live basho) ───────────────────────── */}
-      {!isBashoLive && (
-        <div className="bg-[#0F0F11] border-b border-[#27272A]">
-          <div className="max-w-7xl mx-auto px-6 sm:px-10 py-12 flex justify-center">
-            <NextBashoCountdown
-              targetDate={upcomingStart.toISOString()}
-              bashoName={upcomingNames.en}
-              bashoNameJp={upcomingNames.jp}
-            />
-          </div>
-        </div>
-      )}
 
       {/* ── Basho ticker bar ─────────────────────────────────────── */}
       {latestBasho && (
