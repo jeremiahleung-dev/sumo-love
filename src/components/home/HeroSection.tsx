@@ -60,6 +60,16 @@ export default function HeroSection({
             )}
           </motion.div>
 
+          {/* Kanji */}
+          <motion.p
+            {...fadeUp(0.05)}
+            className="font-display font-black text-[#FAFAFA]/[0.06] leading-none select-none mb-2"
+            style={{ fontSize: "clamp(4rem, 14vw, 13rem)" }}
+            aria-hidden
+          >
+            相撲
+          </motion.p>
+
           {/* Headline */}
           <motion.h1
             {...fadeUp(0.1)}
