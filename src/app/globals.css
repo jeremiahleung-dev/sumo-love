@@ -56,3 +56,41 @@ body {
 .glow-dark-red {
   background: radial-gradient(ellipse at center, #8B1A1A22 0%, transparent 70%);
 }
+
+/* Fine grain texture for dark hero sections */
+.texture-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  opacity: 0.045;
+  pointer-events: none;
+}
+
+/* Horizontal filmstrip scroll container */
+.filmstrip {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.filmstrip::-webkit-scrollbar {
+  display: none;
+}
+.filmstrip > * {
+  scroll-snap-align: start;
+}
+
+/* Right-side fade hint for filmstrip */
+.filmstrip-fade {
+  -webkit-mask-image: linear-gradient(to right, black 82%, transparent 100%);
+  mask-image: linear-gradient(to right, black 82%, transparent 100%);
+}
+
+/* Pulsing live dot */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.45; transform: scale(0.8); }
+}
+.animate-pulse-dot {
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
