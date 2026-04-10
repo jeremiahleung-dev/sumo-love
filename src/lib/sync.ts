@@ -86,6 +86,20 @@ export async function syncAll(): Promise<{ bashoSynced: number; rikishiSynced: n
       banzuke.map((entry) => fetchRikishi(entry.rikishiID))
     );
 
+    // Scrape all photos in parallel (JSA first, Wikipedia fallback per rikishi)
+    const photoUrls = await Promise.allSettled(
+      banzuke.map(async (entry, i) => {
+        const profileResult = profileResults[i];
+        if (profileResult.status === "rejected") return null;
+        const rikishiData = profileResult.value;
+        if (rikishiData.nskId) {
+          const url = await scrapeRikishiPhoto(rikishiData.nskId);
+          if (url) return url;
+        }
+        return fetchWikipediaPhoto(entry.shikonaEn);
+      })
+    );
+
     for (let i = 0; i < banzuke.length; i++) {
       const entry = banzuke[i];
       const profileResult = profileResults[i];
@@ -93,13 +107,8 @@ export async function syncAll(): Promise<{ bashoSynced: number; rikishiSynced: n
       const rikishiData = profileResult.value;
 
       const division = rankToDivision(entry.rank);
-      let imageUrl: string | null = null;
-      if (rikishiData.nskId) {
-        imageUrl = await scrapeRikishiPhoto(rikishiData.nskId);
-      }
-      if (!imageUrl) {
-        imageUrl = await fetchWikipediaPhoto(entry.shikonaEn);
-      }
+      const photoResult = photoUrls[i];
+      const imageUrl = photoResult.status === "fulfilled" ? photoResult.value : null;
 
       const rikishi = await db.rikishi.upsert({
         where: { sumoApiId: String(entry.rikishiID) },
@@ -163,6 +172,9 @@ export async function syncAll(): Promise<{ bashoSynced: number; rikishiSynced: n
         if (!eastDbId || !westDbId) continue;
 
         const winnerDbId = bout.winnerId ? rikishiById.get(String(bout.winnerId)) ?? null : null;
+        if (bout.kimarite && !kimariteByName.has(bout.kimarite)) {
+          console.warn(`Unknown kimarite: "${bout.kimarite}" on day ${day} — storing null`);
+        }
         const kimariteId = bout.kimarite ? (kimariteByName.get(bout.kimarite) ?? null) : null;
 
         let highlightUrl: string | null = null;

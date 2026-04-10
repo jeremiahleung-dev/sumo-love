@@ -25,7 +25,7 @@ function getNextBashoStartDate(bashoId: string): Date {
   return new Date(year, month - 1, firstSunday + 7);
 }
 
-export const revalidate = 1800;
+export const revalidate = 3600;
 
 const BASHO_WITH_ENTRIES = {
   include: {
@@ -95,7 +95,7 @@ export default async function HomePage() {
     shikonaEn: r.shikonaEn,
     shikona: r.shikona,
     currentRank: r.currentRank,
-    heya: r.heya,
+    heya: r.heyaEn,
     imageUrl: r.imageUrl,
   }));
 

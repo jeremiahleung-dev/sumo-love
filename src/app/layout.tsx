@@ -8,7 +8,6 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
-  preload: false,
 });
 
 const outfit = Outfit({
@@ -16,7 +15,6 @@ const outfit = Outfit({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
   variable: "--font-display",
-  preload: false,
 });
 
 export const metadata: Metadata = {

@@ -6,7 +6,7 @@ import { ChevronLeft } from "lucide-react";
 import KimariteAnimation from "@/components/kimarite/KimariteAnimation";
 import { CATEGORY_COLORS } from "@/lib/kimarite-categories";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86400;
 
 export default async function KimariteDetailPage({
   params,
@@ -41,13 +41,13 @@ export default async function KimariteDetailPage({
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
       <Link
         href="/kimarite"
-        className="inline-flex items-center gap-1 text-sm text-[#D4A97A] hover:text-[#1A1A1A] transition-colors mb-8"
+        className="inline-flex items-center gap-1 text-sm text-[#71717A] hover:text-[#FAFAFA] transition-colors mb-8"
       >
         <ChevronLeft size={14} /> All Kimarite
       </Link>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
-        <div className="bg-[#EDE0CC] rounded-xl p-8 flex items-center justify-center min-h-[220px]">
+        <div className="bg-[#18181B] border border-[#27272A] rounded-xl p-8 flex items-center justify-center min-h-[220px]">
           <KimariteAnimation animationId={animKey} />
         </div>
         <div className="flex flex-col justify-center">
@@ -59,13 +59,13 @@ export default async function KimariteDetailPage({
           <h1 className="font-display font-black text-4xl mb-1">
             {kimarite.nameEn}
           </h1>
-          <p className="font-display text-[#D4A97A] text-2xl mb-4">
+          <p className="font-display text-[#A1A1AA] text-2xl mb-4">
             {kimarite.nameJp}
           </p>
-          <p className="text-[#1A1A1A]/70 leading-relaxed mb-6">
+          <p className="text-[#A1A1AA] leading-relaxed mb-6">
             {kimarite.description}
           </p>
-          <p className="text-sm text-[#1A1A1A]/40 font-mono">
+          <p className="text-sm text-[#52525B] font-mono">
             {kimarite._count.matches} bouts recorded in database
           </p>
         </div>
@@ -79,7 +79,7 @@ export default async function KimariteDetailPage({
           <div>
             {kimarite.matches.map((m) => (
               <div key={m.id} className="mb-1">
-                <div className="text-xs text-[#D4A97A] mb-1 ml-1">
+                <div className="text-xs text-[#52525B] mb-1 ml-1">
                   {m.basho.nameEn} {m.basho.year} · Day {m.day}
                 </div>
                 <MatchRow
