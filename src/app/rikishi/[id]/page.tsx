@@ -32,8 +32,7 @@ export default async function RikishiProfilePage({
   const totalWins = rikishi.bashoEntries.reduce((s, e) => s + e.wins, 0);
   const totalLosses = rikishi.bashoEntries.reduce((s, e) => s + e.losses, 0);
   const totalAbsences = rikishi.bashoEntries.reduce((s, e) => s + e.absences, 0);
-  const totalBouts = totalWins + totalLosses;
-  const winPct = totalBouts > 0 ? Math.round((totalWins / totalBouts) * 100) : 0;
+
   const yushoCount = rikishi.bashoEntries.filter((e) => e.yusho).length;
 
   const birthdate = rikishi.birthdate
@@ -93,7 +92,7 @@ export default async function RikishiProfilePage({
               )}
               <p className="text-[#71717A] text-sm mb-6">{rikishi.heyaEn} Stable</p>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 <div>
                   <p className="text-[10px] uppercase tracking-widest text-[#52525B] mb-1">
                     Career Record
@@ -103,12 +102,6 @@ export default async function RikishiProfilePage({
                     losses={totalLosses}
                     absences={totalAbsences}
                   />
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase tracking-widest text-[#52525B] mb-1">
-                    Win Rate
-                  </p>
-                  <p className="font-mono font-bold text-lg">{winPct}%</p>
                 </div>
                 <div>
                   <p className="text-[10px] uppercase tracking-widest text-[#52525B] mb-1">

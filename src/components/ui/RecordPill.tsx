@@ -7,11 +7,8 @@ export default function RecordPill({
   losses: number;
   absences?: number;
 }) {
-  const total = wins + losses + absences;
-  const pct = total > 0 ? Math.round((wins / total) * 100) : 0;
-
   return (
-    <span className="inline-flex items-center gap-1 font-mono text-sm">
+    <span className="inline-flex items-center gap-1 font-mono text-xs whitespace-nowrap">
       <span className="text-[#22C55E] font-semibold">{wins}W</span>
       <span className="text-[#3F3F46]">–</span>
       <span className="text-[#DC2626] font-semibold">{losses}L</span>
@@ -20,9 +17,6 @@ export default function RecordPill({
           <span className="text-[#3F3F46]">–</span>
           <span className="text-[#71717A] font-semibold">{absences}A</span>
         </>
-      )}
-      {total >= 15 && (
-        <span className="text-[10px] text-[#52525B] ml-1">({pct}%)</span>
       )}
     </span>
   );

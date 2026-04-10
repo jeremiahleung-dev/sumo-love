@@ -52,15 +52,15 @@ export default function RikishiCard({
             </span>
           </div>
         )}
-        {currentRank && (
-          <div className="absolute top-2 left-2">
-            <RankBadge rank={currentRank} />
-          </div>
-        )}
       </div>
 
       {/* Info */}
       <div className="p-3 flex flex-col flex-1">
+        {currentRank && (
+          <div className="mb-1.5">
+            <RankBadge rank={currentRank} />
+          </div>
+        )}
         <p className="font-display font-bold text-base leading-tight text-white">{shikonaEn}</p>
         <p className="text-xs text-white/30 mb-0.5">{shikona}</p>
         {nameOrigin && (
