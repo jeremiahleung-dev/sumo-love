@@ -8,14 +8,14 @@ export default function RecordPill({
   absences?: number;
 }) {
   return (
-    <span className="inline-flex items-center gap-1 font-mono text-sm">
-      <span className="text-[#52B788] font-bold">{wins}W</span>
-      <span className="text-white/30">–</span>
-      <span className="text-[#C0292A] font-bold">{losses}L</span>
+    <span className="inline-flex items-center gap-1 font-mono text-xs whitespace-nowrap">
+      <span className="text-[#22C55E] font-semibold">{wins}W</span>
+      <span className="text-[#3F3F46]">–</span>
+      <span className="text-[#DC2626] font-semibold">{losses}L</span>
       {absences > 0 && (
         <>
-          <span className="text-white/30">–</span>
-          <span className="text-[#D4A97A] font-bold">{absences}A</span>
+          <span className="text-[#3F3F46]">–</span>
+          <span className="text-[#71717A] font-semibold">{absences}A</span>
         </>
       )}
     </span>

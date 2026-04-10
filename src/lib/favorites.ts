@@ -3,7 +3,7 @@ export interface FavoriteEntry {
   addedAt: number;
 }
 
-const STORAGE_KEY = "sumo-love:favorites";
+const STORAGE_KEY = "dohyo:favorites";
 
 function read(): FavoriteEntry[] {
   if (typeof window === "undefined") return [];

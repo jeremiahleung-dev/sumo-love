@@ -7,7 +7,7 @@ export const maxDuration = 300; // 5 min — needed for full sync on Vercel
 export async function POST(req: Request) {
   // Verify cron secret to prevent unauthorized syncs
   const secret = req.headers.get("x-cron-secret");
-  if (process.env.CRON_SECRET && secret !== process.env.CRON_SECRET) {
+  if (!secret || secret !== process.env.CRON_SECRET) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

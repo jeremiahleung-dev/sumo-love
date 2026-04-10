@@ -33,7 +33,7 @@ export default function RikishiCard({
   return (
     <Link
       href={`/rikishi/${id}`}
-      className="group bg-[#141414] border border-white/5 rounded-xl overflow-hidden hover:border-[#C0292A]/40 hover:shadow-xl hover:shadow-[#C0292A]/5 transition-all duration-300 flex flex-col"
+      className="group bg-[#141414] border border-white/5 rounded-xl overflow-hidden hover:border-[#DC2626]/40 hover:shadow-xl hover:shadow-[#DC2626]/5 transition-all duration-300 flex flex-col"
     >
       {/* Photo */}
       <div className="relative aspect-[3/4] bg-[#1A1A1A] overflow-hidden flex-shrink-0">
@@ -47,28 +47,28 @@ export default function RikishiCard({
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-5xl text-[#D4A97A]/20 font-display font-black select-none">
+            <span className="text-5xl text-[#3F3F46] font-display font-black select-none">
               力
             </span>
-          </div>
-        )}
-        {currentRank && (
-          <div className="absolute top-2 left-2">
-            <RankBadge rank={currentRank} />
           </div>
         )}
       </div>
 
       {/* Info */}
       <div className="p-3 flex flex-col flex-1">
+        {currentRank && (
+          <div className="mb-1.5">
+            <RankBadge rank={currentRank} />
+          </div>
+        )}
         <p className="font-display font-bold text-base leading-tight text-white">{shikonaEn}</p>
         <p className="text-xs text-white/30 mb-0.5">{shikona}</p>
         {nameOrigin && (
-          <p className="text-[11px] text-[#C0292A]/80 italic leading-snug mb-1 line-clamp-1">
+          <p className="text-[11px] text-[#DC2626]/70 italic leading-snug mb-1 line-clamp-1">
             {nameOrigin.split("—")[0].trim()}
           </p>
         )}
-        <p className="text-xs text-[#D4A97A]/60">{heya} Stable</p>
+        <p className="text-xs text-[#71717A]">{heya} Stable</p>
         {biography && (
           <p className="text-[11px] text-white/35 italic leading-snug mt-2 line-clamp-3">
             {biography}

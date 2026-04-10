@@ -43,7 +43,7 @@ export default function FavoriteButton({ rikishiId, variant }: Props) {
       className={`absolute top-2 right-2 z-10 flex items-center justify-center w-7 h-7 rounded-full transition-all duration-200 ${
         active
           ? "bg-[#C0292A] text-white opacity-100"
-          : "bg-black/40 text-white/50 opacity-0 group-hover:opacity-100 sm:opacity-100"
+          : "bg-black/40 text-white/60 opacity-60 group-hover:opacity-100"
       }`}
       aria-label={active ? "Unfollow" : "Follow"}
     >

@@ -1,23 +1,22 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-crimson: #C0292A;
-  --color-ink:     #0A0A0A;
-  --color-surface: #141414;
-  --color-border:  #222222;
-  --color-rice:    #FAFAF9;
-  --color-clay:    #D4A97A;
-  --color-sand:    #2A2A2A;
-  --color-jade:    #2D6A4F;
-  --color-mist:    #1C1C1C;
+  --color-brand:        #DC2626;
+  --color-brand-hover:  #B91C1C;
+  --color-win:          #22C55E;
+  --color-loss:         #DC2626;
+  --color-surface:      #18181B;
+  --color-elevated:     #27272A;
+  --color-border:       #3F3F46;
+  --color-muted:        #71717A;
 
   --font-sans:    "Inter", system-ui, sans-serif;
-  --font-display: "Noto Serif JP", serif;
+  --font-display: "Outfit", system-ui, sans-serif;
 }
 
 :root {
-  --background: #0A0A0A;
-  --foreground: #FAFAF9;
+  --background: #09090B;
+  --foreground: #FAFAFA;
 }
 
 * {
@@ -36,23 +35,34 @@ body {
 }
 
 .font-display {
-  font-family: "Noto Serif JP", serif;
+  font-family: "Outfit", system-ui, sans-serif;
 }
 
-/* Rank badge colours */
-.rank-yokozuna   { background: #C0292A; color: #fff; }
-.rank-ozeki      { background: #8B1A1A; color: #fff; }
-.rank-sekiwake   { background: #D4A97A; color: #0A0A0A; }
-.rank-komusubi   { background: #2A2A2A; color: #FAFAF9; border: 1px solid #444; }
-.rank-maegashira { background: #1C1C1C; color: #FAFAF9; border: 1px solid #333; }
+/* Horizontal filmstrip scroll container */
+.filmstrip {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.filmstrip::-webkit-scrollbar {
+  display: none;
+}
+.filmstrip > * {
+  scroll-snap-align: start;
+}
 
-/* Gradient blob glow — hero background */
-.glow-crimson {
-  background: radial-gradient(ellipse at center, #C0292A33 0%, transparent 70%);
+/* Right-side fade hint for filmstrip */
+.filmstrip-fade {
+  -webkit-mask-image: linear-gradient(to right, black 82%, transparent 100%);
+  mask-image: linear-gradient(to right, black 82%, transparent 100%);
 }
-.glow-clay {
-  background: radial-gradient(ellipse at center, #D4A97A22 0%, transparent 70%);
+
+/* Pulsing live dot */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.8); }
 }
-.glow-dark-red {
-  background: radial-gradient(ellipse at center, #8B1A1A22 0%, transparent 70%);
+.animate-pulse-dot {
+  animation: pulse-dot 1.8s ease-in-out infinite;
 }

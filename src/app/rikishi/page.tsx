@@ -52,7 +52,7 @@ export default async function RikishiPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
       <div className="mb-10">
         <h1 className="font-display font-black text-4xl mb-2">Rikishi</h1>
-        <p className="text-[#D4A97A]">
+        <p className="text-[#71717A]">
           Makuuchi division — {allRikishi.length} wrestlers
         </p>
       </div>
@@ -67,7 +67,7 @@ export default async function RikishiPage() {
           {sanyaku.length > 0 && (
             <section>
               <h2 className="font-display font-bold text-xl mb-4 flex items-center gap-2">
-                <span className="w-2 h-6 bg-[#C0292A] rounded inline-block" />
+                <span className="w-2 h-6 bg-[#DC2626] rounded inline-block" />
                 Sanyaku
               </h2>
               <RikishiGrid rikishi={sanyaku} />

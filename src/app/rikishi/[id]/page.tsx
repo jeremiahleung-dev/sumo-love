@@ -7,7 +7,7 @@ import RecordPill from "@/components/ui/RecordPill";
 import { ChevronLeft, Scale, Ruler, Calendar, MapPin } from "lucide-react";
 import FavoriteButton from "@/components/rikishi/FavoriteButton";
 
-export const revalidate = 0;
+export const revalidate = 3600;
 
 export default async function RikishiProfilePage({
   params,
@@ -32,8 +32,7 @@ export default async function RikishiProfilePage({
   const totalWins = rikishi.bashoEntries.reduce((s, e) => s + e.wins, 0);
   const totalLosses = rikishi.bashoEntries.reduce((s, e) => s + e.losses, 0);
   const totalAbsences = rikishi.bashoEntries.reduce((s, e) => s + e.absences, 0);
-  const totalBouts = totalWins + totalLosses;
-  const winPct = totalBouts > 0 ? Math.round((totalWins / totalBouts) * 100) : 0;
+
   const yushoCount = rikishi.bashoEntries.filter((e) => e.yusho).length;
 
   const birthdate = rikishi.birthdate
@@ -45,18 +44,19 @@ export default async function RikishiProfilePage({
     : null;
 
   return (
-    <div>
-      <div className="bg-[#1A1A1A] text-[#FAF7F2]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+    <div className="bg-[#09090B] text-[#FAFAFA]">
+      {/* Hero header */}
+      <div className="border-b border-[#27272A]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
           <Link
             href="/rikishi"
-            className="inline-flex items-center gap-1 text-sm text-[#D4A97A] hover:text-white transition-colors mb-6"
+            className="inline-flex items-center gap-1 text-sm text-[#71717A] hover:text-[#FAFAFA] transition-colors mb-6"
           >
             <ChevronLeft size={14} /> All Rikishi
           </Link>
 
           <div className="flex flex-col md:flex-row gap-8 items-start">
-            <div className="relative w-36 h-48 md:w-48 md:h-64 rounded-lg overflow-hidden bg-[#EDE0CC] flex-shrink-0">
+            <div className="relative w-36 h-48 md:w-48 md:h-64 rounded-xl overflow-hidden bg-[#18181B] border border-[#27272A] flex-shrink-0">
               {rikishi.imageUrl ? (
                 <Image
                   src={rikishi.imageUrl}
@@ -67,7 +67,7 @@ export default async function RikishiProfilePage({
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-6xl text-[#D4A97A] font-display font-black">
+                  <span className="text-6xl text-[#3F3F46] font-display font-black">
                     力
                   </span>
                 </div>
@@ -81,20 +81,20 @@ export default async function RikishiProfilePage({
                 )}
                 <FavoriteButton rikishiId={rikishi.id} variant="pill" />
               </div>
-              <h1 className="font-display font-black text-4xl md:text-5xl mb-1">
+              <h1 className="font-display font-black text-4xl md:text-5xl mb-1 text-[#FAFAFA]">
                 {rikishi.shikonaEn}
               </h1>
-              <p className="font-display text-[#D4A97A] text-xl mb-1">
+              <p className="font-display text-[#A1A1AA] text-xl mb-1">
                 {rikishi.shikona}
               </p>
               {rikishi.nameOrigin && (
-                <p className="text-sm text-white/50 italic mb-4">{rikishi.nameOrigin}</p>
+                <p className="text-sm text-[#52525B] italic mb-4">{rikishi.nameOrigin}</p>
               )}
-              <p className="text-[#EDE0CC] text-sm mb-6">{rikishi.heyaEn} Stable</p>
+              <p className="text-[#71717A] text-sm mb-6">{rikishi.heyaEn} Stable</p>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 <div>
-                  <p className="text-[10px] uppercase tracking-widest text-[#D4A97A] mb-1">
+                  <p className="text-[10px] uppercase tracking-widest text-[#52525B] mb-1">
                     Career Record
                   </p>
                   <RecordPill
@@ -104,18 +104,12 @@ export default async function RikishiProfilePage({
                   />
                 </div>
                 <div>
-                  <p className="text-[10px] uppercase tracking-widest text-[#D4A97A] mb-1">
-                    Win Rate
-                  </p>
-                  <p className="font-mono font-bold text-lg">{winPct}%</p>
-                </div>
-                <div>
-                  <p className="text-[10px] uppercase tracking-widest text-[#D4A97A] mb-1">
+                  <p className="text-[10px] uppercase tracking-widest text-[#52525B] mb-1">
                     Yusho
                   </p>
                   <p className="font-mono font-bold text-lg">
                     {yushoCount > 0 ? (
-                      <span className="text-[#C0292A]">
+                      <span className="text-[#DC2626]">
                         {yushoCount} <span className="text-xs">優勝</span>
                       </span>
                     ) : (
@@ -124,7 +118,7 @@ export default async function RikishiProfilePage({
                   </p>
                 </div>
                 <div>
-                  <p className="text-[10px] uppercase tracking-widest text-[#D4A97A] mb-1">
+                  <p className="text-[10px] uppercase tracking-widest text-[#52525B] mb-1">
                     Basho
                   </p>
                   <p className="font-mono font-bold text-lg">
@@ -140,13 +134,13 @@ export default async function RikishiProfilePage({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-2">
-            <h2 className="font-display font-bold text-xl mb-4">
+            <h2 className="font-display font-bold text-xl mb-4 text-[#FAFAFA]">
               Basho History
             </h2>
-            <div className="overflow-hidden rounded-lg border border-white/10">
+            <div className="overflow-hidden rounded-xl border border-[#27272A]">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-white/5 text-white/50 text-xs uppercase tracking-wider">
+                  <tr className="bg-[#18181B] text-[#3F3F46] text-xs uppercase tracking-wider border-b border-[#27272A]">
                     <th className="px-4 py-3 text-left">Basho</th>
                     <th className="px-4 py-3 text-left">Rank</th>
                     <th className="px-4 py-3 text-right">Record</th>
@@ -155,23 +149,23 @@ export default async function RikishiProfilePage({
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5">
+                <tbody className="divide-y divide-[#27272A]">
                   {rikishi.bashoEntries.map((entry) => (
                     <tr
                       key={entry.id}
-                      className={`hover:bg-white/5 transition-colors ${
-                        entry.yusho ? "bg-[#C0292A]/5" : ""
+                      className={`hover:bg-[#18181B] transition-colors ${
+                        entry.yusho ? "bg-[#DC2626]/5" : ""
                       }`}
                     >
                       <td className="px-4 py-3">
                         <Link
                           href={`/basho/${entry.bashoId}`}
-                          className="hover:text-[#C0292A] transition-colors"
+                          className="hover:text-[#DC2626] transition-colors"
                         >
-                          <span className="font-semibold">
+                          <span className="font-semibold text-[#FAFAFA]">
                             {entry.basho.nameEn}
                           </span>
-                          <span className="text-white/40 ml-1 text-xs">
+                          <span className="text-[#3F3F46] ml-1 text-xs">
                             {entry.basho.year}
                           </span>
                         </Link>
@@ -186,12 +180,12 @@ export default async function RikishiProfilePage({
                           absences={entry.absences}
                         />
                         {entry.yusho && (
-                          <span className="ml-2 text-[10px] bg-[#C0292A] text-white px-1.5 py-0.5 rounded font-sans">
+                          <span className="ml-2 text-[10px] bg-[#DC2626] text-white px-1.5 py-0.5 rounded font-sans">
                             優勝
                           </span>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-center text-xs text-[#D4A97A] hidden sm:table-cell">
+                      <td className="px-4 py-3 text-center text-xs text-[#52525B] hidden sm:table-cell">
                         {entry.specialPrize ?? "—"}
                       </td>
                     </tr>
@@ -202,49 +196,49 @@ export default async function RikishiProfilePage({
           </div>
 
           <div>
-            <h2 className="font-display font-bold text-xl mb-4">Profile</h2>
-            <div className="bg-[#FAF7F2] border border-[#EDE0CC] rounded-lg p-5 space-y-4 text-[#1A1A1A]">
+            <h2 className="font-display font-bold text-xl mb-4 text-[#FAFAFA]">Profile</h2>
+            <div className="bg-[#18181B] border border-[#27272A] rounded-xl p-5 space-y-4">
               {rikishi.nationality && (
                 <div className="flex items-center gap-3">
-                  <MapPin size={16} className="text-[#D4A97A] flex-shrink-0" />
+                  <MapPin size={16} className="text-[#52525B] flex-shrink-0" />
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest text-[#D4A97A]">
+                    <p className="text-[10px] uppercase tracking-widest text-[#52525B]">
                       Hometown
                     </p>
-                    <p className="font-medium">{rikishi.nationality}</p>
+                    <p className="font-medium text-[#FAFAFA]">{rikishi.nationality}</p>
                   </div>
                 </div>
               )}
               {rikishi.heightCm && (
                 <div className="flex items-center gap-3">
-                  <Ruler size={16} className="text-[#D4A97A] flex-shrink-0" />
+                  <Ruler size={16} className="text-[#52525B] flex-shrink-0" />
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest text-[#D4A97A]">
+                    <p className="text-[10px] uppercase tracking-widest text-[#52525B]">
                       Height
                     </p>
-                    <p className="font-medium">{rikishi.heightCm} cm</p>
+                    <p className="font-medium text-[#FAFAFA]">{rikishi.heightCm} cm</p>
                   </div>
                 </div>
               )}
               {rikishi.weightKg && (
                 <div className="flex items-center gap-3">
-                  <Scale size={16} className="text-[#D4A97A] flex-shrink-0" />
+                  <Scale size={16} className="text-[#52525B] flex-shrink-0" />
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest text-[#D4A97A]">
+                    <p className="text-[10px] uppercase tracking-widest text-[#52525B]">
                       Weight
                     </p>
-                    <p className="font-medium">{rikishi.weightKg} kg</p>
+                    <p className="font-medium text-[#FAFAFA]">{rikishi.weightKg} kg</p>
                   </div>
                 </div>
               )}
               {birthdate && (
                 <div className="flex items-center gap-3">
-                  <Calendar size={16} className="text-[#D4A97A] flex-shrink-0" />
+                  <Calendar size={16} className="text-[#52525B] flex-shrink-0" />
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest text-[#D4A97A]">
+                    <p className="text-[10px] uppercase tracking-widest text-[#52525B]">
                       Born
                     </p>
-                    <p className="font-medium">{birthdate}</p>
+                    <p className="font-medium text-[#FAFAFA]">{birthdate}</p>
                   </div>
                 </div>
               )}
@@ -252,8 +246,8 @@ export default async function RikishiProfilePage({
 
             {rikishi.biography && (
               <div className="mt-6">
-                <h3 className="font-display font-semibold mb-3">Story</h3>
-                <p className="text-sm text-white/70 leading-relaxed italic">
+                <h3 className="font-display font-semibold mb-3 text-[#FAFAFA]">Story</h3>
+                <p className="text-sm text-[#71717A] leading-relaxed italic">
                   {rikishi.biography}
                 </p>
               </div>
