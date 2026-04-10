@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import FavoritesGrid from "./FavoritesGrid";
 
 export const metadata: Metadata = {
-  title: "My Rikishi — Sumo Love",
+  title: "My Rikishi — Dohyo",
   description: "Your followed rikishi — track their standings and results in one place.",
 };
 

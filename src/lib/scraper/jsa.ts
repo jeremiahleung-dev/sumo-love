@@ -28,7 +28,7 @@ async function scrapeJSADataProfile(nskId: number): Promise<string | null> {
   try {
     const url = `${JSA_BASE}/EnSumoDataRikishi/profile/${nskId}/`;
     const res = await fetch(url, {
-      headers: { "User-Agent": "sumo-love/1.0 (educational sumo tracker)" },
+      headers: { "User-Agent": "dohyo/1.0 (educational sumo tracker)" },
       signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) return null;
@@ -99,7 +99,7 @@ export async function scrapeCurrentBashoId(): Promise<string | null> {
   try {
     const url = `${JSA_BASE}/EnHonbashoMain/`;
     const res = await fetch(url, {
-      headers: { "User-Agent": "sumo-love/1.0" },
+      headers: { "User-Agent": "dohyo/1.0" },
       signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) return null;

@@ -17,7 +17,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-1 sm:grid-cols-3 gap-10">
         <div>
           <p className="font-display font-bold text-[#FAFAFA] text-sm mb-3">
-            Sumo Love
+            Dohyo
           </p>
           <p className="text-sm text-[#52525B] leading-relaxed max-w-xs">
             The live tracker for Makuuchi and Sanyaku rikishi.

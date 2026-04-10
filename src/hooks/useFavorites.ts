@@ -16,7 +16,7 @@ export function useFavorites() {
 
     // Keep in sync across tabs
     function onStorage(e: StorageEvent) {
-      if (e.key === "sumo-love:favorites") {
+      if (e.key === "dohyo:favorites") {
         setFavoriteIds(getFavoriteIds());
       }
     }

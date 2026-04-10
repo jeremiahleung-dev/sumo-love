@@ -25,7 +25,7 @@ export default function Navbar() {
           className="font-display font-bold text-[15px] tracking-tight text-[#FAFAFA] hover:text-[#DC2626] transition-colors duration-200 cursor-pointer"
           onClick={() => setOpen(false)}
         >
-          Sumo Love
+          Dohyo
         </Link>
 
         {/* Desktop nav */}
