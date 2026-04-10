@@ -18,12 +18,12 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Dohyo — Live Basho Tracker",
+  title: "dohyo — Live Basho Tracker",
   description:
     "Follow your favourite rikishi through every basho. Live standings, match results, and kimarite for Makuuchi and Sanyaku.",
   keywords: ["sumo", "basho", "rikishi", "makuuchi", "sanyaku", "kimarite"],
   openGraph: {
-    title: "Dohyo",
+    title: "dohyo",
     description: "Live sumo basho tracker",
     type: "website",
   },
