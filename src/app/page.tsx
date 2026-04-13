@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { db } from "@/lib/db";
 import HeroSection from "@/components/home/HeroSection";
+import CountdownBanner from "@/components/ui/CountdownBanner";
 import RikishiFilmstrip from "@/components/home/RikishiFilmstrip";
 import LeaderBoard from "@/components/basho/LeaderBoard";
 import YoutubeEmbed from "@/components/ui/YoutubeEmbed";
@@ -102,13 +103,16 @@ export default async function HomePage() {
   return (
     <div className="bg-[#09090B]">
       {/* ── Hero ─────────────────────────────────────────────────── */}
-      <HeroSection
-        isActive={isBashoLive}
-        bashoName={latestBasho?.nameEn}
-        countdownDate={!isBashoLive ? upcomingStart.toISOString() : undefined}
-        countdownBashoName={!isBashoLive ? upcomingNames.en : undefined}
-        countdownBashoNameJp={!isBashoLive ? upcomingNames.jp : undefined}
-      />
+      <HeroSection isActive={isBashoLive} bashoName={latestBasho?.nameEn} />
+
+      {/* ── Countdown banner — shown when no live basho ──────────── */}
+      {!isBashoLive && (
+        <CountdownBanner
+          targetDate={upcomingStart.toISOString()}
+          bashoName={upcomingNames.en}
+          bashoNameJp={upcomingNames.jp}
+        />
+      )}
 
       {/* ── Basho ticker bar ─────────────────────────────────────── */}
       {latestBasho && (

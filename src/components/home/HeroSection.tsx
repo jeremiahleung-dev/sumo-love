@@ -3,14 +3,10 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import NextBashoCountdown from "@/components/ui/NextBashoCountdown";
 
 interface HeroSectionProps {
   isActive: boolean;
   bashoName?: string;
-  countdownDate?: string;
-  countdownBashoName?: string;
-  countdownBashoNameJp?: string;
 }
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -23,13 +19,7 @@ function fadeUp(delay: number) {
   };
 }
 
-export default function HeroSection({
-  isActive,
-  bashoName,
-  countdownDate,
-  countdownBashoName,
-  countdownBashoNameJp,
-}: HeroSectionProps) {
+export default function HeroSection({ isActive, bashoName }: HeroSectionProps) {
   return (
     <section className="relative bg-[#09090B] overflow-hidden">
       {/* Subtle top glow */}
@@ -112,19 +102,6 @@ export default function HeroSection({
             </Link>
           </motion.div>
 
-          {/* Countdown — shown when no live basho */}
-          {!isActive && countdownDate && countdownBashoName && countdownBashoNameJp && (
-            <motion.div
-              {...fadeUp(0.45)}
-              className="mt-8 pt-6 border-t border-[#27272A]"
-            >
-              <NextBashoCountdown
-                targetDate={countdownDate}
-                bashoName={countdownBashoName}
-                bashoNameJp={countdownBashoNameJp}
-              />
-            </motion.div>
-          )}
         </div>
       </div>
     </section>
