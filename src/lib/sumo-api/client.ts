@@ -20,14 +20,26 @@ async function apiFetch<T>(path: string): Promise<T> {
 
 /** Derive the current basho ID (YYYYMM) from today's date.
  *  Basho run in odd months: Jan, Mar, May, Jul, Sep, Nov.
- *  If we're in an even month, use the previous odd month.
+ *  If we're in an even month and day >= 20, the next basho's banzuke has
+ *  already been published (~13 days before the basho), so look ahead.
+ *  Otherwise fall back to the previous odd month.
  */
 export function currentBashoId(): string {
   const now = new Date();
   const year = now.getFullYear();
-  let month = now.getMonth() + 1; // 1-indexed
-  if (month % 2 === 0) month -= 1; // even month → previous odd
-  return `${year}${String(month).padStart(2, "0")}`;
+  const month = now.getMonth() + 1; // 1-indexed
+  const day = now.getDate();
+
+  if (month % 2 === 1) {
+    return `${year}${String(month).padStart(2, "0")}`;
+  }
+  // Even month: banzuke for the next basho drops in the last ~week of the month
+  if (day >= 20) {
+    const nextMonth = month + 1;
+    if (nextMonth <= 12) return `${year}${String(nextMonth).padStart(2, "0")}`;
+    return `${year + 1}01`; // December → January next year
+  }
+  return `${year}${String(month - 1).padStart(2, "0")}`;
 }
 
 /** Returns the next basho ID after the current one (YYYYMM). */
@@ -47,10 +59,9 @@ export function nextBashoId(): string {
 /** Returns the last N basho IDs in descending order, starting from the current one. */
 export function recentBashoIds(count: number): string[] {
   const ODD_MONTHS = [11, 9, 7, 5, 3, 1];
-  const now = new Date();
-  let year = now.getFullYear();
-  let month = now.getMonth() + 1;
-  if (month % 2 === 0) month -= 1;
+  const startId = currentBashoId();
+  let year = parseInt(startId.slice(0, 4));
+  let month = parseInt(startId.slice(4, 6));
 
   const ids: string[] = [];
   while (ids.length < count) {
