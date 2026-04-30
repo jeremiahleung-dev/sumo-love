@@ -83,7 +83,7 @@ export default async function HomePage() {
     latestBasho?.entries.map((e) => ({
       rikishiId: e.rikishiId,
       shikonaEn: e.rikishi.shikonaEn,
-      currentRank: e.rikishi.currentRank,
+      currentRank: e.rank,
       wins: e.wins,
       losses: e.losses,
       absences: e.absences,
