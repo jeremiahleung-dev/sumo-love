@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { nextBashoId } from "@/lib/sumo-api/client";
 import { MapPin, CalendarDays, Trophy, Clock } from "lucide-react";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 const BASHO_META: Record<number, { jp: string; en: string; location: string; venue: string }> = {
   1:  { jp: "初場所",     en: "Hatsu Basho",   location: "Tokyo",   venue: "Ryogoku Kokugikan" },

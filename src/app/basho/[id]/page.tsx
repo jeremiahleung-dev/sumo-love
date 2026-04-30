@@ -5,7 +5,7 @@ import LeaderBoard from "@/components/basho/LeaderBoard";
 import BoutsSection from "@/components/basho/BoutsSection";
 import { ChevronLeft, MapPin, CalendarDays, Trophy } from "lucide-react";
 
-export const revalidate = 1800;
+export const dynamic = "force-dynamic";
 
 export default async function BashoDetailPage({
   params,

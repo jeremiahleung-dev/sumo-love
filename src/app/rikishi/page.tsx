@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import RikishiGrid from "@/components/rikishi/RikishiGrid";
 import { isSanyaku, rankSortKey } from "@/lib/ranks";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export default async function RikishiPage() {
   const latestBasho = await db.basho.findFirst({ orderBy: { sumoApiId: "desc" } });
