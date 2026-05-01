@@ -8,14 +8,12 @@ export function isSanyaku(rank: string | null | undefined): boolean {
 }
 
 export function rankSortKey(rank: string | null | undefined): number {
-  if (!rank) return 99;
+  if (!rank) return 9999;
   const idx = RANK_ORDER.findIndex((r) => rank.startsWith(r));
-  if (idx === -1) return 99;
-  if (rank.startsWith("Maegashira")) {
-    const num = parseInt(rank.replace(/\D/g, "")) || 99;
-    return 4 + num / 100;
-  }
-  return idx;
+  if (idx === -1) return 9999;
+  const isWest = rank.includes("West") ? 1 : 0;
+  const num = parseInt(rank.replace(/\D/g, "")) || 1;
+  return idx * 1000 + num * 2 + isWest;
 }
 
 export function rankToDivision(rank: string): string {

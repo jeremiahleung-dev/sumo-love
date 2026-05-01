@@ -1,6 +1,7 @@
 import Link from "next/link";
 import RankBadge from "@/components/ui/RankBadge";
 import RecordPill from "@/components/ui/RecordPill";
+import { rankSortKey } from "@/lib/ranks";
 
 interface LeaderEntry {
   rikishiId: string;
@@ -12,10 +13,11 @@ interface LeaderEntry {
   yusho: boolean;
 }
 
-export default function LeaderBoard({ entries }: { entries: LeaderEntry[] }) {
+export default function LeaderBoard({ entries, limit }: { entries: LeaderEntry[]; limit?: number }) {
   const sorted = [...entries].sort((a, b) => {
     if (b.wins !== a.wins) return b.wins - a.wins;
-    return a.losses - b.losses;
+    if (a.losses !== b.losses) return a.losses - b.losses;
+    return rankSortKey(a.currentRank) - rankSortKey(b.currentRank);
   });
 
   return (
@@ -30,7 +32,7 @@ export default function LeaderBoard({ entries }: { entries: LeaderEntry[] }) {
           </tr>
         </thead>
         <tbody className="divide-y divide-[#27272A]">
-          {sorted.slice(0, 15).map((entry, i) => (
+          {(limit != null ? sorted.slice(0, limit) : sorted).map((entry, i) => (
             <tr
               key={entry.rikishiId}
               className={`transition-colors duration-150 hover:bg-[#18181B] cursor-pointer ${

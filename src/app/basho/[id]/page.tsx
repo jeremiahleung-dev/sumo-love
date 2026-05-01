@@ -5,7 +5,7 @@ import LeaderBoard from "@/components/basho/LeaderBoard";
 import BoutsSection from "@/components/basho/BoutsSection";
 import { ChevronLeft, MapPin, CalendarDays, Trophy } from "lucide-react";
 
-export const revalidate = 1800;
+export const dynamic = "force-dynamic";
 
 export default async function BashoDetailPage({
   params,
@@ -141,7 +141,7 @@ export default async function BashoDetailPage({
           <div>
             <h2 className="font-display font-bold text-xl mb-4">Standings</h2>
             {leaderEntries.length > 0 ? (
-              <LeaderBoard entries={leaderEntries} />
+              <LeaderBoard entries={leaderEntries} limit={leaderEntries.length} />
             ) : (
               <p className="text-white/40 text-sm">No standings yet.</p>
             )}
