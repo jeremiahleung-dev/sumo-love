@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import AuthProvider from "@/components/providers/AuthProvider";
+import SplashScreen from "@/components/SplashScreen";
 import "./globals.css";
 
 const inter = Inter({
@@ -37,9 +39,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable} h-full`}>
       <body className="min-h-full flex flex-col bg-[#09090B] text-[#FAFAFA] antialiased">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <AuthProvider>
+          <SplashScreen />
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
