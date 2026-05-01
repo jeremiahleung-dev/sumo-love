@@ -50,13 +50,13 @@ export default function SplashScreen() {
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 2.0, duration: 0.5, ease: "easeOut" }}
         >
-          <ellipse cx="76" cy="76" rx="5" ry="4" fill="white" opacity="0" />
-          <circle cx="76" cy="88" r="12" fill="white" opacity="0" />
-          <ellipse cx="76" cy="114" rx="22" ry="19" fill="white" opacity="0" />
-          <ellipse cx="57" cy="108" rx="9" ry="6" fill="white" opacity="0" transform="rotate(-25 57 108)" />
-          <ellipse cx="95" cy="106" rx="9" ry="6" fill="white" opacity="0" transform="rotate(20 95 106)" />
-          <ellipse cx="66" cy="130" rx="9" ry="7" fill="white" opacity="0" />
-          <ellipse cx="86" cy="130" rx="9" ry="7" fill="white" opacity="0" />
+          <ellipse cx="76" cy="76" rx="5" ry="4" fill="white" opacity="0.9" />
+          <circle cx="76" cy="88" r="12" fill="white" opacity="0.9" />
+          <ellipse cx="76" cy="114" rx="22" ry="19" fill="white" opacity="0.88" />
+          <ellipse cx="57" cy="108" rx="9" ry="6" fill="white" opacity="0.75" transform="rotate(-25 57 108)" />
+          <ellipse cx="95" cy="106" rx="9" ry="6" fill="white" opacity="0.75" transform="rotate(20 95 106)" />
+          <ellipse cx="66" cy="130" rx="9" ry="7" fill="white" opacity="0.8" />
+          <ellipse cx="86" cy="130" rx="9" ry="7" fill="white" opacity="0.8" />
           {/* Mawashi — red */}
           <rect x="58" y="111" width="36" height="9" rx="2" fill="#C0292A" />
         </motion.g>
@@ -67,13 +67,13 @@ export default function SplashScreen() {
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 2.0, duration: 0.5, ease: "easeOut" }}
         >
-          <ellipse cx="144" cy="76" rx="5" ry="4" fill="white" opacity="0" />
-          <circle cx="144" cy="88" r="12" fill="white" opacity="0" />
-          <ellipse cx="144" cy="114" rx="22" ry="19" fill="white" opacity="0" />
-          <ellipse cx="163" cy="108" rx="9" ry="6" fill="white" opacity="0" transform="rotate(25 163 108)" />
-          <ellipse cx="125" cy="106" rx="9" ry="6" fill="white" opacity="0" transform="rotate(-20 125 106)" />
-          <ellipse cx="134" cy="130" rx="9" ry="7" fill="white" opacity="0" />
-          <ellipse cx="154" cy="130" rx="9" ry="7" fill="white" opacity="0" />
+          <ellipse cx="144" cy="76" rx="5" ry="4" fill="white" opacity="0.9" />
+          <circle cx="144" cy="88" r="12" fill="white" opacity="0.9" />
+          <ellipse cx="144" cy="114" rx="22" ry="19" fill="white" opacity="0.88" />
+          <ellipse cx="163" cy="108" rx="9" ry="6" fill="white" opacity="0.75" transform="rotate(25 163 108)" />
+          <ellipse cx="125" cy="106" rx="9" ry="6" fill="white" opacity="0.75" transform="rotate(-20 125 106)" />
+          <ellipse cx="134" cy="130" rx="9" ry="7" fill="white" opacity="0.8" />
+          <ellipse cx="154" cy="130" rx="9" ry="7" fill="white" opacity="0.8" />
           {/* Mawashi — blue */}
           <rect x="126" y="111" width="36" height="9" rx="2" fill="#2563EB" />
         </motion.g>
