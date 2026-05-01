@@ -3,53 +3,22 @@
 import { useSession, signIn } from "next-auth/react";
 import { motion } from "framer-motion";
 
-// Sumo wrestler silhouette in shikiri (pre-bout crouch) — faces right by default
-function RikishiSilhouette({ flip = false }: { flip?: boolean }) {
-  return (
-    <svg
-      viewBox="0 0 120 140"
-      className="w-24 h-28"
-      style={{ transform: flip ? "scaleX(-1)" : undefined }}
-      aria-hidden
-    >
-      {/* Mage (topknot) */}
-      <ellipse cx="60" cy="20" rx="7" ry="5" fill="currentColor" />
-      {/* Head */}
-      <circle cx="60" cy="34" r="16" fill="currentColor" />
-      {/* Body / mawashi bulk */}
-      <path
-        d="M18 62 Q28 54 60 54 Q92 54 102 62 Q98 102 84 110 Q60 116 36 110 Q22 102 18 62Z"
-        fill="currentColor"
-      />
-      {/* Left arm reaching forward */}
-      <line x1="18" y1="65" x2="2" y2="86" stroke="currentColor" strokeWidth="13" strokeLinecap="round" />
-      {/* Right arm braced */}
-      <line x1="102" y1="65" x2="116" y2="80" stroke="currentColor" strokeWidth="13" strokeLinecap="round" />
-      {/* Left leg wide */}
-      <line x1="36" y1="110" x2="26" y2="136" stroke="currentColor" strokeWidth="14" strokeLinecap="round" />
-      {/* Right leg */}
-      <line x1="84" y1="110" x2="94" y2="136" stroke="currentColor" strokeWidth="14" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 export default function SplashScreen() {
   const { status } = useSession();
 
   if (status === "authenticated") return null;
 
-  // Hold a plain dark screen while session resolves to avoid flash
   if (status === "loading") {
     return <div className="fixed inset-0 bg-[#09090B] z-[100]" />;
   }
 
   return (
-    <div className="fixed inset-0 bg-[#09090B] z-[100] flex flex-col items-center justify-center gap-0 overflow-hidden">
+    <div className="fixed inset-0 bg-[#09090B] z-[100] flex flex-col items-center justify-center overflow-hidden">
 
-      {/* ── Dohyo ring ───────────────────────────────────────────── */}
+      {/* ── Dohyo ring + rikishi (single SVG) ───────────────────── */}
       <motion.svg
         viewBox="0 0 220 220"
-        className="w-64 h-64 absolute"
+        className="w-72 h-72"
         aria-hidden
       >
         {/* Outer rope ring */}
@@ -63,7 +32,7 @@ export default function SplashScreen() {
           animate={{ pathLength: 1, opacity: 0.6 }}
           transition={{ duration: 1.6, ease: "easeInOut", delay: 0.2 }}
         />
-        {/* Inner ring */}
+        {/* Inner dashed ring */}
         <motion.circle
           cx="110" cy="110" r="88"
           fill="none"
@@ -71,50 +40,74 @@ export default function SplashScreen() {
           strokeWidth="1.5"
           strokeDasharray="4 6"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.3 }}
+          animate={{ opacity: 0.25 }}
           transition={{ delay: 1.6, duration: 0.4 }}
-        />
-        {/* Shikirisen east */}
-        <motion.rect
-          x="96" y="105" width="10" height="10"
-          fill="#FAF7F2"
-          initial={{ scaleY: 0, opacity: 0 }}
-          animate={{ scaleY: 1, opacity: 0.9 }}
-          transition={{ delay: 1.4, duration: 0.25, ease: "easeOut" }}
         />
         {/* Shikirisen west */}
         <motion.rect
-          x="114" y="105" width="10" height="10"
+          x="94" y="104" width="12" height="12" rx="1"
           fill="#FAF7F2"
           initial={{ scaleY: 0, opacity: 0 }}
-          animate={{ scaleY: 1, opacity: 0.9 }}
-          transition={{ delay: 1.4, duration: 0.25, ease: "easeOut" }}
+          animate={{ scaleY: 1, opacity: 0.85 }}
+          transition={{ delay: 1.4, duration: 0.2, ease: "easeOut" }}
         />
-      </motion.svg>
+        {/* Shikirisen east */}
+        <motion.rect
+          x="114" y="104" width="12" height="12" rx="1"
+          fill="#FAF7F2"
+          initial={{ scaleY: 0, opacity: 0 }}
+          animate={{ scaleY: 1, opacity: 0.85 }}
+          transition={{ delay: 1.4, duration: 0.2, ease: "easeOut" }}
+        />
 
-      {/* ── Rikishi silhouettes ──────────────────────────────────── */}
-      <div className="flex items-end justify-center gap-2 relative z-10 mt-8">
-        <motion.div
-          className="text-[#FAF7F2]/80"
-          initial={{ x: -80, opacity: 0 }}
+        {/* ── West rikishi (left, facing right) ── */}
+        <motion.g
+          initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 2.0, duration: 0.5, ease: "easeOut" }}
         >
-          <RikishiSilhouette flip />
-        </motion.div>
-        <motion.div
-          className="text-[#FAF7F2]/80"
-          initial={{ x: 80, opacity: 0 }}
+          {/* Mage (topknot) */}
+          <ellipse cx="76" cy="76" rx="5" ry="4" fill="white" opacity="0.9" />
+          {/* Head */}
+          <circle cx="76" cy="88" r="12" fill="white" opacity="0.9" />
+          {/* Body — wide round mass */}
+          <ellipse cx="76" cy="114" rx="22" ry="19" fill="white" opacity="0.88" />
+          {/* Left arm (back side) */}
+          <ellipse cx="57" cy="108" rx="9" ry="6" fill="white" opacity="0.75" transform="rotate(-25 57 108)" />
+          {/* Right arm (reaching forward) */}
+          <ellipse cx="95" cy="106" rx="9" ry="6" fill="white" opacity="0.75" transform="rotate(20 95 106)" />
+          {/* Left leg */}
+          <ellipse cx="66" cy="130" rx="9" ry="7" fill="white" opacity="0.8" />
+          {/* Right leg */}
+          <ellipse cx="86" cy="130" rx="9" ry="7" fill="white" opacity="0.8" />
+        </motion.g>
+
+        {/* ── East rikishi (right, facing left — mirrored) ── */}
+        <motion.g
+          initial={{ x: 50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 2.0, duration: 0.5, ease: "easeOut" }}
         >
-          <RikishiSilhouette />
-        </motion.div>
-      </div>
+          {/* Mage */}
+          <ellipse cx="144" cy="76" rx="5" ry="4" fill="white" opacity="0.9" />
+          {/* Head */}
+          <circle cx="144" cy="88" r="12" fill="white" opacity="0.9" />
+          {/* Body */}
+          <ellipse cx="144" cy="114" rx="22" ry="19" fill="white" opacity="0.88" />
+          {/* Right arm (back side) */}
+          <ellipse cx="163" cy="108" rx="9" ry="6" fill="white" opacity="0.75" transform="rotate(25 163 108)" />
+          {/* Left arm (reaching forward) */}
+          <ellipse cx="125" cy="106" rx="9" ry="6" fill="white" opacity="0.75" transform="rotate(-20 125 106)" />
+          {/* Left leg */}
+          <ellipse cx="134" cy="130" rx="9" ry="7" fill="white" opacity="0.8" />
+          {/* Right leg */}
+          <ellipse cx="154" cy="130" rx="9" ry="7" fill="white" opacity="0.8" />
+        </motion.g>
+      </motion.svg>
 
       {/* ── 相撲 kanji stamp ─────────────────────────────────────── */}
       <motion.div
-        className="relative z-10 mt-6 font-display font-black text-7xl text-[#FAFAFA] leading-none select-none"
+        className="mt-4 font-display font-black text-6xl text-[#FAFAFA] leading-none select-none"
         initial={{ scale: 1.6, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 2.6, duration: 0.35, ease: [0.2, 0, 0.1, 1] }}
@@ -124,7 +117,7 @@ export default function SplashScreen() {
 
       {/* ── Brand name ───────────────────────────────────────────── */}
       <motion.p
-        className="relative z-10 mt-3 font-display font-semibold text-lg tracking-[0.3em] text-[#D4A97A] uppercase"
+        className="mt-2 font-display font-semibold text-base tracking-[0.35em] text-[#D4A97A] uppercase"
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 3.1, duration: 0.4 }}
@@ -134,7 +127,7 @@ export default function SplashScreen() {
 
       {/* ── Sign in button ───────────────────────────────────────── */}
       <motion.div
-        className="relative z-10 mt-10 flex flex-col items-center gap-3"
+        className="mt-10 flex flex-col items-center gap-3"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 3.6, duration: 0.5 }}
