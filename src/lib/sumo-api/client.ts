@@ -42,17 +42,25 @@ export function currentBashoId(): string {
   return `${year}${String(month - 1).padStart(2, "0")}`;
 }
 
-/** Returns the next basho ID after the current one (YYYYMM). */
+/** Returns the upcoming basho ID (YYYYMM).
+ *  In an even month the next odd month is upcoming.
+ *  In an odd month before day 11 the basho hasn't started, so this month is upcoming.
+ *  In an odd month on day 11+ the basho is underway; the one after is upcoming.
+ */
 export function nextBashoId(): string {
-  const ODD_MONTHS = [1, 3, 5, 7, 9, 11];
   const now = new Date();
   let year = now.getFullYear();
   let month = now.getMonth() + 1;
-  if (month % 2 === 0) month += 1; // even → next odd
-  else month += 2; // already odd → skip to the one after
+  const day = now.getDate();
+
+  if (month % 2 === 0) {
+    month += 1; // even → next odd month
+  } else if (day >= 11) {
+    month += 2; // basho already started → next cycle
+  }
+  // else: odd month, day < 11 → basho not yet started, keep current month
+
   if (month > 12) { month = 1; year += 1; }
-  // snap to nearest odd month (handles edge cases)
-  if (!ODD_MONTHS.includes(month)) month += 1;
   return `${year}${String(month).padStart(2, "0")}`;
 }
 
