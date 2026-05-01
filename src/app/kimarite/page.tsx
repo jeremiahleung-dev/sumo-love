@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import { KIMARITE_CATEGORIES } from "@/lib/kimarite-categories";
 import CategorySection from "@/components/kimarite/CategorySection";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export default async function KimaritePage({
   searchParams,

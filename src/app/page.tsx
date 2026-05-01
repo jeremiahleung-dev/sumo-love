@@ -25,7 +25,7 @@ function getNextBashoStartDate(bashoId: string): Date {
   return new Date(year, month - 1, firstSunday + 7);
 }
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 const BASHO_WITH_ENTRIES = {
   include: {
