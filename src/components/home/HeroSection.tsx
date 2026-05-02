@@ -47,7 +47,7 @@ export default function HeroSection({
         <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 py-32 md:py-40">
 
           {/* Status label */}
-          <motion.div {...fadeUp(0)} className="mb-8">
+          <motion.div {...fadeUp(0)} className="mb-6">
             {isActive && bashoName ? (
               <span className="inline-flex items-center gap-2 bg-[#DC2626]/10 border border-[#DC2626]/25 text-[#DC2626] text-xs font-semibold px-3 py-1.5 rounded-full">
                 <span className="animate-pulse-dot w-1.5 h-1.5 rounded-full bg-[#DC2626] inline-block" />
@@ -60,11 +60,22 @@ export default function HeroSection({
             )}
           </motion.div>
 
+          {/* Countdown — shown above headline when no live basho */}
+          {!isActive && countdownDate && countdownBashoName && countdownBashoNameJp && (
+            <motion.div {...fadeUp(0.05)} className="mb-6">
+              <NextBashoCountdown
+                targetDate={countdownDate}
+                bashoName={countdownBashoName}
+                bashoNameJp={countdownBashoNameJp}
+              />
+            </motion.div>
+          )}
+
           {/* Kanji */}
           <motion.p
-            {...fadeUp(0.05)}
+            {...fadeUp(0.08)}
             className="font-display font-black text-[#FAFAFA]/[0.06] leading-none select-none mb-2"
-            style={{ fontSize: "clamp(4rem, 14vw, 13rem)" }}
+            style={{ fontSize: "clamp(3rem, 10vw, 10rem)" }}
             aria-hidden
           >
             相撲
@@ -72,9 +83,9 @@ export default function HeroSection({
 
           {/* Headline */}
           <motion.h1
-            {...fadeUp(0.1)}
+            {...fadeUp(0.12)}
             className="font-display font-black text-[#FAFAFA] leading-[0.9] tracking-tight"
-            style={{ fontSize: "clamp(3.5rem, 10vw, 9rem)" }}
+            style={{ fontSize: "clamp(2.5rem, 6vw, 5.5rem)" }}
           >
             Follow Every
             <br />
@@ -84,14 +95,14 @@ export default function HeroSection({
           {/* Body copy */}
           <motion.p
             {...fadeUp(0.2)}
-            className="mt-8 text-[#A1A1AA] text-lg md:text-xl leading-relaxed max-w-[500px]"
+            className="mt-6 text-[#A1A1AA] text-base md:text-lg leading-relaxed max-w-[500px]"
           >
             The premier sumo basho tracker. Live standings, bout-by-bout
             results, and the kimarite behind every victory — updated daily.
           </motion.p>
 
           {/* CTAs */}
-          <motion.div {...fadeUp(0.3)} className="mt-10 flex flex-wrap gap-3">
+          <motion.div {...fadeUp(0.3)} className="mt-8 flex flex-wrap gap-3">
             <Link
               href="/rikishi"
               className="inline-flex items-center gap-2 bg-[#DC2626] hover:bg-[#B91C1C] text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors duration-200 cursor-pointer"
@@ -111,20 +122,6 @@ export default function HeroSection({
               Kimarite →
             </Link>
           </motion.div>
-
-          {/* Countdown — shown when no live basho */}
-          {!isActive && countdownDate && countdownBashoName && countdownBashoNameJp && (
-            <motion.div
-              {...fadeUp(0.45)}
-              className="mt-16 pt-8 border-t border-[#27272A]"
-            >
-              <NextBashoCountdown
-                targetDate={countdownDate}
-                bashoName={countdownBashoName}
-                bashoNameJp={countdownBashoNameJp}
-              />
-            </motion.div>
-          )}
         </div>
       </div>
 
