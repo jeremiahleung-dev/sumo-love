@@ -1,7 +1,6 @@
 import Link from "next/link";
-import RankBadge from "@/components/ui/RankBadge";
 import RecordPill from "@/components/ui/RecordPill";
-import { rankSortKey } from "@/lib/ranks";
+import { rankSortKey, rankAbbr } from "@/lib/ranks";
 
 interface LeaderEntry {
   rikishiId: string;
@@ -27,7 +26,7 @@ export default function LeaderBoard({ entries, limit }: { entries: LeaderEntry[]
           <tr className="bg-[#18181B] text-[#52525B] text-[11px] uppercase tracking-[0.1em]">
             <th className="px-5 py-3 text-left w-10 font-medium">#</th>
             <th className="px-5 py-3 text-left font-medium">Rikishi</th>
-            <th className="px-5 py-3 text-left hidden sm:table-cell font-medium">Rank</th>
+            <th className="px-5 py-3 text-left font-medium">Rank</th>
             <th className="px-5 py-3 text-right font-medium">Record</th>
           </tr>
         </thead>
@@ -55,8 +54,8 @@ export default function LeaderBoard({ entries, limit }: { entries: LeaderEntry[]
                   )}
                 </Link>
               </td>
-              <td className="px-5 py-3.5 hidden sm:table-cell">
-                {entry.currentRank && <RankBadge rank={entry.currentRank} />}
+              <td className="px-5 py-3.5 font-mono text-xs text-[#A1A1AA]">
+                {rankAbbr(entry.currentRank)}
               </td>
               <td className="px-5 py-3.5 text-right">
                 <RecordPill

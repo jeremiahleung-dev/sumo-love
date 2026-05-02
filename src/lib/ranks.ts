@@ -19,3 +19,20 @@ export function rankSortKey(rank: string | null | undefined): number {
 export function rankToDivision(rank: string): string {
   return isSanyaku(rank) ? "Sanyaku" : "Makuuchi";
 }
+
+const ABBR: Record<string, string> = {
+  Yokozuna: "Y", Ozeki: "O", Sekiwake: "S", Komusubi: "K", Maegashira: "M",
+};
+
+/** "Maegashira 5 East" → "M5e", "Yokozuna 1 West" → "Y1w" */
+export function rankAbbr(rank: string | null | undefined): string {
+  if (!rank) return "—";
+  for (const [full, abbr] of Object.entries(ABBR)) {
+    if (rank.startsWith(full)) {
+      const num = rank.match(/\d+/)?.[0] ?? "";
+      const side = rank.includes("East") ? "e" : rank.includes("West") ? "w" : "";
+      return `${abbr}${num}${side}`;
+    }
+  }
+  return rank;
+}
