@@ -25,14 +25,12 @@ export default function LeaderBoard({ entries, limit }: { entries: LeaderEntry[]
         <colgroup>
           <col className="w-8" />
           <col />
-          <col className="w-14" />
           <col className="w-24" />
         </colgroup>
         <thead>
           <tr className="bg-[#18181B] text-[#52525B] text-[11px] uppercase tracking-[0.1em]">
             <th className="px-3 py-3 text-left font-medium">#</th>
             <th className="px-3 py-3 text-left font-medium">Rikishi</th>
-            <th className="px-3 py-3 text-left font-medium">Rank</th>
             <th className="px-3 py-3 text-right font-medium">Record</th>
           </tr>
         </thead>
@@ -47,21 +45,23 @@ export default function LeaderBoard({ entries, limit }: { entries: LeaderEntry[]
               <td className="px-3 py-3.5 text-[#3F3F46] font-mono text-xs font-medium">
                 {i + 1}
               </td>
-              <td className="px-3 py-3.5 truncate">
+              <td className="px-3 py-3.5">
                 <Link
                   href={`/rikishi/${entry.rikishiId}`}
                   className="font-semibold text-[#FAFAFA] hover:text-[#DC2626] transition-colors duration-150 flex items-center gap-2 cursor-pointer"
                 >
-                  <span className="truncate">{entry.shikonaEn}</span>
+                  <span className="truncate">
+                    {entry.shikonaEn}
+                    <span className="font-normal text-[#52525B] ml-1">
+                      ({rankAbbr(entry.currentRank)})
+                    </span>
+                  </span>
                   {entry.yusho && (
                     <span className="flex-none text-[10px] bg-[#DC2626] text-white px-1.5 py-0.5 rounded font-medium">
                       優勝
                     </span>
                   )}
                 </Link>
-              </td>
-              <td className="px-3 py-3.5 font-mono text-xs text-[#A1A1AA]">
-                {rankAbbr(entry.currentRank)}
               </td>
               <td className="px-3 py-3.5 text-right">
                 <RecordPill
