@@ -21,13 +21,19 @@ export default function LeaderBoard({ entries, limit }: { entries: LeaderEntry[]
 
   return (
     <div className="overflow-hidden">
-      <table className="w-full text-sm">
+      <table className="w-full text-sm table-fixed">
+        <colgroup>
+          <col className="w-8" />
+          <col />
+          <col className="w-14" />
+          <col className="w-24" />
+        </colgroup>
         <thead>
-          <tr className="bg-[#18181B] text-[#52525B] text-[10px] uppercase tracking-[0.1em]">
-            <th className="px-3 py-2 text-left w-8 font-medium">#</th>
-            <th className="px-3 py-2 text-left font-medium">Rikishi</th>
-            <th className="px-3 py-2 text-left font-medium">Rank</th>
-            <th className="px-3 py-2 text-right font-medium">Record</th>
+          <tr className="bg-[#18181B] text-[#52525B] text-[11px] uppercase tracking-[0.1em]">
+            <th className="px-3 py-3 text-left font-medium">#</th>
+            <th className="px-3 py-3 text-left font-medium">Rikishi</th>
+            <th className="px-3 py-3 text-left font-medium">Rank</th>
+            <th className="px-3 py-3 text-right font-medium">Record</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-[#27272A]">
@@ -38,26 +44,26 @@ export default function LeaderBoard({ entries, limit }: { entries: LeaderEntry[]
                 i === 0 ? "bg-[#DC2626]/[0.04]" : ""
               }`}
             >
-              <td className="px-3 py-2 text-[#3F3F46] font-mono text-xs font-medium">
+              <td className="px-3 py-3.5 text-[#3F3F46] font-mono text-xs font-medium">
                 {i + 1}
               </td>
-              <td className="px-3 py-2">
+              <td className="px-3 py-3.5 truncate">
                 <Link
                   href={`/rikishi/${entry.rikishiId}`}
-                  className="font-semibold text-sm text-[#FAFAFA] hover:text-[#DC2626] transition-colors duration-150 flex items-center gap-2 cursor-pointer"
+                  className="font-semibold text-[#FAFAFA] hover:text-[#DC2626] transition-colors duration-150 flex items-center gap-2 cursor-pointer"
                 >
-                  {entry.shikonaEn}
+                  <span className="truncate">{entry.shikonaEn}</span>
                   {entry.yusho && (
-                    <span className="text-[10px] bg-[#DC2626] text-white px-1.5 py-0.5 rounded font-medium">
+                    <span className="flex-none text-[10px] bg-[#DC2626] text-white px-1.5 py-0.5 rounded font-medium">
                       優勝
                     </span>
                   )}
                 </Link>
               </td>
-              <td className="px-3 py-2 font-mono text-xs text-[#A1A1AA]">
+              <td className="px-3 py-3.5 font-mono text-xs text-[#A1A1AA]">
                 {rankAbbr(entry.currentRank)}
               </td>
-              <td className="px-3 py-2 text-right">
+              <td className="px-3 py-3.5 text-right">
                 <RecordPill
                   wins={entry.wins}
                   losses={entry.losses}
